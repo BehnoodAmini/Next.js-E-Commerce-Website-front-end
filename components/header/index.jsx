@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 
@@ -21,11 +21,13 @@ const Header = () => {
     <header className="container mx-auto py-2 overflow-x-hidden">
       <div className="flex justify-between items-start gap-4">
         <div className="flex flex-col relative h-52 w-48">
-          <Link href={"/"}
-          onMouseEnter={() => setLogohover(1)}
-              onMouseLeave={() => setLogohover(0)}
-              className="z-30 bg-white logo p-4 rounded-lg shadow-[0px_1px_10px_rgba(0,0,0,0.25)] transition-all duration-500 hover:shadow-[0px_1px_10px_rgba(0,0,0,0.5)] text-center"
-            >
+          <Link
+            href={"/"}
+            onMouseEnter={() => setLogohover(1)}
+            onMouseLeave={() => setLogohover(0)}
+            className="z-30 bg-white logo p-4 rounded-lg shadow-[0px_1px_10px_rgba(0,0,0,0.25)] transition-all duration-500 hover:shadow-[0px_1px_10px_rgba(0,0,0,0.5)] text-center"
+          >
+            <div className="flex justify-center">
               <Image
                 src={"/logo.jpg"}
                 className="rounded-lg"
@@ -33,7 +35,8 @@ const Header = () => {
                 height={100}
                 alt="shop logo"
               />
-              <div>فروشگاه فایل</div>
+            </div>
+            <div>فروشگاه فایل</div>
           </Link>
           <div
             onMouseEnter={() => setLogohover(1)}
@@ -41,23 +44,29 @@ const Header = () => {
             className={
               logohover == 0
                 ? "z-20 absolute bottom-20 right-0 left-0 flex justify-around items-center text-[1.5rem] p-2 text-indigo-600 bg-zinc-100 rounded-br-md rounded-bl-md transition-all duration-500"
-                : "z-20 absolute bottom-0 right-0 left-0 flex justify-around items-center text-[1.5rem] p-2 text-indigo-600 bg-zinc-100 rounded-br-md rounded-bl-md transition-all duration-500"
+                : "z-20 absolute bottom-3 right-0 left-0 flex justify-around items-center text-[1.5rem] p-2 text-indigo-600 bg-zinc-100 rounded-br-md rounded-bl-md transition-all duration-500"
             }
           >
-            <Link href="https://web.telegram.org/"
-            className="transition-all duration-300 hover:text-orange-500"
-            target={"_blank"}>
-                <BsTelegram />
+            <Link
+              href="https://web.telegram.org/"
+              className="transition-all duration-300 hover:text-orange-500"
+              target={"_blank"}
+            >
+              <BsTelegram />
             </Link>
-            <Link href="https://youtube.com/"
-            className="transition-all duration-300 hover:text-orange-500"
-            target={"_blank"}>
-                <BsYoutube />
+            <Link
+              href="https://youtube.com/"
+              className="transition-all duration-300 hover:text-orange-500"
+              target={"_blank"}
+            >
+              <BsYoutube />
             </Link>
-            <Link href="https://x.com/"
-            className="transition-all duration-300 hover:text-orange-500"
-            target={"_blank"}>
-                <FaSquareXTwitter />
+            <Link
+              href="https://x.com/"
+              className="transition-all duration-300 hover:text-orange-500"
+              target={"_blank"}
+            >
+              <FaSquareXTwitter />
             </Link>
           </div>
         </div>
@@ -66,28 +75,43 @@ const Header = () => {
             <nav className="">
               <ul className="flex items-center justify-start gap-2">
                 <li>
-                  <Link href="/" className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white">
-                      خانه
+                  <Link
+                    href="/"
+                    className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white"
+                  >
+                    خانه
                   </Link>
                 </li>
                 <li>
-                  <Link href="/" className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white">
-                      اپلیکیشن‌ها
+                  <Link
+                    href="/"
+                    className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white"
+                  >
+                    اپلیکیشن‌ها
                   </Link>
                 </li>
                 <li>
-                  <Link href="/" className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white">
-                      کتاب‌ها
+                  <Link
+                    href="/"
+                    className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white"
+                  >
+                    کتاب‌ها
                   </Link>
                 </li>
                 <li>
-                  <Link href="/" className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white">
-                      فایل‌های گرافیکی
+                  <Link
+                    href="/"
+                    className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white"
+                  >
+                    فایل‌های گرافیکی
                   </Link>
                 </li>
                 <li>
-                  <Link href="/" className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white">
-                      وبلاگ
+                  <Link
+                    href="/"
+                    className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white"
+                  >
+                    وبلاگ
                   </Link>
                 </li>
               </ul>

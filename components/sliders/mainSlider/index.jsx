@@ -1,28 +1,36 @@
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, {
-   Navigation,
-   Pagination,
-   Scrollbar,
-   Autoplay,
-} from "swiper";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/autoplay";
-SwiperCore.use([Autoplay]);
+// import { Swiper, SwiperSlide } from "swiper/react";
+// import SwiperCore, {
+//    Navigation,
+//    Pagination,
+//    Scrollbar,
+//    Autoplay,
+// } from "swiper";
+// import "swiper/css";
+// import "swiper/css/navigation";
+// import "swiper/css/pagination";
+// import "swiper/css/autoplay";
+// SwiperCore.use([Autoplay]);
 
 import Image from "next/image";
 
 const MainSlider = () => {
    return (
          <section className=" container mx-auto">
-            <Swiper
+            <div className="flex justify-center items-center">
+                     <Image 
+                        src={"/images/slider/slide1.jpg"}
+                        className="rounded-lg"
+                        width={1280}
+                        height={300}
+                        alt="slider1"
+                     />
+                  </div>
+            {/* <Swiper
                modules={[Navigation,Pagination, Scrollbar]}
                spaceBetween={20}
                slidesPerView={1}
                navigation
-               pagination
-               autoplay={{ delay: 3000 }}
+               pagination 
                scrollbar={{ draggable: true }}
             >
                <SwiperSlide>
@@ -61,7 +69,7 @@ const MainSlider = () => {
                      />
                   </div>
                </SwiperSlide>
-            </Swiper>
+            </Swiper> */}
          </section>
    );
 };
