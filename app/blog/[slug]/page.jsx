@@ -72,7 +72,7 @@ const SingleBlog = () => {
         </p>
       </section>
       <section>
-        <RelatedPosts />
+        <RelatedPosts title={"مقالات مرتبط"}/>
       </section>
       <section className="flex flex-col gap-6">
         <h2 className="text-xl">دیدگاه‌ها</h2>

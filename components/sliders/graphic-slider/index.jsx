@@ -45,7 +45,7 @@ const GraphicSlider = () => {
               </div>
               <Link
                 href={"/"}
-                className="flex items-center text-white! border-white border-2 bg-orange-500 px-4 py-1 rounded-md transition-all duration-500 hover:bg-orange-600"
+                className="flex items-center text-white! border-white border-2 bg-indigo-500 px-4 py-1 rounded-md transition-all duration-500 hover:bg-indigo-600"
               >
                 مشاهده همه
               </Link>

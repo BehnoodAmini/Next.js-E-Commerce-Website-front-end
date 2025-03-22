@@ -7,7 +7,7 @@ const BlogLayout = ({ children }) => {
   return (
     <div className="flex justify-between items-start container mx-auto gap-2">
       <main className="w-[75%]">{children}</main>
-      <aside className="w-80 max-w-80 p-2 rounded-md flex flex-col gap-12">
+      <aside className="w-80 max-w-80 rounded-md flex flex-col gap-12">
         <form className="border-zinc-700 border-2 px-2 rounded-md flex justify-between items-center">
           <input
             type="text"
@@ -88,7 +88,7 @@ const BlogLayout = ({ children }) => {
             <input
               type="text"
               className="bg-transparent p-2 outline-none text-sm"
-              placeholder="جست و جو در بلاگ..."
+              placeholder="ایمیل خود را وارد کنید..."
             />
             <IoSend className="rotate-180 w-6 h-6 text-blue-500" />
           </form>

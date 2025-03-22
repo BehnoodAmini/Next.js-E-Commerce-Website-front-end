@@ -7,7 +7,7 @@ import { FaChevronLeft } from "react-icons/fa";
 
 import BlogBox from "@/components/newBlogs/BlogBox";
 
-const RelatedPosts = () => {
+const RelatedPosts = ({ title }) => {
   const carouselRef = useRef();
   const carouselSwitcher = (data) => {
     if (carouselRef.current) {
@@ -22,9 +22,9 @@ const RelatedPosts = () => {
   return (
     <div>
       <div className="container mx-auto py-8">
-        <section className="flex flex-col gap-6 px-2">
+        <div className="flex flex-col gap-6 px-2">
           <header className=" flex justify-between items-center">
-            <h2 className="text-xl">مطالب مرتبط</h2>
+            <h2 className="text-xl">{title}</h2>
             <div className="flex gap-1">
               <div className=" flex items-center gap-1 text-zinc-600">
                 <FaChevronRight
@@ -57,7 +57,7 @@ const RelatedPosts = () => {
               <BlogBox />
             </div>
           </div>
-        </section>
+        </div>
       </div>
     </div>
   );

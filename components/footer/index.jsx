@@ -34,7 +34,7 @@ const Footer = () => {
             <ul className="flex flex-col gap-3 text-base sm:text-sm">
               <li>
                 <Link
-                  href={"/"}
+                  href={"/about"}
                   className="w-32 flex gap-1 items-center transition-all duration-300 hover:gap-2 hover:text-orange-500!"
                 >
                   <TfiAngleLeft />
@@ -43,7 +43,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href={"/"}
+                  href={"/contact"}
                   className="w-32 flex gap-1 items-center transition-all duration-300 hover:gap-2 hover:text-orange-500!"
                 >
                   <TfiAngleLeft />
@@ -52,7 +52,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href={"/"}
+                  href={"/help"}
                   className="w-32 flex gap-1 items-center transition-all duration-300 hover:gap-2 hover:text-orange-500!"
                 >
                   <TfiAngleLeft />
@@ -61,7 +61,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href={"/"}
+                  href={"/blog"}
                   className="w-32 flex gap-1 items-center transition-all duration-300 hover:gap-2 hover:text-orange-500!"
                 >
                   <TfiAngleLeft />
@@ -75,7 +75,7 @@ const Footer = () => {
             <ul className="flex flex-col gap-3 text-base sm:text-sm">
               <li>
                 <Link
-                  href={"/"}
+                  href={"/help"}
                   className="w-32 flex gap-1 items-center transition-all duration-300 hover:gap-2 hover:text-orange-500!"
                 >
                   <TfiAngleLeft />
@@ -84,7 +84,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href={"/"}
+                  href={"/help"}
                   className="w-32 flex gap-1 items-center transition-all duration-300  hover:gap-2 hover:text-orange-500!"
                 >
                   <TfiAngleLeft />
@@ -93,7 +93,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href={"/"}
+                  href={"/help"}
                   className="w-32 flex gap-1 items-center transition-all duration-300 hover:gap-2 hover:text-orange-500!"
                 >
                   <TfiAngleLeft />
@@ -126,7 +126,7 @@ const Footer = () => {
         <p>تمامی حقوق مادی و معنوی این وبسایت متعلق به ***** می‌باشد.</p>
         <HiOutlineArrowUp
           onClick={() => goTopCtrl()}
-          className="cursor-pointer w-10 h-10 p-2 rounded-lg bg-zinc-200 transition-all duration-300 hover:bg-indigo-500 hover:text-white"
+          className="fixed bottom-4 left-4 cursor-pointer w-12 h-12 p-2 rounded-lg bg-yellow-500 text-black transition-all duration-300 hover:bg-indigo-500 hover:text-white"
         />
       </div>
     </footer>

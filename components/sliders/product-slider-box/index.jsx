@@ -8,7 +8,7 @@ import { HiOutlineShoppingCart } from "react-icons/hi";
 const SlideBox = () => {
   return (
     <article className="sliderItem p-2 hover:pt-0 transition-all duration-300">
-      <div className="relative bg-white h-[24rem] w-72 rounded-lg">
+      <div className="relative bg-white h-[22rem] w-72 rounded-lg">
         <Link href={"/shop"} className="flex justify-center items-center pt-2">
             <Image
               width={260}
@@ -21,7 +21,7 @@ const SlideBox = () => {
         <div>
           <div className="flex flex-col gap-6 p-2">
             <Link href={"/shop"}>
-                <h3 className=" m-2 line-clamp-3">
+                <h3 className=" m-2 line-clamp-2">
                   عنوان محصول ان محصول هستنوان محصول هستنوان ان محصول هستنوان محصول هستنوان ان محصول هستنوان محصول هستنوان هستنوان محصول هستنوان محصول هستنوان محصول هستنوان
                   محصول هست این
                 </h3>
