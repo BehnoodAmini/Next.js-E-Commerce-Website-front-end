@@ -4,9 +4,17 @@ import { useState, useEffect } from "react";
 
 import AllMidBanners from "./allMidBanners";
 import NewMidBanner from "./newMidBanner";
+import MidBannerDetails from "./midBannerDetails";
 
 const MiddleBannerAll = () => {
-  const [det, setDet] = useState(<AllMidBanners />);
+  const [midBanDetCtrl, setMidBanDetCtrl] = useState("");
+  const [det, setDet] = useState(
+    <AllMidBanners setMidBanDetCtrl={setMidBanDetCtrl} />
+  );
+
+  useEffect(() => {
+    setDet(<MidBannerDetails midBanId={midBanDetCtrl} />);
+  }, [midBanDetCtrl]);
 
   return (
     <div className="flex flex-col gap-8">
@@ -14,7 +22,9 @@ const MiddleBannerAll = () => {
         <h1 className="text-blue-500 text-lg">بنرهای تبلیغاتی</h1>
         <div className="flex justify-end items-center gap-2">
           <button
-            onClick={() => setDet(<AllMidBanners />)}
+            onClick={() =>
+              setDet(<AllMidBanners setMidBanDetCtrl={setMidBanDetCtrl} />)
+            }
             className="px-3 py-1 rounded-md bg-indigo-600 text-white transition-all duration-300 hover:bg-orange-500"
           >
             همه
