@@ -31,14 +31,16 @@ const NewMidBanner = () => {
         <div className="flex flex-col gap-2">
           <div>آدرس عکس</div>
           <input
+            required={true}
             type="text"
             ref={imageUrlRef}
-            className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+            className="inputLtr p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
           />
         </div>
         <div className="flex flex-col gap-2">
           <div>آلت عکس</div>
           <input
+            required={true}
             type="text"
             ref={imageAltRef}
             className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
@@ -47,9 +49,10 @@ const NewMidBanner = () => {
         <div className="flex flex-col gap-2">
           <div>لینک عکس</div>
           <input
+            required={true}
             type="text"
             ref={imageLinkRef}
-            className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+            className="inputLtr p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
           />
         </div>
         <div className="flex flex-col gap-2">

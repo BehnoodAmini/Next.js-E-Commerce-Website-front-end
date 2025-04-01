@@ -1,12 +1,15 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 
-const Box = ({ data, setMidBanDetCtrl }) => {
+const Box = ({ data, setMidBanDetCtrl, setRandNumForBannerClick }) => {
   return (
     <div
-      onClick={() => setMidBanDetCtrl(data._id)}
-      className="cursor-pointer w-full p-6 rounded-lg bg-zinc-100 border-2 border-zinc-200 transition-all duration-300 hover:border-orange-500"
+      onClick={() => {
+        setMidBanDetCtrl(data._id);
+        setRandNumForBannerClick(Math.ceil(Math.random() * 100));
+      }}
+      className="relative flex justify-between items-center cursor-pointer w-full p-6 rounded-lg bg-zinc-100 border-2 border-zinc-200 transition-all duration-300 hover:border-orange-500"
     >
       <div className="flex justify-start items-center">
         <Image
@@ -18,7 +21,7 @@ const Box = ({ data, setMidBanDetCtrl }) => {
           height={200}
         />
       </div>
-      <div className="flex justify-end items-center gap-3">
+      <div className="flex items-center gap-3 absolute bottom-3 left-3">
         {data.situation == true ? (
           <div className="text-xs bg-green-600 text-white px-3 py-1 rounded">
             فعال

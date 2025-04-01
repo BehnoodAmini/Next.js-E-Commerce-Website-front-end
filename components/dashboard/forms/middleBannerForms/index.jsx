@@ -8,13 +8,16 @@ import MidBannerDetails from "./midBannerDetails";
 
 const MiddleBannerAll = () => {
   const [midBanDetCtrl, setMidBanDetCtrl] = useState("");
+  const [randNumForBannerClick, setRandNumForBannerClick] = useState(1);
   const [det, setDet] = useState(
-    <AllMidBanners setMidBanDetCtrl={setMidBanDetCtrl} />
+    <AllMidBanners setMidBanDetCtrl={setMidBanDetCtrl} setRandNumForBannerClick={setRandNumForBannerClick} />
   );
 
   useEffect(() => {
-    setDet(<MidBannerDetails midBanId={midBanDetCtrl} />);
-  }, [midBanDetCtrl]);
+    if (midBanDetCtrl != "") {
+      setDet(<MidBannerDetails midBanId={midBanDetCtrl} />);
+    }
+  }, [randNumForBannerClick]);
 
   return (
     <div className="flex flex-col gap-8">
@@ -23,7 +26,7 @@ const MiddleBannerAll = () => {
         <div className="flex justify-end items-center gap-2">
           <button
             onClick={() =>
-              setDet(<AllMidBanners setMidBanDetCtrl={setMidBanDetCtrl} />)
+              setDet(<AllMidBanners setMidBanDetCtrl={setMidBanDetCtrl} setRandNumForBannerClick={setRandNumForBannerClick}/>)
             }
             className="px-3 py-1 rounded-md bg-indigo-600 text-white transition-all duration-300 hover:bg-orange-500"
           >

@@ -49,21 +49,21 @@ const Header = () => {
           >
             <Link
               href="https://web.telegram.org/"
-              className="transition-all duration-300 hover:text-orange-500"
+              className="transition-all duration-300 hover:text-orange-500!"
               target={"_blank"}
             >
               <BsTelegram />
             </Link>
             <Link
               href="https://youtube.com/"
-              className="transition-all duration-300 hover:text-orange-500"
+              className="transition-all duration-300 hover:text-orange-500!"
               target={"_blank"}
             >
               <BsYoutube />
             </Link>
             <Link
               href="https://x.com/"
-              className="transition-all duration-300 hover:text-orange-500"
+              className="transition-all duration-300 hover:text-orange-500!"
               target={"_blank"}
             >
               <FaSquareXTwitter />
@@ -77,7 +77,7 @@ const Header = () => {
                 <li>
                   <Link
                     href="/"
-                    className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white"
+                    className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white!"
                   >
                     خانه
                   </Link>
@@ -85,7 +85,7 @@ const Header = () => {
                 <li>
                   <Link
                     href="/"
-                    className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white"
+                    className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white!"
                   >
                     اپلیکیشن‌ها
                   </Link>
@@ -93,7 +93,7 @@ const Header = () => {
                 <li>
                   <Link
                     href="/"
-                    className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white"
+                    className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white!"
                   >
                     کتاب‌ها
                   </Link>
@@ -101,7 +101,7 @@ const Header = () => {
                 <li>
                   <Link
                     href="/"
-                    className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white"
+                    className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white!"
                   >
                     فایل‌های گرافیکی
                   </Link>
@@ -109,7 +109,7 @@ const Header = () => {
                 <li>
                   <Link
                     href="/blog"
-                    className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white"
+                    className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white!"
                   >
                     وبلاگ
                   </Link>
