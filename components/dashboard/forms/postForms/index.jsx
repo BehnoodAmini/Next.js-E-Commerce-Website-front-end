@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react";
 
 import AllMidBanners from "./allMidBanners";
-import NewMidBanner from "./newMidBanner";
+import NewPost from "./newPost";
 import MidBannerDetails from "./midBannerDetails";
 
-const MiddleBannerAll = () => {
+const PostsMain = () => {
   const [midBanDetCtrl, setMidBanDetCtrl] = useState("");
   const [randNumForBannerClick, setRandNumForBannerClick] = useState(1);
   const [det, setDet] = useState(
@@ -25,9 +25,9 @@ const MiddleBannerAll = () => {
   return (
     <div className="flex flex-col gap-8">
       <section className="flex justify-between items-center gap-2">
-        <h1 className="text-blue-500 text-lg">بنرهای تبلیغاتی</h1>
+        <h1 className="text-blue-500 text-lg">پست‌ها</h1>
         <div className="flex justify-end items-center gap-2">
-          <button
+          {/* <button
             onClick={() =>
               setDet(
                 <AllMidBanners
@@ -39,12 +39,12 @@ const MiddleBannerAll = () => {
             className="flex justify-center items-center w-32 h-10 rounded-md bg-indigo-600 text-white transition-all duration-300 hover:bg-orange-500"
           >
             همه
-          </button>
+          </button> */}
           <button
-            onClick={() => setDet(<NewMidBanner />)}
+            onClick={() => setDet(<NewPost />)}
             className="flex justify-center items-center w-32 h-10 rounded-md bg-indigo-600 text-white transition-all duration-300 hover:bg-orange-500"
           >
-            بنر جدید
+            پست جدید
           </button>
         </div>
       </section>
@@ -53,4 +53,4 @@ const MiddleBannerAll = () => {
   );
 };
 
-export default MiddleBannerAll;
+export default PostsMain;

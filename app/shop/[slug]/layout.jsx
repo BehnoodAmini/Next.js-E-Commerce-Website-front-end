@@ -36,6 +36,35 @@ const BlogLayout = ({ children }) => {
           </p>
         </div>
         <div className="flex flex-col gap-4 rounded-lg p-3 shadow-[0px_0px_8px_rgba(0,0,0,0.35)]">
+          <h3 className="text-blue-500">دسته بندی‌ها</h3>
+          <div className="flex justify-start items-center gap-2 flex-wrap">
+            <Link
+              href={"/blog"}
+              className="p-2 flex justify-center items-center rounded-md text-base sm:text-sm bg-zinc-100 transition-all duration-300 hover:text-white! hover:bg-orange-500"
+            >
+              دسته فلان
+            </Link>
+            <Link
+              href={"/blog"}
+              className="p-2 flex justify-center items-center rounded-md text-base sm:text-sm bg-zinc-100 transition-all duration-300 hover:text-white! hover:bg-orange-500"
+            >
+              دسته فلان
+            </Link>
+            <Link
+              href={"/blog"}
+              className="p-2 flex justify-center items-center rounded-md text-base sm:text-sm bg-zinc-100 transition-all duration-300 hover:text-white! hover:bg-orange-500"
+            >
+              دسته فلان
+            </Link>
+            <Link
+              href={"/blog"}
+              className="p-2 flex justify-center items-center rounded-md text-base sm:text-sm bg-zinc-100 transition-all duration-300 hover:text-white! hover:bg-orange-500"
+            >
+              دسته فلان
+            </Link>
+          </div>
+        </div>
+        <div className="flex flex-col gap-4 rounded-lg p-3 shadow-[0px_0px_8px_rgba(0,0,0,0.35)]">
           <h3 className="text-blue-500">برچسب‌ها</h3>
           <div className="flex justify-start items-center gap-2 flex-wrap">
             <Link

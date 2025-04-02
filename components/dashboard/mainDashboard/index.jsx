@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import DashboardCtrl from "../dashboard-ctrl";
 import MiddleBannerAll from "../forms/middleBannerForms";
 import SliderAll from "../forms/sliderForms";
+import PostsMain from "../forms/postForms";
 
 const MainDashboard = () => {
   const [contentChanger, setContentChanger] = useState("midBan");
@@ -15,6 +16,8 @@ const MainDashboard = () => {
       setDetails(<MiddleBannerAll />);
     } else if (contentChanger == "sliders") {
       setDetails(<SliderAll />);
+    } else if (contentChanger == "posts") {
+      setDetails(<PostsMain />);
     }
   }, [contentChanger]);
 

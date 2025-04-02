@@ -16,6 +16,10 @@ const NewMidBanner = () => {
       imageAlt: imageAltRef.current.value,
       link: imageLinkRef.current.value,
       situation: imageSituationRef.current.value,
+      date: new Date().toLocaleDateString("fa-IR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
     };
     const url = `http://localhost:27017/api/new-middle-banner`;
     axios
