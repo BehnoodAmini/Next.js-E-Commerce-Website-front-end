@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import Image from "next/image";
 
 const NewPost = () => {
   const titleRef = useRef();
@@ -30,6 +31,28 @@ const NewPost = () => {
     setTag(tag.filter((_, index) => index !== indexToRemove));
   };
 
+  const [posts, setPosts] = useState([-1]);
+  const [relPosts, setRelPosts] = useState([]);
+  useEffect(() => {
+    const postsUrl = `http://localhost:27017/api/posts-rel`;
+    axios
+      .get(postsUrl)
+      .then((d) => {
+        setPosts(d.data);
+      })
+      .catch((e) => console.log("error in loading posts"));
+  }, []);
+  const postsRelatedMan = (v) => {
+    let related = [...relPosts];
+    if (v.target.checked) {
+      related = [...related, v.target.checked];
+    } else {
+      related.splice(relPosts.indexOf(v.target.value), 1);
+    }
+    setRelPosts(related);
+  };
+  console.log(relPosts)
+
   const SubmitHandler = (e) => {
     e.preventDefault();
     const formData = {
@@ -52,13 +75,13 @@ const NewPost = () => {
       pageView: 0,
       published: publishedRef.current.value,
       comments: [],
+      relatedPosts: relPosts,
     };
     const url = `http://localhost:27017/api/new-post`;
-    console.log(formData);
-    // axios
-    //   .post(url, formData)
-    //   .then((d) => console.log("ok"))
-    //   .catch((e) => console.log("error"));
+    axios
+      .post(url, formData)
+      .then((d) => console.log("ok"))
+      .catch((e) => console.log("error"));
   };
 
   return (
@@ -166,6 +189,33 @@ const NewPost = () => {
               })}
             </div>
           </div>
+        </div>
+        <div>
+          {posts[0] == -1 ? (
+            <div className="flex justify-center items-center p-12">
+              <Image
+                alt="loading"
+                width={120}
+                height={120}
+                src={"/loading.svg"}
+              />
+            </div>
+          ) : posts.length < 1 ? (
+            <div className="p-3">مقاله‌ای یافت نشد.</div>
+          ) : (
+            <div className="flex justify-start items-center flex-wrap gap-2">
+              {posts.map((po, i) => (
+                <div key={i} className="px-2 py-1 bg-zinc-100 rounded">
+                  {po.title}{" "}
+                  <input
+                    type="checkbox"
+                    value={po._id}
+                    onChange={postsRelatedMan}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className="flex flex-col gap-2">
           <div>وضعیت</div>
