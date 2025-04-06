@@ -1,15 +1,21 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 
-const NewPost = () => {
+const PostDetails = ({ goalId }) => {
   //PREVENT FORM TO BE SENT WITH ENTER
   const FormKeyNotSuber = (event) => {
     if (event.key == "Enter") {
       event.preventDefault();
     }
+  };
+
+  const goTopCtrl = () => {
+    window.scrollTo({
+      top: 0,
+    });
   };
 
   const titleRef = useRef();
@@ -60,14 +66,10 @@ const NewPost = () => {
     setRelPosts(related);
   };
 
-  const SubmitHandler = (e) => {
+  const UpdateHandler = (e) => {
     e.preventDefault();
     const formData = {
       title: titleRef.current.value,
-      createdAt: new Date().toLocaleDateString("fa-IR", {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
       UpdatedAt: new Date().toLocaleDateString("fa-IR", {
         hour: "2-digit",
         minute: "2-digit",
@@ -78,30 +80,74 @@ const NewPost = () => {
       shortDesc: shortDescRef.current.value,
       longDesc: longDescRef.current.value,
       tags: tag,
-      type: "post",
-      pageView: 0,
       published: publishedRef.current.value,
-      comments: [],
       relatedPosts: relPosts,
     };
-    const url = `http://localhost:27017/api/new-post`;
+    const url = `http://localhost:27017/api/update-post/${goalId}`;
     axios
       .post(url, formData)
       .then((d) => console.log("ok"))
       .catch((e) => console.log("error"));
   };
 
+  const RemoveHandler = () => {
+    const url = `http://localhost:27017/api/delete-post/${goalId}`;
+    axios
+      .post(url)
+      .then((d) => console.log("removed"))
+      .catch((e) => console.log("error"));
+  };
+
+  // LOADING DEFAULT VALUES
+  const [fullData, setFullData] = useState("");
+  useEffect(() => {
+    goTopCtrl();
+    axios
+      .get(`http://localhost:27017/api/get-post-by-id/${goalId}`)
+      .then((d) => {
+        setFullData(d.data);
+        setTag(d.data.tags);
+      })
+      .catch((e) => console.log("error"));
+  }, [goalId]);
+
   return (
     <div className="flex flex-col gap-8">
-      <h2 className="text-orange-500">پست جدید</h2>
+      <div className="flex justify-between items-center">
+        <h2 className="text-orange-500">جزئیات مقاله</h2>
+        <button
+          onClick={() => RemoveHandler()}
+          className="bg-rose-600 text-white px-4 py-1 rounded-md text-xs transition-all duration-300 hover:bg-rose-700"
+        >
+          حذف
+        </button>
+      </div>
+      <div className="flex justify-between items-center">
+        <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
+          آیدی مقاله: {fullData._id ? fullData._id : ""}
+        </div>
+        <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
+        تاریخ ایجاد: {fullData.createdAt ? fullData.createdAt : ""}
+        </div>
+        <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
+        به روز رسانی: {fullData.UpdatedAt ? fullData.UpdatedAt : ""}
+        </div>
+        <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
+          {fullData.pageView ? fullData.pageView : 0} بازدید
+        </div>
+        <div  className={fullData.published? "bg-green-600 rounded px-3 py-1 text-sm text-white" : "bg-orange-500 rounded px-3 py-1 text-sm text-white"}>
+          {fullData.published ? "منتشر شده" : "پیش‌نویس"}
+        </div>
+      </div>
       <form
-        onSubmit={SubmitHandler}
+        onSubmit={UpdateHandler}
         onKeyDown={FormKeyNotSuber}
         className="flex flex-col gap-6"
       >
         <div className="flex flex-col gap-2">
-          <div>عنوان مقاله</div>
+          <div>عنوان جدید مقاله</div>
           <input
+            defaultValue={fullData.title ? fullData.title : ""}
             required={true}
             type="text"
             ref={titleRef}
@@ -109,8 +155,9 @@ const NewPost = () => {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <div>اسلاگ پست</div>
+          <div>اسلاگ جدید پست</div>
           <input
+            defaultValue={fullData.slug ? fullData.slug : ""}
             required={true}
             type="text"
             ref={slugRef}
@@ -118,8 +165,9 @@ const NewPost = () => {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <div>آدرس عکس</div>
+          <div>آدرس جدید عکس</div>
           <input
+            defaultValue={fullData.image ? fullData.image : ""}
             required={true}
             type="text"
             ref={imageRef}
@@ -127,8 +175,9 @@ const NewPost = () => {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <div>آلت عکس</div>
+          <div>آلت جدید عکس</div>
           <input
+            defaultValue={fullData.imageAlt ? fullData.imageAlt : ""}
             required={true}
             type="text"
             ref={imageAltRef}
@@ -136,8 +185,9 @@ const NewPost = () => {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <div>توضیحات کوتاه</div>
+          <div>توضیحات کوتاه جدید</div>
           <input
+            defaultValue={fullData.shortDesc ? fullData.shortDesc : ""}
             required={true}
             type="text"
             ref={shortDescRef}
@@ -145,8 +195,9 @@ const NewPost = () => {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <div>توضیحات کامل</div>
+          <div>توضیحات کامل جدید</div>
           <textarea
+            defaultValue={fullData.longDesc ? fullData.longDesc : ""}
             required={true}
             type="text"
             ref={longDescRef}
@@ -219,11 +270,21 @@ const NewPost = () => {
               {posts.map((po, i) => (
                 <div key={i} className="px-2 py-1 bg-zinc-100 rounded">
                   {po.title}{" "}
-                  <input
-                    type="checkbox"
-                    value={po._id}
-                    onChange={postsRelatedMan}
-                  />
+                  {fullData.relatedPosts &&
+                  fullData.relatedPosts.includes(po._id) ? (
+                    <input
+                      type="checkbox"
+                      value={po._id}
+                      onChange={postsRelatedMan}
+                      defaultChecked
+                    />
+                  ) : (
+                    <input
+                      type="checkbox"
+                      value={po._id}
+                      onChange={postsRelatedMan}
+                    />
+                  )}
                 </div>
               ))}
             </div>
@@ -235,19 +296,33 @@ const NewPost = () => {
             ref={publishedRef}
             className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
           >
-            <option value={true}>انتشار</option>
-            <option value={false}>پیش‌نویس</option>
+            {fullData.published && fullData.published == true ? (
+              <>
+                <option value={true}>انتشار</option>
+                <option value={false}>پیش‌نویس</option>
+              </>
+            ) : fullData.published && fullData.published == false ? (
+              <>
+                <option value={false}>پیش‌نویس</option>
+                <option value={true}>انتشار</option>
+              </>
+            ) : (
+              <>
+                <option value={false}>پیش‌نویس</option>
+                <option value={true}>انتشار</option>
+              </>
+            )}
           </select>
         </div>
         <button
           type="submit"
           className="p-2 bg-indigo-600 text-white w-full rounded-md transition-all duration-300 hover:bg-orange-500"
         >
-          ارسال
+          به روز رسانی
         </button>
       </form>
     </div>
   );
 };
 
-export default NewPost;
+export default PostDetails;

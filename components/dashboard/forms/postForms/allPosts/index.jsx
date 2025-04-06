@@ -6,26 +6,24 @@ import Image from "next/image";
 
 import Box from "./Box";
 
-const AllMidBanners = ({ setMidBanDetCtrl, setRandNumForBannerClick }) => {
-  const [banners, setBanners] = useState([-1]);
+const AllPosts = ({ setMidBanDetCtrl, setRandNumForBannerClick }) => {
+  const [posts, setPosts] = useState([-1]);
   const [pageNumber, setPageNumber] = useState(1);
   const [numbersOfBtns, setNumbersOfBtns] = useState([-1]);
   const [filteredBtns, setFilteredBtns] = useState([-1]);
-  const [allMidBannerNums, setAllMidBannerNums] = useState(0);
+  const [allPostsNumber, setAllPostsNumber] = useState(0);
   const [colorFocus, setColorFocus] = useState(1);
   const paginate = 10;
 
   useEffect(() => {
     axios
-      .get(
-        `http://localhost:27017/api/middle-banners?pn=${pageNumber}&&pgn=${paginate}`
-      )
+      .get(`http://localhost:27017/api/posts?pn=${pageNumber}&&pgn=${paginate}`)
       .then((d) => {
-        setBanners(d.data.GoalMidBans);
+        setPosts(d.data.GoalPosts);
         setNumbersOfBtns(
-          Array.from(Array(Math.ceil(d.data.AllMidBansNum / paginate)).keys())
+          Array.from(Array(Math.ceil(d.data.AllPostsNum / paginate)).keys())
         );
-        setAllMidBannerNums(d.data.AllMidBansNum);
+        setAllPostsNumber(d.data.AllPostsNum);
       })
       .catch((e) => console.log(e));
   }, [pageNumber]);
@@ -59,11 +57,11 @@ const AllMidBanners = ({ setMidBanDetCtrl, setRandNumForBannerClick }) => {
     <div className="flex flex-col gap-8">
       <div className="flex justify-end">
         <div className="w-32 h-10 rounded bg-indigo-600 flex justify-center items-center text-white">
-          {allMidBannerNums} بنر
+          {allPostsNumber} مقاله
         </div>
       </div>
       <div className="flex flex-col gap-6">
-        {banners[0] == -1 ? (
+        {posts[0] == -1 ? (
           <div className="flex justify-center items-center p-12">
             <Image
               alt="loading"
@@ -72,17 +70,17 @@ const AllMidBanners = ({ setMidBanDetCtrl, setRandNumForBannerClick }) => {
               src={"/loading.svg"}
             />
           </div>
-        ) : banners.length < 1 ? (
+        ) : posts.length < 1 ? (
           <div className="flex justify-center items-center w-full p-8">
-            بنری موجود نیست...
+            مقاله‌ای موجود نیست...
           </div>
         ) : (
-          banners.map((ba, i) => (
+          posts.map((da, i) => (
             <Box
               setMidBanDetCtrl={setMidBanDetCtrl}
               setRandNumForBannerClick={setRandNumForBannerClick}
               key={i}
-              data={ba}
+              data={da}
             />
           ))
         )}
@@ -116,4 +114,4 @@ const AllMidBanners = ({ setMidBanDetCtrl, setRandNumForBannerClick }) => {
   );
 };
 
-export default AllMidBanners;
+export default AllPosts;

@@ -4,6 +4,13 @@ import { useRef } from "react";
 import axios from "axios";
 
 const NewMidBanner = () => {
+  //PREVENT FORM TO BE SENT WITH ENTER
+  const FormKeyNotSuber = (event) => {
+    if (event.key == "Enter") {
+      event.preventDefault();
+    }
+  };
+
   const imageUrlRef = useRef();
   const imageAltRef = useRef();
   const imageLinkRef = useRef();
@@ -31,7 +38,11 @@ const NewMidBanner = () => {
   return (
     <div className="flex flex-col gap-8">
       <h2 className="text-orange-500">بنر جدید</h2>
-      <form onSubmit={SubmitHandler} className="flex flex-col gap-6">
+      <form
+        onSubmit={SubmitHandler}
+        onKeyDown={FormKeyNotSuber}
+        className="flex flex-col gap-6"
+      >
         <div className="flex flex-col gap-2">
           <div>آدرس عکس</div>
           <input
