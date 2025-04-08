@@ -1,13 +1,15 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
+import axios from "axios";
+import Image from "next/image";
 
 import { FaChevronRight } from "react-icons/fa";
 import { FaChevronLeft } from "react-icons/fa";
 
 import BlogBox from "@/components/newBlogs/BlogBox";
 
-const RelatedPosts = ({ title }) => {
+const RelatedPosts = ({ title, relPostsData }) => {
   const carouselRef = useRef();
   const carouselSwitcher = (data) => {
     if (carouselRef.current) {
@@ -18,6 +20,18 @@ const RelatedPosts = ({ title }) => {
       );
     }
   };
+
+  const [relPostsDataState, setrelPostsDataState] = useState([-1]);
+  const sendingDataForRel = { goalIds: relPostsData };
+  useEffect(() => {
+    const url = "http://localhost:27017/api/get-related-posts";
+    axios
+      .post(url, sendingDataForRel)
+      .then((d) => {
+        setrelPostsDataState(d.data);
+      })
+      .catch((e) => console.log(e));
+  }, [relPostsData]);
 
   return (
     <div>
@@ -47,14 +61,26 @@ const RelatedPosts = ({ title }) => {
             className="sliderContainer w-full max-w-5xl overflow-x-scroll px-4"
           >
             <div className=" flex justify-between items-center gap-4 ">
-              <BlogBox />
-              <BlogBox />
-              <BlogBox />
-              <BlogBox />
-              <BlogBox />
-              <BlogBox />
-              <BlogBox />
-              <BlogBox />
+              <div className=" flex justify-between items-center gap-4 ">
+                {relPostsDataState[0] == -1 ? (
+                  <div className=" flex justify-center items-center p-12">
+                    <Image
+                      alt="loading"
+                      width={120}
+                      height={120}
+                      src={"/loading.svg"}
+                    />
+                  </div>
+                ) : relPostsDataState.length < 1 ? (
+                  <div className=" justify-center flex items-center p-4">
+                    مقاله مرتبطی موجود نیست.
+                  </div>
+                ) : (
+                  relPostsDataState.map((po, i) => (
+                    <BlogBox data={po} key={i} />
+                  ))
+                )}
+              </div>
             </div>
           </div>
         </div>

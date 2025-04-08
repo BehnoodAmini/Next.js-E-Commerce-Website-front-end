@@ -2,7 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 const getData = async () => {
-  const data = await fetch("http://localhost:27017/api/get-active-mid-bans");
+  const data = await fetch("http://localhost:27017/api/get-active-mid-bans", {
+    cache: "no-store",
+  });
   return data.json();
 };
 
