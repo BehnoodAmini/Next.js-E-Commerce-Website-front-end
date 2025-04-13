@@ -3,6 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 const NewPost = () => {
   //PREVENT FORM TO BE SENT WITH ENTER
@@ -87,8 +90,40 @@ const NewPost = () => {
     const url = `http://localhost:27017/api/new-post`;
     axios
       .post(url, formData)
-      .then((d) => console.log("ok"))
-      .catch((e) => console.log("error"));
+      .then((d) => {
+        formData.published == "true"
+          ? toast.success("مقاله با موفقیت منتشر شد.", {
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            })
+          : toast.success("مقاله به صورت پیش‌نویس ذخیره شد.", {
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+      })
+      .catch((e) => {
+        let message = "متاسفانه ناموفق بود.";
+        if (e.response.data.msg) {
+          message = e.response.data.msg;
+        }
+
+        toast.error(message, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
   };
 
   return (
@@ -201,7 +236,7 @@ const NewPost = () => {
             </div>
           </div>
         </div>
-        <div>
+        <div className="tags flex flex-col gap-2">
           <h3>مقاله‌های مرتبط</h3>
           {posts[0] == -1 ? (
             <div className="flex justify-center items-center p-12">
@@ -246,6 +281,19 @@ const NewPost = () => {
           ارسال
         </button>
       </form>
+      <ToastContainer
+        bodyClassName={() => "font-[IRANSans] text-sm flex items-center"}
+        position="top-right"
+        autoClose={3000}
+        theme="colored"
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };

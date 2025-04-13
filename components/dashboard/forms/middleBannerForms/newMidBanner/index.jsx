@@ -2,6 +2,9 @@
 
 import { useRef } from "react";
 import axios from "axios";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 const NewMidBanner = () => {
   //PREVENT FORM TO BE SENT WITH ENTER
@@ -31,8 +34,40 @@ const NewMidBanner = () => {
     const url = `http://localhost:27017/api/new-middle-banner`;
     axios
       .post(url, formData)
-      .then((d) => console.log("ok"))
-      .catch((e) => console.log("error"));
+      .then((d) => {
+        formData.situation == "true"
+          ? toast.success("بنر میانی با موفقیت منتشر شد.", {
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            })
+          : toast.success("بنر میانی به صورت غیرفعال ذخیره شد.", {
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+      })
+      .catch((e) => {
+        let message = "متاسفانه ناموفق بود.";
+        if (e.response.data.msg) {
+          message = e.response.data.msg;
+        }
+
+        toast.error(message, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
   };
 
   return (
@@ -87,6 +122,19 @@ const NewMidBanner = () => {
           ارسال
         </button>
       </form>
+      <ToastContainer
+        bodyClassName={() => "font-[IRANSans] text-sm flex items-center"}
+        position="top-right"
+        autoClose={3000}
+        theme="colored"
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };

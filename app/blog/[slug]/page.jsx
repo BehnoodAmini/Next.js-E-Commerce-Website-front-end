@@ -35,6 +35,7 @@ const SingleBlog = async ({ params }) => {
               className="rounded-xl"
               src={data.image}
               alt={data.imageAlt}
+              title={data.imageAlt}
               width={800}
               height={400}
               priority={true}
@@ -65,7 +66,10 @@ const SingleBlog = async ({ params }) => {
             <p className="leading-9 w-[96%] text-justify">{data.longDesc}</p>
           </section>
           <section>
-            <RelatedPosts relPostsData={data.relatedPosts} title={"مقالات مرتبط"} />
+            <RelatedPosts
+              relPostsData={data.relatedPosts}
+              title={"مقالات مرتبط"}
+            />
           </section>
           <section className="flex flex-col gap-6">
             <h2 className="text-xl">دیدگاه‌ها</h2>

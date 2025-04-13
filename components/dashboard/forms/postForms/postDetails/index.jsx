@@ -3,6 +3,10 @@
 import { useRef, useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
+import Link from "next/link";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 const PostDetails = ({ goalId }) => {
   //PREVENT FORM TO BE SENT WITH ENTER
@@ -86,16 +90,71 @@ const PostDetails = ({ goalId }) => {
     const url = `http://localhost:27017/api/update-post/${goalId}`;
     axios
       .post(url, formData)
-      .then((d) => console.log("ok"))
-      .catch((e) => console.log("error"));
+      .then((d) => {
+        formData.published == "true"
+          ? toast.success("مقاله با موفقیت به روز رسانی و منتشر شد.", {
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            })
+          : toast.success("مقاله به صورت پیش‌نویس ذخیره شد.", {
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+      })
+      .catch((e) => {
+        let message = "متاسفانه ناموفق بود.";
+        if (e.response.data.msg) {
+          message = e.response.data.msg;
+        }
+
+        toast.error(message, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
   };
 
   const RemoveHandler = () => {
     const url = `http://localhost:27017/api/delete-post/${goalId}`;
     axios
       .post(url)
-      .then((d) => console.log("removed"))
-      .catch((e) => console.log("error"));
+      .then((d) => {
+        toast.success("مقاله با موفقیت حذف شد.", {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      })
+      .catch((e) => {
+        let message = "متاسفانه ناموفق بود.";
+        if (e.response.data.msg) {
+          message = e.response.data.msg;
+        }
+
+        toast.error(message, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
   };
 
   // LOADING DEFAULT VALUES
@@ -115,27 +174,41 @@ const PostDetails = ({ goalId }) => {
     <div className="flex flex-col gap-8">
       <div className="flex justify-between items-center">
         <h2 className="text-orange-500">جزئیات مقاله</h2>
-        <button
-          onClick={() => RemoveHandler()}
-          className="bg-rose-600 text-white px-4 py-1 rounded-md text-xs transition-all duration-300 hover:bg-rose-700"
-        >
-          حذف
-        </button>
+        <div className="flex justify-end items-center gap-4">
+          <Link
+            href={`/blog/${fullData.slug}`}
+            className="bg-indigo-600 text-white! px-4 py-1 rounded-md text-sm transition-all duration-300 hover:bg-indigo-700"
+          >
+            لینک پست
+          </Link>
+          <button
+            onClick={() => RemoveHandler()}
+            className="bg-rose-600 text-white! px-4 py-1 rounded-md text-sm transition-all duration-300 hover:bg-rose-700"
+          >
+            حذف
+          </button>
+        </div>
       </div>
       <div className="flex justify-between items-center">
         <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
           آیدی مقاله: {fullData._id ? fullData._id : ""}
         </div>
         <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
-        تاریخ ایجاد: {fullData.createdAt ? fullData.createdAt : ""}
+          تاریخ ایجاد: {fullData.createdAt ? fullData.createdAt : ""}
         </div>
         <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
-        به روز رسانی: {fullData.UpdatedAt ? fullData.UpdatedAt : ""}
+          به روز رسانی: {fullData.UpdatedAt ? fullData.UpdatedAt : ""}
         </div>
         <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
           {fullData.pageView ? fullData.pageView : 0} بازدید
         </div>
-        <div  className={fullData.published? "bg-green-600 rounded px-3 py-1 text-sm text-white" : "bg-orange-500 rounded px-3 py-1 text-sm text-white"}>
+        <div
+          className={
+            fullData.published
+              ? "bg-green-600 rounded px-3 py-1 text-sm text-white"
+              : "bg-orange-500 rounded px-3 py-1 text-sm text-white"
+          }
+        >
           {fullData.published ? "منتشر شده" : "پیش‌نویس"}
         </div>
       </div>
@@ -252,7 +325,7 @@ const PostDetails = ({ goalId }) => {
             </div>
           </div>
         </div>
-        <div>
+        <div className="tags flex flex-col gap-2">
           <h3>مقاله‌های مرتبط</h3>
           {posts[0] == -1 ? (
             <div className="flex justify-center items-center p-12">
@@ -269,10 +342,12 @@ const PostDetails = ({ goalId }) => {
             <div className="flex justify-start items-center flex-wrap gap-2">
               {posts.map((po, i) => (
                 <div key={i} className="px-2 py-1 bg-zinc-100 rounded">
-                  {po.title}{" "}
+                  <label htmlFor={po._id}>{po.title}</label>{" "}
                   {fullData.relatedPosts &&
                   fullData.relatedPosts.includes(po._id) ? (
                     <input
+                      name={po._id}
+                      id={po._id}
                       type="checkbox"
                       value={po._id}
                       onChange={postsRelatedMan}
@@ -280,6 +355,8 @@ const PostDetails = ({ goalId }) => {
                     />
                   ) : (
                     <input
+                      name={po._id}
+                      id={po._id}
                       type="checkbox"
                       value={po._id}
                       onChange={postsRelatedMan}
@@ -321,6 +398,19 @@ const PostDetails = ({ goalId }) => {
           به روز رسانی
         </button>
       </form>
+      <ToastContainer
+        bodyClassName={() => "font-[IRANSans] text-sm flex items-center"}
+        position="top-right"
+        autoClose={3000}
+        theme="colored"
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };

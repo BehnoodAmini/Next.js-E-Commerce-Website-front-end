@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-
 @theme {
   --breakpoint-2xl: initial;
 }
@@ -23,14 +22,13 @@
   }
 }*/
 
-
 html,
 body {
   padding: 0;
   margin: 0;
   direction: rtl;
-  font-family:  IRANSans, IRANYekan, sans-serif;
-  color: #55555F;
+  font-family: IRANSans, IRANYekan, sans-serif;
+  color: #55555f;
 }
 
 a {
@@ -43,27 +41,26 @@ a {
 }
 
 @font-face {
-  font-family: 'IRANYekan';
-  src: url('../public/font/IRANYekan.eot');
-  src: url('../public/font/IRANYekan.eot?#iefix') format('embedded-opentype'),
-      url('../public/font/IRANYekan.woff2') format('woff2'),
-      url('../public/font/IRANYekan.woff') format('woff'),
-      url('../public/font/IRANYekan.ttf') format('truetype');
+  font-family: "IRANYekan";
+  src: url("../public/font/IRANYekan.eot");
+  src: url("../public/font/IRANYekan.eot?#iefix") format("embedded-opentype"),
+    url("../public/font/IRANYekan.woff2") format("woff2"),
+    url("../public/font/IRANYekan.woff") format("woff"),
+    url("../public/font/IRANYekan.ttf") format("truetype");
   font-display: swap;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 @font-face {
-  font-family: 'IRANSans';
-  src: url('../public/font/IRANSans.ttf') format('truetype');
+  font-family: "IRANSans";
+  src: url("../public/font/IRANSans.ttf") format("truetype");
   font-display: swap;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-
-@import "./custom.css"; 
+@import "./custom.css";
 
 /*@font-face {
   font-family: estedad;
