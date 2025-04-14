@@ -9,26 +9,26 @@ import { toast } from "react-toastify";
 
 import Box from "./Box";
 
-const AllMidBanners = ({ setMidBanDetCtrl, setRandNumForBannerClick }) => {
-  const [banners, setBanners] = useState([-1]);
+const AllSliders = ({ setMidBanDetCtrl, setRandNumForBannerClick }) => {
+  const [sliders, setSliders] = useState([-1]);
   const [pageNumber, setPageNumber] = useState(1);
   const [numbersOfBtns, setNumbersOfBtns] = useState([-1]);
   const [filteredBtns, setFilteredBtns] = useState([-1]);
-  const [allMidBannerNums, setAllMidBannerNums] = useState(0);
+  const [allSliderNums, setAllSliderNums] = useState(0);
   const [colorFocus, setColorFocus] = useState(1);
   const paginate = 10;
 
   useEffect(() => {
     axios
       .get(
-        `http://localhost:27017/api/middle-banners?pn=${pageNumber}&&pgn=${paginate}`
+        `http://localhost:27017/api/sliders?pn=${pageNumber}&&pgn=${paginate}`
       )
       .then((d) => {
-        setBanners(d.data.GoalMidBans);
+        setSliders(d.data.GoalSliders);
         setNumbersOfBtns(
-          Array.from(Array(Math.ceil(d.data.AllMidBansNum / paginate)).keys())
+          Array.from(Array(Math.ceil(d.data.AllSlidersNum / paginate)).keys())
         );
-        setAllMidBannerNums(d.data.AllMidBansNum);
+        setAllSliderNums(d.data.AllSlidersNum);
       })
       .catch((e) => {
         toast.error("خطا در لود اطلاعات!", {
@@ -72,11 +72,11 @@ const AllMidBanners = ({ setMidBanDetCtrl, setRandNumForBannerClick }) => {
     <div className="flex flex-col gap-8">
       <div className="flex justify-end">
         <div className="w-32 h-10 rounded bg-indigo-600 flex justify-center items-center text-white">
-          {allMidBannerNums} بنر
+          {allSliderNums} اسلایدر
         </div>
       </div>
       <div className="flex flex-col gap-6">
-        {banners[0] == -1 ? (
+        {sliders[0] == -1 ? (
           <div className="flex justify-center items-center p-12">
             <Image
               alt="loading"
@@ -85,12 +85,12 @@ const AllMidBanners = ({ setMidBanDetCtrl, setRandNumForBannerClick }) => {
               src={"/loading.svg"}
             />
           </div>
-        ) : banners.length < 1 ? (
+        ) : sliders.length < 1 ? (
           <div className="flex justify-center items-center w-full p-8">
-            بنری موجود نیست...
+            اسلایدری موجود نیست...
           </div>
         ) : (
-          banners.map((ba, i) => (
+          sliders.map((ba, i) => (
             <Box
               setMidBanDetCtrl={setMidBanDetCtrl}
               setRandNumForBannerClick={setRandNumForBannerClick}
@@ -142,4 +142,4 @@ const AllMidBanners = ({ setMidBanDetCtrl, setRandNumForBannerClick }) => {
   );
 };
 
-export default AllMidBanners;
+export default AllSliders;

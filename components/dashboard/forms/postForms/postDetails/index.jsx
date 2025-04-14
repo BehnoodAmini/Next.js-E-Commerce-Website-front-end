@@ -38,7 +38,7 @@ const PostDetails = ({ goalId }) => {
       let tagList = [...tag];
       const data = tagRef.current.value;
       if (data.length > 0) {
-        tagList = [...tag, data];
+        tagList = [...tag, data.replace(/\s+/g, "_").toLowerCase()];
         setTag(tagList);
       }
       tagRef.current.value = "";
@@ -92,7 +92,7 @@ const PostDetails = ({ goalId }) => {
       .post(url, formData)
       .then((d) => {
         formData.published == "true"
-          ? toast.success("مقاله با موفقیت به روز رسانی و منتشر شد.", {
+          ? toast.success("مقاله با موفقیت به‌روزرسانی و منتشر شد.", {
               autoClose: 3000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -158,7 +158,7 @@ const PostDetails = ({ goalId }) => {
   };
 
   // LOADING DEFAULT VALUES
-  const [fullData, setFullData] = useState("");
+  const [fullData, setFullData] = useState([-1]);
   useEffect(() => {
     goTopCtrl();
     axios
@@ -167,237 +167,255 @@ const PostDetails = ({ goalId }) => {
         setFullData(d.data);
         setTag(d.data.tags);
       })
-      .catch((e) => console.log("error"));
+      .catch((e) => {
+        toast.error("خطا در لود اطلاعات!", {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
   }, [goalId]);
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex justify-between items-center">
-        <h2 className="text-orange-500">جزئیات مقاله</h2>
-        <div className="flex justify-end items-center gap-4">
-          <Link
-            href={`/blog/${fullData.slug}`}
-            className="bg-indigo-600 text-white! px-4 py-1 rounded-md text-sm transition-all duration-300 hover:bg-indigo-700"
-          >
-            لینک پست
-          </Link>
-          <button
-            onClick={() => RemoveHandler()}
-            className="bg-rose-600 text-white! px-4 py-1 rounded-md text-sm transition-all duration-300 hover:bg-rose-700"
-          >
-            حذف
-          </button>
+      {fullData[0] == -1 ? (
+        <div className="flex justify-center items-center p-12">
+          <Image alt="loading" width={120} height={120} src={"/loading.svg"} />
         </div>
-      </div>
-      <div className="flex justify-between items-center">
-        <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
-          آیدی مقاله: {fullData._id ? fullData._id : ""}
-        </div>
-        <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
-          تاریخ ایجاد: {fullData.createdAt ? fullData.createdAt : ""}
-        </div>
-        <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
-          به روز رسانی: {fullData.UpdatedAt ? fullData.UpdatedAt : ""}
-        </div>
-        <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
-          {fullData.pageView ? fullData.pageView : 0} بازدید
-        </div>
-        <div
-          className={
-            fullData.published
-              ? "bg-green-600 rounded px-3 py-1 text-sm text-white"
-              : "bg-orange-500 rounded px-3 py-1 text-sm text-white"
-          }
-        >
-          {fullData.published ? "منتشر شده" : "پیش‌نویس"}
-        </div>
-      </div>
-      <form
-        onSubmit={UpdateHandler}
-        onKeyDown={FormKeyNotSuber}
-        className="flex flex-col gap-6"
-      >
-        <div className="flex flex-col gap-2">
-          <div>عنوان جدید مقاله</div>
-          <input
-            defaultValue={fullData.title ? fullData.title : ""}
-            required={true}
-            type="text"
-            ref={titleRef}
-            className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <div>اسلاگ جدید پست</div>
-          <input
-            defaultValue={fullData.slug ? fullData.slug : ""}
-            required={true}
-            type="text"
-            ref={slugRef}
-            className="inputLtr p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <div>آدرس جدید عکس</div>
-          <input
-            defaultValue={fullData.image ? fullData.image : ""}
-            required={true}
-            type="text"
-            ref={imageRef}
-            className="inputLtr p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <div>آلت جدید عکس</div>
-          <input
-            defaultValue={fullData.imageAlt ? fullData.imageAlt : ""}
-            required={true}
-            type="text"
-            ref={imageAltRef}
-            className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <div>توضیحات کوتاه جدید</div>
-          <input
-            defaultValue={fullData.shortDesc ? fullData.shortDesc : ""}
-            required={true}
-            type="text"
-            ref={shortDescRef}
-            className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <div>توضیحات کامل جدید</div>
-          <textarea
-            defaultValue={fullData.longDesc ? fullData.longDesc : ""}
-            required={true}
-            type="text"
-            ref={longDescRef}
-            className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
-            rows="8"
-          />
-        </div>
-        <div className="tags flex flex-col gap-2">
-          <h3>برچسب ها</h3>
-          <div className="tags w-full flex flex-col gap-4">
-            <div className="input flex gap-2 items-center">
-              <input
-                type="text"
-                onKeyDown={tagSuber}
-                ref={tagRef}
-                className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
-                placeholder="تگ را وارد کنید و Enter بزنید..."
-              />
-            </div>
-            <div className="tagResults flex gap-3 justify-start flex-wrap">
-              {tag.map((t, index) => {
-                return (
-                  <div
-                    key={t}
-                    className="res flex gap-1 text-sm py-1 px-2 rounded-md border-2 border-zinc-300"
-                  >
-                    <i
-                      className="text-indigo-500 flex items-center"
-                      onClick={() => {
-                        tagDeleter(index);
-                      }}
-                    >
-                      <span className="text-xs">{t}</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={3}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </i>
-                  </div>
-                );
-              })}
+      ) : (
+        <div className="flex flex-col gap-8">
+          <div className="flex justify-between items-center">
+            <h2 className="text-orange-500">جزئیات مقاله</h2>
+            <div className="flex justify-end items-center gap-4">
+              <Link
+                href={`/blog/${fullData.slug}`}
+                className="bg-indigo-600 text-white! px-4 py-1 rounded-md text-sm transition-all duration-300 hover:bg-indigo-700"
+              >
+                لینک پست
+              </Link>
+              <button
+                onClick={() => RemoveHandler()}
+                className="bg-rose-600 text-white! px-4 py-1 rounded-md text-sm transition-all duration-300 hover:bg-rose-700"
+              >
+                حذف
+              </button>
             </div>
           </div>
-        </div>
-        <div className="tags flex flex-col gap-2">
-          <h3>مقاله‌های مرتبط</h3>
-          {posts[0] == -1 ? (
-            <div className="flex justify-center items-center p-12">
-              <Image
-                alt="loading"
-                width={120}
-                height={120}
-                src={"/loading.svg"}
+          <div className="flex justify-between items-center">
+            <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
+              آیدی مقاله: {fullData._id ? fullData._id : ""}
+            </div>
+            <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
+              تاریخ ایجاد: {fullData.createdAt ? fullData.createdAt : ""}
+            </div>
+            <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
+              به‌روزرسانی: {fullData.UpdatedAt ? fullData.UpdatedAt : ""}
+            </div>
+            <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
+              {fullData.pageView ? fullData.pageView : 0} بازدید
+            </div>
+            <div
+              className={
+                fullData.published
+                  ? "bg-green-600 rounded px-3 py-1 text-sm text-white"
+                  : "bg-orange-500 rounded px-3 py-1 text-sm text-white"
+              }
+            >
+              {fullData.published ? "منتشر شده" : "پیش‌نویس"}
+            </div>
+          </div>
+          <form
+            onSubmit={UpdateHandler}
+            onKeyDown={FormKeyNotSuber}
+            className="flex flex-col gap-6"
+          >
+            <div className="flex flex-col gap-2">
+              <div>عنوان جدید مقاله</div>
+              <input
+                defaultValue={fullData.title ? fullData.title : ""}
+                required={true}
+                type="text"
+                ref={titleRef}
+                className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
               />
             </div>
-          ) : posts.length < 1 ? (
-            <div className="p-3">مقاله‌ای یافت نشد.</div>
-          ) : (
-            <div className="flex justify-start items-center flex-wrap gap-2">
-              {posts.map((po, i) => (
-                <div key={i} className="px-2 py-1 bg-zinc-100 rounded">
-                  <label htmlFor={po._id}>{po.title}</label>{" "}
-                  {fullData.relatedPosts &&
-                  fullData.relatedPosts.includes(po._id) ? (
-                    <input
-                      name={po._id}
-                      id={po._id}
-                      type="checkbox"
-                      value={po._id}
-                      onChange={postsRelatedMan}
-                      defaultChecked
-                    />
-                  ) : (
-                    <input
-                      name={po._id}
-                      id={po._id}
-                      type="checkbox"
-                      value={po._id}
-                      onChange={postsRelatedMan}
-                    />
-                  )}
-                </div>
-              ))}
+            <div className="flex flex-col gap-2">
+              <div>اسلاگ جدید پست</div>
+              <input
+                defaultValue={fullData.slug ? fullData.slug : ""}
+                required={true}
+                type="text"
+                ref={slugRef}
+                className="inputLtr p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+              />
             </div>
-          )}
+            <div className="flex flex-col gap-2">
+              <div>آدرس جدید عکس</div>
+              <input
+                defaultValue={fullData.image ? fullData.image : ""}
+                required={true}
+                type="text"
+                ref={imageRef}
+                className="inputLtr p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <div>آلت جدید عکس</div>
+              <input
+                defaultValue={fullData.imageAlt ? fullData.imageAlt : ""}
+                required={true}
+                type="text"
+                ref={imageAltRef}
+                className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <div>توضیحات کوتاه جدید</div>
+              <input
+                defaultValue={fullData.shortDesc ? fullData.shortDesc : ""}
+                required={true}
+                type="text"
+                ref={shortDescRef}
+                className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <div>توضیحات کامل جدید</div>
+              <textarea
+                defaultValue={fullData.longDesc ? fullData.longDesc : ""}
+                required={true}
+                type="text"
+                ref={longDescRef}
+                className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+                rows="8"
+              />
+            </div>
+            <div className="tags flex flex-col gap-2">
+              <h3>برچسب ها</h3>
+              <div className="tags w-full flex flex-col gap-4">
+                <div className="input flex gap-2 items-center">
+                  <input
+                    type="text"
+                    onKeyDown={tagSuber}
+                    ref={tagRef}
+                    className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+                    placeholder="تگ را وارد کنید و Enter بزنید..."
+                  />
+                </div>
+                <div className="tagResults flex gap-3 justify-start flex-wrap">
+                  {tag.map((t, index) => {
+                    return (
+                      <div
+                        key={t}
+                        className="res flex gap-1 text-sm py-1 px-2 rounded-md border-2 border-zinc-300"
+                      >
+                        <i
+                          className="text-indigo-500 flex items-center"
+                          onClick={() => {
+                            tagDeleter(index);
+                          }}
+                        >
+                          <span className="text-xs">{t}</span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-4 w-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={3}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        </i>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+            <div className="tags flex flex-col gap-2">
+              <h3>مقاله‌های مرتبط</h3>
+              {posts[0] == -1 ? (
+                <div className="flex justify-center items-center p-12">
+                  <Image
+                    alt="loading"
+                    width={120}
+                    height={120}
+                    src={"/loading.svg"}
+                  />
+                </div>
+              ) : posts.length < 1 ? (
+                <div className="p-3">مقاله‌ای یافت نشد.</div>
+              ) : (
+                <div className="flex justify-start items-center flex-wrap gap-2">
+                  {posts.map((po, i) => (
+                    <div key={i} className="px-2 py-1 bg-zinc-100 rounded">
+                      <label htmlFor={po._id}>{po.title}</label>{" "}
+                      {fullData.relatedPosts &&
+                      fullData.relatedPosts.includes(po._id) ? (
+                        <input
+                          name={po._id}
+                          id={po._id}
+                          type="checkbox"
+                          value={po._id}
+                          onChange={postsRelatedMan}
+                          defaultChecked
+                        />
+                      ) : (
+                        <input
+                          name={po._id}
+                          id={po._id}
+                          type="checkbox"
+                          value={po._id}
+                          onChange={postsRelatedMan}
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="flex flex-col gap-2">
+              <div>وضعیت</div>
+              <select
+                ref={publishedRef}
+                className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+              >
+                {fullData.published && fullData.published == true ? (
+                  <>
+                    <option value={true}>انتشار</option>
+                    <option value={false}>پیش‌نویس</option>
+                  </>
+                ) : fullData.published && fullData.published == false ? (
+                  <>
+                    <option value={false}>پیش‌نویس</option>
+                    <option value={true}>انتشار</option>
+                  </>
+                ) : (
+                  <>
+                    <option value={false}>پیش‌نویس</option>
+                    <option value={true}>انتشار</option>
+                  </>
+                )}
+              </select>
+            </div>
+            <button
+              type="submit"
+              className="p-2 bg-indigo-600 text-white w-full rounded-md transition-all duration-300 hover:bg-orange-500"
+            >
+              به روز رسانی
+            </button>
+          </form>
         </div>
-        <div className="flex flex-col gap-2">
-          <div>وضعیت</div>
-          <select
-            ref={publishedRef}
-            className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
-          >
-            {fullData.published && fullData.published == true ? (
-              <>
-                <option value={true}>انتشار</option>
-                <option value={false}>پیش‌نویس</option>
-              </>
-            ) : fullData.published && fullData.published == false ? (
-              <>
-                <option value={false}>پیش‌نویس</option>
-                <option value={true}>انتشار</option>
-              </>
-            ) : (
-              <>
-                <option value={false}>پیش‌نویس</option>
-                <option value={true}>انتشار</option>
-              </>
-            )}
-          </select>
-        </div>
-        <button
-          type="submit"
-          className="p-2 bg-indigo-600 text-white w-full rounded-md transition-all duration-300 hover:bg-orange-500"
-        >
-          به روز رسانی
-        </button>
-      </form>
+      )}
+
       <ToastContainer
         bodyClassName={() => "font-[IRANSans] text-sm flex items-center"}
         position="top-right"

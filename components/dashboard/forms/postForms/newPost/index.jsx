@@ -31,7 +31,7 @@ const NewPost = () => {
       let tagList = [...tag];
       const data = tagRef.current.value;
       if (data.length > 0) {
-        tagList = [...tag, data];
+        tagList = [...tag, data.replace(/\s+/g, "_").toLowerCase()];
         setTag(tagList);
       }
       tagRef.current.value = "";

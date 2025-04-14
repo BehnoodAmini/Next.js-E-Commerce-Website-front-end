@@ -2,12 +2,12 @@
 
 import { useRef, useEffect, useState } from "react";
 import axios from "axios";
-import Image from "next/image";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
+import Image from "next/image";
 
-const MidBannerDetails = ({ midBanId }) => {
+const SliderDetails = ({ midBanId }) => {
   //PREVENT FORM TO BE SENT WITH ENTER
   const FormKeyNotSuber = (event) => {
     if (event.key == "Enter") {
@@ -23,6 +23,7 @@ const MidBannerDetails = ({ midBanId }) => {
 
   const imageUrlRef = useRef();
   const imageAltRef = useRef();
+  const sorterRef = useRef();
   const imageLinkRef = useRef();
   const imageSituationRef = useRef();
 
@@ -32,6 +33,7 @@ const MidBannerDetails = ({ midBanId }) => {
       goalId: midBanId,
       image: imageUrlRef.current.value,
       imageAlt: imageAltRef.current.value,
+      sorter: sorterRef.current.value,
       link: imageLinkRef.current.value,
       situation: imageSituationRef.current.value,
       date: new Date().toLocaleDateString("fa-IR", {
@@ -39,12 +41,12 @@ const MidBannerDetails = ({ midBanId }) => {
         minute: "2-digit",
       }),
     };
-    const url = `http://localhost:27017/api/update-middle-banner/${midBanId}`;
+    const url = `http://localhost:27017/api/update-slider/${midBanId}`;
     axios
       .post(url, formData)
       .then((d) => {
         formData.situation == "true"
-          ? toast.success("بنر میانی با موفقیت منتشر شد.", {
+          ? toast.success("اسلایدر با موفقیت به‌روزرسانی و منتشر شد.", {
               autoClose: 3000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -52,7 +54,7 @@ const MidBannerDetails = ({ midBanId }) => {
               draggable: true,
               progress: undefined,
             })
-          : toast.success("بنر میانی به‌روزرسانی شد.", {
+          : toast.success("اسلایدر به‌روزرسانی شد.", {
               autoClose: 3000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -82,7 +84,7 @@ const MidBannerDetails = ({ midBanId }) => {
   useEffect(() => {
     goTopCtrl();
     axios
-      .get(`http://localhost:27017/api/get-mid-ban/${midBanId}`)
+      .get(`http://localhost:27017/api/get-slider/${midBanId}`)
       .then((d) => {
         setFullData(d.data);
       })
@@ -99,7 +101,7 @@ const MidBannerDetails = ({ midBanId }) => {
   }, [midBanId]);
 
   const RemoveHandler = () => {
-    const url = `http://localhost:27017/api/delete-middle-banner/${midBanId}`;
+    const url = `http://localhost:27017/api/delete-slider/${midBanId}`;
     axios
       .post(url)
       .then((d) => {
@@ -180,6 +182,16 @@ const MidBannerDetails = ({ midBanId }) => {
               />
             </div>
             <div className="flex flex-col gap-2">
+              <div>ترتیب جدید اسلایدر</div>
+              <input
+                required={true}
+                defaultValue={fullData.sorter}
+                type="number"
+                ref={sorterRef}
+                className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
               <div>لینک جدید عکس</div>
               <input
                 required={true}
@@ -235,4 +247,4 @@ const MidBannerDetails = ({ midBanId }) => {
   );
 };
 
-export default MidBannerDetails;
+export default SliderDetails;
