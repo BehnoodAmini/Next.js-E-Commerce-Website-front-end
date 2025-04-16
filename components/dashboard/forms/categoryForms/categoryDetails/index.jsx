@@ -2,12 +2,12 @@
 
 import { useRef, useEffect, useState } from "react";
 import axios from "axios";
+import Image from "next/image";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-import Image from "next/image";
 
-const SliderDetails = ({ midBanId }) => {
+const CategoryDetails = ({ categoryId }) => {
   //PREVENT FORM TO BE SENT WITH ENTER
   const FormKeyNotSuber = (event) => {
     if (event.key == "Enter") {
@@ -21,32 +21,33 @@ const SliderDetails = ({ midBanId }) => {
     });
   };
 
+  const titleRef = useRef();
+  const slugRef = useRef();
   const imageUrlRef = useRef();
   const imageAltRef = useRef();
-  const sorterRef = useRef();
-  const imageLinkRef = useRef();
-  const imageSituationRef = useRef();
+  const shortDescRef = useRef();
+  const categorySituationRef = useRef();
 
   const UpdateHandler = (e) => {
     e.preventDefault();
     const formData = {
-      goalId: midBanId,
+      title: titleRef.current.value,
+      slug: slugRef.current.value,
       image: imageUrlRef.current.value,
       imageAlt: imageAltRef.current.value,
-      sorter: sorterRef.current.value,
-      link: imageLinkRef.current.value,
-      situation: imageSituationRef.current.value,
+      situation: categorySituationRef.current.value,
+      shortDesc: shortDescRef.current.value,
       date: new Date().toLocaleDateString("fa-IR", {
         hour: "2-digit",
         minute: "2-digit",
       }),
     };
-    const url = `http://localhost:27017/api/update-slider/${midBanId}`;
+    const url = `http://localhost:27017/api/update-category/${categoryId}`;
     axios
       .post(url, formData)
       .then((d) => {
         formData.situation == "true"
-          ? toast.success("اسلایدر با موفقیت به‌روزرسانی و منتشر شد.", {
+          ? toast.success("دسته محصول با موفقیت منتشر شد.", {
               autoClose: 3000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -54,7 +55,7 @@ const SliderDetails = ({ midBanId }) => {
               draggable: true,
               progress: undefined,
             })
-          : toast.success("اسلایدر به‌روزرسانی شد.", {
+          : toast.success("دسته محصول به‌روزرسانی شد.", {
               autoClose: 3000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -84,7 +85,7 @@ const SliderDetails = ({ midBanId }) => {
   useEffect(() => {
     goTopCtrl();
     axios
-      .get(`http://localhost:27017/api/get-slider/${midBanId}`)
+      .get(`http://localhost:27017/api/get-category/${categoryId}`)
       .then((d) => {
         setFullData(d.data);
       })
@@ -98,14 +99,14 @@ const SliderDetails = ({ midBanId }) => {
           progress: undefined,
         });
       });
-  }, [midBanId]);
+  }, [categoryId]);
 
   const RemoveHandler = () => {
-    const url = `http://localhost:27017/api/delete-slider/${midBanId}`;
+    const url = `http://localhost:27017/api/delete-category/${categoryId}`;
     axios
       .post(url)
       .then((d) => {
-        toast.success("بنر با موفقیت حذف شد.", {
+        toast.success("دسته محصول با موفقیت حذف شد.", {
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -140,7 +141,7 @@ const SliderDetails = ({ midBanId }) => {
       ) : (
         <div className="flex flex-col gap-8">
           <div className="flex justify-between items-center">
-            <h2 className="text-orange-500">جزئیات بنر</h2>
+            <h2 className="text-orange-500">جزئیات دسته محصول</h2>
             <button
               onClick={() => RemoveHandler()}
               className="bg-rose-600 text-white px-4 py-1 rounded-md text-xs transition-all duration-300 hover:bg-rose-700"
@@ -162,6 +163,26 @@ const SliderDetails = ({ midBanId }) => {
             className="flex flex-col gap-6"
           >
             <div className="flex flex-col gap-2">
+              <div>عنوان جدید دسته</div>
+              <input
+                required={true}
+                defaultValue={fullData.title}
+                type="text"
+                ref={titleRef}
+                className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <div>اسلاگ جدید دسته</div>
+              <input
+                required={true}
+                defaultValue={fullData.slug}
+                type="text"
+                ref={slugRef}
+                className="inputLtr p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
               <div>آدرس جدید عکس</div>
               <input
                 required={true}
@@ -182,40 +203,30 @@ const SliderDetails = ({ midBanId }) => {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <div>ترتیب جدید اسلایدر</div>
+              <div>توضیحات کوتاه جدید دسته</div>
               <input
                 required={true}
-                defaultValue={fullData.sorter}
-                type="number"
-                ref={sorterRef}
+                defaultValue={fullData.shortDesc}
+                type="text"
+                ref={shortDescRef}
                 className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
               />
             </div>
             <div className="flex flex-col gap-2">
-              <div>لینک جدید عکس</div>
-              <input
-                required={true}
-                defaultValue={fullData.link}
-                type="text"
-                ref={imageLinkRef}
-                className="inputLtr p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <div>روشن و خاموش</div>
+              <div>انتشار و پیش‌نویس</div>
               <select
-                ref={imageSituationRef}
+                ref={categorySituationRef}
                 className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
               >
                 {fullData.situation == true ? (
                   <>
-                    <option value={true}>روشن</option>
-                    <option value={false}>خاموش</option>
+                    <option value={true}>انتشار</option>
+                    <option value={false}>پیش‌نویس</option>
                   </>
                 ) : (
                   <>
-                    <option value={false}>خاموش</option>
-                    <option value={true}>روشن</option>
+                    <option value={false}>پیش‌نویس</option>
+                    <option value={true}>انتشار</option>
                   </>
                 )}
               </select>
@@ -247,4 +258,4 @@ const SliderDetails = ({ midBanId }) => {
   );
 };
 
-export default SliderDetails;
+export default CategoryDetails;

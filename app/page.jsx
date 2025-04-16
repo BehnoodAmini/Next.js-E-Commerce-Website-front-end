@@ -3,7 +3,7 @@ import Image from "next/image";
 import MainSlider from "../components/sliders/mainSlider";
 import ProductsSlider from "../components/sliders/products-slider";
 import MiddleBanner from "../components/middle-banners";
-import GraphicCategories from "../components/graphic-cats";
+import Categories from "../components/categories";
 import GraphicSlider from "../components/sliders/graphic-slider";
 import NewBlogs from "../components/newBlogs";
 
@@ -15,7 +15,7 @@ export default function Home() {
         <ProductsSlider title="اپلیکیشن‌ها" linkComp="apps" />
         <MiddleBanner />
         <ProductsSlider title="کتاب‌ها" linkComp="books" />
-        <GraphicCategories />
+        <Categories />
         <GraphicSlider />
         <NewBlogs />
       </main>

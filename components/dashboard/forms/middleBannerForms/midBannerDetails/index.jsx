@@ -170,7 +170,7 @@ const MidBannerDetails = ({ midBanId }) => {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <div>آلت جدید عکس</div>
+              <div>alt جدید عکس</div>
               <input
                 required={true}
                 defaultValue={fullData.imageAlt}

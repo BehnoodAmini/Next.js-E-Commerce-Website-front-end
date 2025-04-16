@@ -90,7 +90,7 @@ const NewSlider = () => {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <div>آلت عکس</div>
+          <div>alt عکس</div>
           <input
             required={true}
             type="text"
