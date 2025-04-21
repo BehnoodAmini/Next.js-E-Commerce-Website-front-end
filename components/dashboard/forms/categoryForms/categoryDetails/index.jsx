@@ -26,6 +26,7 @@ const CategoryDetails = ({ categoryId }) => {
   const imageUrlRef = useRef();
   const imageAltRef = useRef();
   const shortDescRef = useRef();
+  const typeOfProductRef = useRef();
   const categorySituationRef = useRef();
 
   const UpdateHandler = (e) => {
@@ -35,8 +36,9 @@ const CategoryDetails = ({ categoryId }) => {
       slug: slugRef.current.value,
       image: imageUrlRef.current.value,
       imageAlt: imageAltRef.current.value,
-      situation: categorySituationRef.current.value,
       shortDesc: shortDescRef.current.value,
+      typeOfProduct: typeOfProductRef.current.value,
+      situation: categorySituationRef.current.value,
       date: new Date().toLocaleDateString("fa-IR", {
         hour: "2-digit",
         minute: "2-digit",
@@ -211,6 +213,33 @@ const CategoryDetails = ({ categoryId }) => {
                 ref={shortDescRef}
                 className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
               />
+            </div>
+            <div className="flex flex-col gap-2">
+              <div>نوع دسته بندی محصول</div>
+              <select
+                ref={typeOfProductRef}
+                className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+              >
+                {fullData.typeOfProduct == "app" ? (
+                  <>
+                    <option value={"app"}>اپلیکیشن</option>
+                    <option value={"gr"}>فایل گرافیکی</option>
+                    <option value={"book"}>کتاب</option>
+                  </>
+                ) : fullData.typeOfProduct == "book" ? (
+                  <>
+                    <option value={"book"}>کتاب</option>
+                    <option value={"app"}>اپلیکیشن</option>
+                    <option value={"gr"}>فایل گرافیکی</option>
+                  </>
+                ) : (
+                  <>
+                    <option value={"gr"}>فایل گرافیکی</option>
+                    <option value={"app"}>اپلیکیشن</option>
+                    <option value={"book"}>کتاب</option>
+                  </>
+                )}
+              </select>
             </div>
             <div className="flex flex-col gap-2">
               <div>انتشار و پیش‌نویس</div>

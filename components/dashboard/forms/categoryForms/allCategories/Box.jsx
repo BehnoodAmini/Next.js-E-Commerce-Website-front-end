@@ -23,16 +23,23 @@ const Box = ({ data, setCategoryDetCtrl, setRandNumForBannerClick }) => {
       </div>
       <div className="flex flex-col gap-4 h-10">
         <div>{data.title}</div>
-        <div className="absolute bottom-3 left-3 flex justify-end items-center gap-2">
-          {data.situation == true ? (
-            <div className="text-xs bg-green-600 text-white px-3 py-1 rounded">
-              منتشر شده
-            </div>
-          ) : (
-            <div className="text-xs bg-orange-500 text-white px-3 py-1 rounded">
-              پیش‌نویس
-            </div>
-          )}
+        <div className="text-xs absolute bottom-3 left-3  text-white flex justify-end items-center gap-2">
+          <div className="bg-blue-600 px-3 py-1 rounded">
+            {data.typeOfProduct == "book" ? (
+              <span>کتاب</span>
+            ) : data.typeOfProduct == "app" ? (
+              <span>اپلیکیشن</span>
+            ) : (
+              <span>فایل گرافیکی</span>
+            )}
+          </div>
+          <div>
+            {data.situation == true ? (
+              <div className="bg-green-600 px-3 py-1 rounded">منتشر شده</div>
+            ) : (
+              <div className="bg-orange-500 px-3 py-1 rounded">پیش‌نویس</div>
+            )}
+          </div>
         </div>
       </div>
     </div>

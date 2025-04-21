@@ -3,29 +3,42 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
-import BlogBox from "../newBlogs/BlogBox";
+import Box from "./Box";
 
-const BlogPageComp = () => {
+const AllPosts = ({ setMidBanDetCtrl, setRandNumForBannerClick }) => {
   const [posts, setPosts] = useState([-1]);
   const [pageNumber, setPageNumber] = useState(1);
   const [numbersOfBtns, setNumbersOfBtns] = useState([-1]);
   const [filteredBtns, setFilteredBtns] = useState([-1]);
+  const [allPostsNumber, setAllPostsNumber] = useState(0);
   const [colorFocus, setColorFocus] = useState(1);
-  const paginate = 4;
+  const paginate = 10;
 
   useEffect(() => {
     axios
-      .get(
-        `http://localhost:27017/api/get-blog-page-posts?pn=${pageNumber}&pgn=${paginate}`
-      )
+      .get(`http://localhost:27017/api/posts?pn=${pageNumber}&&pgn=${paginate}`)
       .then((d) => {
         setPosts(d.data.GoalPosts);
         setNumbersOfBtns(
           Array.from(Array(Math.ceil(d.data.AllPostsNum / paginate)).keys())
         );
+        setAllPostsNumber(d.data.AllPostsNum);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        toast.error("خطا در لود اطلاعات!", {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        console.log(e);
+      });
   }, [pageNumber]);
 
   useEffect(() => {
@@ -55,6 +68,11 @@ const BlogPageComp = () => {
 
   return (
     <div className="flex flex-col gap-8">
+      <div className="flex justify-end">
+        <div className="w-32 h-10 rounded bg-indigo-600 flex justify-center items-center text-white">
+          {allPostsNumber} مقاله
+        </div>
+      </div>
       <div className="flex flex-col gap-6">
         {posts[0] == -1 ? (
           <div className="flex justify-center items-center p-12">
@@ -70,11 +88,14 @@ const BlogPageComp = () => {
             مقاله‌ای موجود نیست...
           </div>
         ) : (
-          <div className="flex flex-wrap justify-between items-center gap-2">
-            {posts.map((da, i) => (
-              <BlogBox key={i} data={da} />
-            ))}
-          </div>
+          posts.map((da, i) => (
+            <Box
+              setMidBanDetCtrl={setMidBanDetCtrl}
+              setRandNumForBannerClick={setRandNumForBannerClick}
+              key={i}
+              data={da}
+            />
+          ))
         )}
       </div>
       <div className="flex justify-center items-center gap-4">
@@ -102,8 +123,21 @@ const BlogPageComp = () => {
           ))
         )}
       </div>
+      <ToastContainer
+        bodyClassName={() => "font-[IRANSans] text-sm flex items-center"}
+        position="top-right"
+        autoClose={3000}
+        theme="colored"
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };
 
-export default BlogPageComp;
+export default AllPosts;

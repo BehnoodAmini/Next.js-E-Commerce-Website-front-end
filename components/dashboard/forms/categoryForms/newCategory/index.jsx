@@ -19,7 +19,8 @@ const NewMidBanner = () => {
   const imageUrlRef = useRef();
   const imageAltRef = useRef();
   const shortDescRef = useRef();
-  const imageSituationRef = useRef();
+  const typeOfProductRef = useRef();
+  const situationRef = useRef();
 
   const SubmitHandler = (e) => {
     e.preventDefault();
@@ -28,7 +29,8 @@ const NewMidBanner = () => {
       slug: slugRef.current.value,
       image: imageUrlRef.current.value,
       imageAlt: imageAltRef.current.value,
-      situation: imageSituationRef.current.value,
+      situation: situationRef.current.value,
+      typeOfProduct: typeOfProductRef.current.value,
       shortDesc: shortDescRef.current.value,
       date: new Date().toLocaleDateString("fa-IR", {
         hour: "2-digit",
@@ -128,9 +130,20 @@ const NewMidBanner = () => {
           />
         </div>
         <div className="flex flex-col gap-2">
+          <div>نوع دسته بندی محصول</div>
+          <select
+            ref={typeOfProductRef}
+            className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+          >
+            <option value={"app"}>اپلیکیشن</option>
+            <option value={"gr"}>فایل گرافیکی</option>
+            <option value={"book"}>کتاب</option>
+          </select>
+        </div>
+        <div className="flex flex-col gap-2">
           <div>انتشار یا پیش‌نویس</div>
           <select
-            ref={imageSituationRef}
+            ref={situationRef}
             className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
           >
             <option value={true}>انتشار</option>
