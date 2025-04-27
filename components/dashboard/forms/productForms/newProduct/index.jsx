@@ -310,7 +310,7 @@ const NewProduct = () => {
                 onKeyDown={featureSuber}
                 ref={featuresRef}
                 className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
-                placeholder="ویژگی را وارد کنید و Enter بزنید..."
+                placeholder="نام ویژگی: توضیح ویژگی"
               />
             </div>
             <div className="tagResults flex gap-3 justify-start flex-wrap">

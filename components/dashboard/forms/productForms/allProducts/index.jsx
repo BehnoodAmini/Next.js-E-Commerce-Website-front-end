@@ -9,24 +9,27 @@ import { toast } from "react-toastify";
 
 import Box from "./Box";
 
-const AllPosts = ({ setMidBanDetCtrl, setRandNumForBannerClick }) => {
-  const [posts, setPosts] = useState([-1]);
+const AllProducts = ({ setProductDetCtrl, setRandNumForProductClick }) => {
+  const [products, setProducts] = useState([-1]);
   const [pageNumber, setPageNumber] = useState(1);
   const [numbersOfBtns, setNumbersOfBtns] = useState([-1]);
   const [filteredBtns, setFilteredBtns] = useState([-1]);
-  const [allPostsNumber, setAllPostsNumber] = useState(0);
+  const [allProductsNumber, setAllProductsNumber] = useState(0);
   const [colorFocus, setColorFocus] = useState(1);
   const paginate = 10;
+  const [categoryUrl, setCategoryUrl] = useState("products");
 
   useEffect(() => {
     axios
-      .get(`http://localhost:27017/api/posts?pn=${pageNumber}&&pgn=${paginate}`)
+      .get(
+        `http://localhost:27017/api/${categoryUrl}?pn=${pageNumber}&&pgn=${paginate}`
+      )
       .then((d) => {
-        setPosts(d.data.GoalPosts);
+        setProducts(d.data.GoalProducts);
         setNumbersOfBtns(
-          Array.from(Array(Math.ceil(d.data.AllPostsNum / paginate)).keys())
+          Array.from(Array(Math.ceil(d.data.AllProductsNum / paginate)).keys())
         );
-        setAllPostsNumber(d.data.AllPostsNum);
+        setAllProductsNumber(d.data.AllProductsNum);
       })
       .catch((e) => {
         toast.error("خطا در لود اطلاعات!", {
@@ -39,7 +42,7 @@ const AllPosts = ({ setMidBanDetCtrl, setRandNumForBannerClick }) => {
         });
         console.log(e);
       });
-  }, [pageNumber]);
+  }, [pageNumber, categoryUrl]);
 
   useEffect(() => {
     if (numbersOfBtns[0] != -1 && numbersOfBtns.length > 0) {
@@ -68,13 +71,40 @@ const AllPosts = ({ setMidBanDetCtrl, setRandNumForBannerClick }) => {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-2">
+        <div className="text-xs text-white flex justify-end items-center gap-4">
+          <div>نوع محصول</div>
+          <select
+            className="text-sm p-2 rounded w-full text-black border-2 border-indigo-300 focus:border-orange-400 focus:outline-none"
+            onChange={(event) => {
+              const selectedValue = event.target.value;
+              if (selectedValue === "products") {
+                setCategoryUrl("products");
+                setPageNumber(1);
+              } else if (selectedValue === "book") {
+                setCategoryUrl("get-products-of-type/book");
+                setPageNumber(1);
+              } else if (selectedValue === "app") {
+                setCategoryUrl("get-products-of-type/app");
+                setPageNumber(1);
+              } else if (selectedValue === "gr") {
+                setCategoryUrl("get-products-of-type/gr");
+                setPageNumber(1);
+              }
+            }}
+          >
+            <option value="products">همه دسته‌ها</option>
+            <option value="book">کتاب</option>
+            <option value="app">اپلیکیشن</option>
+            <option value="gr">فایل گرافیکی</option>
+          </select>
+        </div>
         <div className="w-32 h-10 rounded bg-indigo-600 flex justify-center items-center text-white">
-          {allPostsNumber} مقاله
+          {allProductsNumber} محصول
         </div>
       </div>
       <div className="flex flex-col gap-6">
-        {posts[0] == -1 ? (
+        {products[0] == -1 ? (
           <div className="flex justify-center items-center p-12">
             <Image
               alt="loading"
@@ -83,15 +113,15 @@ const AllPosts = ({ setMidBanDetCtrl, setRandNumForBannerClick }) => {
               src={"/loading.svg"}
             />
           </div>
-        ) : posts.length < 1 ? (
+        ) : products.length < 1 ? (
           <div className="flex justify-center items-center w-full p-8">
-            مقاله‌ای موجود نیست...
+            محصولی موجود نیست...
           </div>
         ) : (
-          posts.map((da, i) => (
+          products.map((da, i) => (
             <Box
-              setMidBanDetCtrl={setMidBanDetCtrl}
-              setRandNumForBannerClick={setRandNumForBannerClick}
+              setProductDetCtrl={setProductDetCtrl}
+              setRandNumForProductClick={setRandNumForProductClick}
               key={i}
               data={da}
             />
@@ -140,4 +170,4 @@ const AllPosts = ({ setMidBanDetCtrl, setRandNumForBannerClick }) => {
   );
 };
 
-export default AllPosts;
+export default AllProducts;

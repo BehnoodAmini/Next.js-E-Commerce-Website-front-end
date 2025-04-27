@@ -8,26 +8,23 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
-const PostDetails = ({ goalId }) => {
-  //PREVENT FORM TO BE SENT WITH ENTER
-  const FormKeyNotSuber = (event) => {
+const ProductDetails = ({ goalId }) => {
+   //PREVENT FORM TO BE SENT WITH ENTER
+   const FormKeyNotSuber = (event) => {
     if (event.key == "Enter") {
       event.preventDefault();
     }
   };
 
-  const goTopCtrl = () => {
-    window.scrollTo({
-      top: 0,
-    });
-  };
-
   const titleRef = useRef();
   const slugRef = useRef();
+  const mainFileRef = useRef();
   const imageRef = useRef();
   const imageAltRef = useRef();
+  const priceRef = useRef();
   const shortDescRef = useRef();
   const longDescRef = useRef();
+  const typeOfProductRef = useRef();
   const publishedRef = useRef();
 
   // TAG MANAGING
@@ -48,51 +45,102 @@ const PostDetails = ({ goalId }) => {
     setTag(tag.filter((_, index) => index !== indexToRemove));
   };
 
+  // FEATURES MANAGING
+  const featuresRef = useRef();
+  const [feature, setFeature] = useState([]);
+  const featureSuber = (e) => {
+    if (e.key === "Enter") {
+      let featureList = [...feature];
+      const data = featuresRef.current.value;
+      if (data.length > 0) {
+        featureList = [...feature, data];
+        setFeature(featureList);
+      }
+      featuresRef.current.value = "";
+    }
+  };
+  const featureDeleter = (indexToRemove) => {
+    setFeature(feature.filter((_, index) => index !== indexToRemove));
+  };
+
   // RELATED
-  const [posts, setPosts] = useState([-1]);
-  const [relPosts, setRelPosts] = useState([]);
+  const [products, setProducts] = useState([-1]);
+  const [relProducts, setRelProducts] = useState([]);
   useEffect(() => {
-    const postsUrl = `http://localhost:27017/api/posts-rel`;
+    const productsUrl = `http://localhost:27017/api/products-rel`;
     axios
-      .get(postsUrl)
+      .get(productsUrl)
       .then((d) => {
-        setPosts(d.data);
+        setProducts(d.data);
       })
       .catch((e) => console.log("error in loading posts"));
   }, []);
-  const postsRelatedMan = (v) => {
-    let related = [...relPosts];
+  const productsRelatedMan = (v) => {
+    let related = [...relProducts];
     if (v.target.checked) {
       related = [...related, v.target.value];
     } else {
-      related.splice(relPosts.indexOf(v.target.value), 1);
+      related.splice(relProducts.indexOf(v.target.value), 1);
     }
-    setRelPosts(related);
+    setRelProducts(related);
+  };
+
+  // CATEGORIES
+  const [categories, setCategories] = useState([-1]);
+  const [relCategories, setRelCategories] = useState([]);
+  useEffect(() => {
+    const categoriesUrl = `http://localhost:27017/api/products-categories-rel`;
+    axios
+      .get(categoriesUrl)
+      .then((d) => {
+        setCategories(d.data);
+      })
+      .catch((e) => console.log("error in loading posts"));
+  }, []);
+  const productsCategoriesMan = (v) => {
+    let related = [...relCategories];
+    if (v.target.checked) {
+      related = [...related, v.target.value];
+    } else {
+      related.splice(relCategories.indexOf(v.target.value), 1);
+    }
+    setRelCategories(related);
   };
 
   const UpdateHandler = (e) => {
     e.preventDefault();
     const formData = {
       title: titleRef.current.value,
+      createdAt: new Date().toLocaleDateString("fa-IR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
       UpdatedAt: new Date().toLocaleDateString("fa-IR", {
         hour: "2-digit",
         minute: "2-digit",
       }),
       slug: slugRef.current.value,
+      mainFile: mainFileRef.current.value,
       image: imageRef.current.value,
       imageAlt: imageAltRef.current.value,
+      price: priceRef.current.value,
       shortDesc: shortDescRef.current.value,
       longDesc: longDescRef.current.value,
       tags: tag,
+      features: feature,
+      typeOfProduct: typeOfProductRef.current.value,
+      pageView: 0,
       published: publishedRef.current.value,
-      relatedPosts: relPosts,
+      comments: [],
+      relatedProducts: relProducts,
+      categories: relCategories,
     };
-    const url = `http://localhost:27017/api/update-post/${goalId}`;
+    const url = `http://localhost:27017/api/update-product/${goalId}`;
     axios
       .post(url, formData)
       .then((d) => {
         formData.published == "true"
-          ? toast.success("مقاله با موفقیت به‌روزرسانی و منتشر شد.", {
+          ? toast.success("محصول با موفقیت به‌روزرسانی و منتشر شد.", {
               autoClose: 3000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -100,7 +148,7 @@ const PostDetails = ({ goalId }) => {
               draggable: true,
               progress: undefined,
             })
-          : toast.success("مقاله به صورت پیش‌نویس ذخیره شد.", {
+          : toast.success("محصول با موفقیت به‌روزرسانی و به صورت پیش‌نویس ذخیره شد.", {
               autoClose: 3000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -127,11 +175,11 @@ const PostDetails = ({ goalId }) => {
   };
 
   const RemoveHandler = () => {
-    const url = `http://localhost:27017/api/delete-post/${goalId}`;
+    const url = `http://localhost:27017/api/delete-product/${goalId}`;
     axios
       .post(url)
       .then((d) => {
-        toast.success("مقاله با موفقیت حذف شد.", {
+        toast.success("محصول با موفقیت حذف شد.", {
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -162,10 +210,11 @@ const PostDetails = ({ goalId }) => {
   useEffect(() => {
     goTopCtrl();
     axios
-      .get(`http://localhost:27017/api/get-post-by-id/${goalId}`)
+      .get(`http://localhost:27017/api/get-product-by-id/${goalId}`)
       .then((d) => {
         setFullData(d.data);
         setTag(d.data.tags);
+        setFeature(d.data.features);
       })
       .catch((e) => {
         toast.error("خطا در لود اطلاعات!", {
@@ -188,13 +237,13 @@ const PostDetails = ({ goalId }) => {
       ) : (
         <div className="flex flex-col gap-8">
           <div className="flex justify-between items-center">
-            <h2 className="text-orange-500">جزئیات مقاله</h2>
+            <h2 className="text-orange-500">جزئیات محصول</h2>
             <div className="flex justify-end items-center gap-4">
               <Link
-                href={`/blog/${fullData.slug}`}
+                href={`/shop/${fullData.slug}`}
                 className="bg-indigo-600 text-white! px-4 py-1 rounded-md text-sm transition-all duration-300 hover:bg-indigo-700"
               >
-                لینک پست
+                لینک محصول
               </Link>
               <button
                 onClick={() => RemoveHandler()}
@@ -433,4 +482,4 @@ const PostDetails = ({ goalId }) => {
   );
 };
 
-export default PostDetails;
+export default ProductDetails;

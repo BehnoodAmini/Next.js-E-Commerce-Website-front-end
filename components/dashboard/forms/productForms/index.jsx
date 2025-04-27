@@ -2,25 +2,25 @@
 
 import { useState, useEffect } from "react";
 
-import AllPosts from "./allPosts";
+import AllProducts from "./allProducts";
 import NewProduct from "./newProduct";
-import PostDetails from "./postDetails";
+import ProductDetails from "./productDetails";
 
 const PostsMain = () => {
-  const [midBanDetCtrl, setMidBanDetCtrl] = useState("");
-  const [randNumForBannerClick, setRandNumForBannerClick] = useState(1);
+  const [productDetCtrl, setProductDetCtrl] = useState("");
+  const [randNumForProductClick, setRandNumForProductClick] = useState(1);
   const [det, setDet] = useState(
-    <AllPosts
-      setMidBanDetCtrl={setMidBanDetCtrl}
-      setRandNumForBannerClick={setRandNumForBannerClick}
+    <AllProducts
+      setProductDetCtrl={setProductDetCtrl}
+      setRandNumForProductClick={setRandNumForProductClick}
     />
   );
 
   useEffect(() => {
-    if (midBanDetCtrl != "") {
-      setDet(<PostDetails goalId={midBanDetCtrl} />);
+    if (productDetCtrl != "") {
+      setDet(<ProductDetails goalId={productDetCtrl} />);
     }
-  }, [randNumForBannerClick]);
+  }, [randNumForProductClick]);
 
   return (
     <div className="flex flex-col gap-8">
@@ -30,9 +30,9 @@ const PostsMain = () => {
           <button
             onClick={() =>
               setDet(
-                <AllPosts
-                  setMidBanDetCtrl={setMidBanDetCtrl}
-                  setRandNumForBannerClick={setRandNumForBannerClick}
+                <AllProducts
+                  setProductDetCtrl={setProductDetCtrl}
+                  setRandNumForProductClick={setRandNumForProductClick}
                 />
               )
             }
