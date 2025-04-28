@@ -166,6 +166,7 @@ const PostDetails = ({ goalId }) => {
       .then((d) => {
         setFullData(d.data);
         setTag(d.data.tags);
+        setRelPosts(d.data.relatedPosts);
       })
       .catch((e) => {
         toast.error("خطا در لود اطلاعات!", {

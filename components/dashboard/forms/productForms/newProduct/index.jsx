@@ -14,6 +14,11 @@ const NewProduct = () => {
       event.preventDefault();
     }
   };
+  
+  // SPLITER FOR CATEGORIES
+  const spliterForCategories = (value) => {
+    return value.split("*");
+  };
 
   const titleRef = useRef();
   const slugRef = useRef();
@@ -99,9 +104,25 @@ const NewProduct = () => {
   const productsCategoriesMan = (v) => {
     let related = [...relCategories];
     if (v.target.checked) {
-      related = [...related, v.target.value];
+      const goalArr = spliterForCategories(v.target.value);
+      related = [
+        ...related,
+        {
+          _id: goalArr[0],
+          title: goalArr[1],
+          slug: goalArr[2],
+        },
+      ];
     } else {
-      related.splice(relCategories.indexOf(v.target.value), 1);
+      const goalArr = spliterForCategories(v.target.value);
+      related.splice(
+        relCategories.indexOf({
+          _id: goalArr[0],
+          title: goalArr[1],
+          slug: goalArr[2],
+        }),
+        1
+      );
     }
     setRelCategories(related);
   };
@@ -227,20 +248,20 @@ const NewProduct = () => {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <div>توضیحات کوتاه</div>
-          <input
-            required={true}
-            type="text"
-            ref={shortDescRef}
-            className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
-          />
-        </div>
-        <div className="flex flex-col gap-2">
           <div>قیمت محصول(تومان)</div>
           <input
             required={true}
             type="number"
             ref={priceRef}
+            className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <div>توضیحات کوتاه</div>
+          <input
+            required={true}
+            type="text"
+            ref={shortDescRef}
             className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
           />
         </div>
@@ -379,7 +400,7 @@ const NewProduct = () => {
                   <label htmlFor={pr.id}>{pr.title}</label>
                   <input
                     type="checkbox"
-                    value={pr._id}
+                    value={`${po._id}*${po.title}*${po.slug}`}
                     name={pr._id}
                     id={pr._id}
                     onChange={productsCategoriesMan}
@@ -406,7 +427,7 @@ const NewProduct = () => {
             <div className="flex justify-start items-center flex-wrap gap-2">
               {products.map((pr, i) => (
                 <div key={i} className="px-2 py-1 bg-zinc-100 rounded">
-                   <label htmlFor={pr.id}>{pr.title}</label>
+                  <label htmlFor={pr.id}>{pr.title}</label>
                   <input
                     type="checkbox"
                     value={pr._id}

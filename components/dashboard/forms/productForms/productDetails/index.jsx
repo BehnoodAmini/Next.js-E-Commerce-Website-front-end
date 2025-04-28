@@ -9,11 +9,23 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
 const ProductDetails = ({ goalId }) => {
-   //PREVENT FORM TO BE SENT WITH ENTER
-   const FormKeyNotSuber = (event) => {
+  //PREVENT FORM TO BE SENT WITH ENTER
+  const FormKeyNotSuber = (event) => {
     if (event.key == "Enter") {
       event.preventDefault();
     }
+  };
+
+  const goTopCtrl = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  // SPLITER FOR CATEGORIES
+  const spliterForCategories = (value) => {
+    return value.split("*");
   };
 
   const titleRef = useRef();
@@ -63,7 +75,7 @@ const ProductDetails = ({ goalId }) => {
     setFeature(feature.filter((_, index) => index !== indexToRemove));
   };
 
-  // RELATED
+  // RELATED PRODUCTS
   const [products, setProducts] = useState([-1]);
   const [relProducts, setRelProducts] = useState([]);
   useEffect(() => {
@@ -88,6 +100,7 @@ const ProductDetails = ({ goalId }) => {
   // CATEGORIES
   const [categories, setCategories] = useState([-1]);
   const [relCategories, setRelCategories] = useState([]);
+  const [thisProductCatsIds, setThisProductCatsIds] = useState([]);
   useEffect(() => {
     const categoriesUrl = `http://localhost:27017/api/products-categories-rel`;
     axios
@@ -100,9 +113,25 @@ const ProductDetails = ({ goalId }) => {
   const productsCategoriesMan = (v) => {
     let related = [...relCategories];
     if (v.target.checked) {
-      related = [...related, v.target.value];
+      const goalArr = spliterForCategories(v.target.value);
+      related = [
+        ...related,
+        {
+          _id: goalArr[0],
+          title: goalArr[1],
+          slug: goalArr[2],
+        },
+      ];
     } else {
-      related.splice(relCategories.indexOf(v.target.value), 1);
+      const goalArr = spliterForCategories(v.target.value);
+      related.splice(
+        relCategories.indexOf({
+          _id: goalArr[0],
+          title: goalArr[1],
+          slug: goalArr[2],
+        }),
+        1
+      );
     }
     setRelCategories(related);
   };
@@ -148,14 +177,17 @@ const ProductDetails = ({ goalId }) => {
               draggable: true,
               progress: undefined,
             })
-          : toast.success("محصول با موفقیت به‌روزرسانی و به صورت پیش‌نویس ذخیره شد.", {
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
+          : toast.success(
+              "محصول با موفقیت به‌روزرسانی و به صورت پیش‌نویس ذخیره شد.",
+              {
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              }
+            );
       })
       .catch((e) => {
         let message = "متاسفانه ناموفق بود.";
@@ -215,6 +247,9 @@ const ProductDetails = ({ goalId }) => {
         setFullData(d.data);
         setTag(d.data.tags);
         setFeature(d.data.features);
+        setRelProducts(d.data.relatedProducts);
+        setRelCategories(d.data.categories);
+        setThisProductCatsIds(d.data.categories.map((cat) => cat._id));
       })
       .catch((e) => {
         toast.error("خطا در لود اطلاعات!", {
@@ -266,6 +301,9 @@ const ProductDetails = ({ goalId }) => {
             <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
               {fullData.pageView ? fullData.pageView : 0} بازدید
             </div>
+            <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
+              {fullData.buyNumber ? fullData.buyNumber : 0} فروش
+            </div>
             <div
               className={
                 fullData.published
@@ -282,7 +320,7 @@ const ProductDetails = ({ goalId }) => {
             className="flex flex-col gap-6"
           >
             <div className="flex flex-col gap-2">
-              <div>عنوان جدید مقاله</div>
+              <div>عنوان جدید محصول</div>
               <input
                 defaultValue={fullData.title ? fullData.title : ""}
                 required={true}
@@ -292,12 +330,22 @@ const ProductDetails = ({ goalId }) => {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <div>اسلاگ جدید پست</div>
+              <div>اسلاگ جدید محصول</div>
               <input
                 defaultValue={fullData.slug ? fullData.slug : ""}
                 required={true}
                 type="text"
                 ref={slugRef}
+                className="inputLtr p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <div>URL فایل اصلی جدید محصول</div>
+              <input
+                defaultValue={fullData.mainFile ? fullData.mainFile : ""}
+                required={true}
+                type="text"
+                ref={mainFileRef}
                 className="inputLtr p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
               />
             </div>
@@ -318,6 +366,16 @@ const ProductDetails = ({ goalId }) => {
                 required={true}
                 type="text"
                 ref={imageAltRef}
+                className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <div>قیمت جدید محصول(تومان)</div>
+              <input
+                defaultValue={fullData.price ? fullData.price : ""}
+                required={true}
+                type="number"
+                ref={priceRef}
                 className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
               />
             </div>
@@ -390,8 +448,84 @@ const ProductDetails = ({ goalId }) => {
               </div>
             </div>
             <div className="tags flex flex-col gap-2">
-              <h3>مقاله‌های مرتبط</h3>
-              {posts[0] == -1 ? (
+              <h3>ویژگی‌های جدید</h3>
+              <div className="tags w-full flex flex-col gap-4">
+                <div className="input flex gap-2 items-center">
+                  <input
+                    type="text"
+                    onKeyDown={featureSuber}
+                    ref={featuresRef}
+                    className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+                    placeholder="نام ویژگی : توضیح ویژگی"
+                  />
+                </div>
+                <div className="tagResults flex gap-3 justify-start flex-wrap">
+                  {feature.map((t, index) => {
+                    return (
+                      <div
+                        key={t}
+                        className="res flex gap-1 text-sm py-1 px-2 rounded-md border-2 border-zinc-300"
+                      >
+                        <i
+                          className="text-indigo-500 flex items-center  cursor-pointer"
+                          onClick={() => {
+                            featureDeleter(index);
+                          }}
+                        >
+                          <span className="text-xs">{t}</span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-4 w-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={3}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        </i>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <div>نوع محصول</div>
+              <select
+                ref={typeOfProductRef}
+                className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+              >
+                {fullData.typeOfProductRef &&
+                fullData.typeOfProductRef == "book" ? (
+                  <>
+                    <option value={"book"}>کتاب</option>
+                    <option value={"app"}>اپلیکیشن</option>
+                    <option value={"gr"}>فایل گرافیکی</option>
+                  </>
+                ) : fullData.typeOfProductRef &&
+                  fullData.typeOfProductRef == "app" ? (
+                  <>
+                    <option value={"app"}>اپلیکیشن</option>
+                    <option value={"book"}>کتاب</option>
+                    <option value={"gr"}>فایل گرافیکی</option>
+                  </>
+                ) : (
+                  <>
+                    <option value={"gr"}>فایل گرافیکی</option>
+                    <option value={"book"}>کتاب</option>
+                    <option value={"app"}>اپلیکیشن</option>
+                  </>
+                )}
+              </select>
+            </div>
+            <div className="tags flex flex-col gap-2">
+              <h3>دسته بندی‌های محصول</h3>
+              {categories[0] == -1 ? (
                 <div className="flex justify-center items-center p-12">
                   <Image
                     alt="loading"
@@ -400,21 +534,62 @@ const ProductDetails = ({ goalId }) => {
                     src={"/loading.svg"}
                   />
                 </div>
-              ) : posts.length < 1 ? (
-                <div className="p-3">مقاله‌ای یافت نشد.</div>
+              ) : categories.length < 1 ? (
+                <div className="p-3">دسته‌ای یافت نشد.</div>
               ) : (
                 <div className="flex justify-start items-center flex-wrap gap-2">
-                  {posts.map((po, i) => (
+                  {categories.map((po, i) => (
                     <div key={i} className="px-2 py-1 bg-zinc-100 rounded">
                       <label htmlFor={po._id}>{po.title}</label>{" "}
-                      {fullData.relatedPosts &&
-                      fullData.relatedPosts.includes(po._id) ? (
+                      {thisProductCatsIds.includes(po._id) ? (
+                        <input
+                          name={po._id}
+                          id={po._id}
+                          type="checkbox"
+                          value={`${po._id}*${po.title}*${po.slug}`}
+                          onChange={productsCategoriesMan}
+                          defaultChecked
+                        />
+                      ) : (
+                        <input
+                          name={po._id}
+                          id={po._id}
+                          type="checkbox"
+                          value={`${po._id}*${po.title}*${po.slug}`}
+                          onChange={productsCategoriesMan}
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="tags flex flex-col gap-2">
+              <h3>محصولات مرتبط</h3>
+              {products[0] == -1 ? (
+                <div className="flex justify-center items-center p-12">
+                  <Image
+                    alt="loading"
+                    width={120}
+                    height={120}
+                    src={"/loading.svg"}
+                  />
+                </div>
+              ) : products.length < 1 ? (
+                <div className="p-3">محصولی یافت نشد.</div>
+              ) : (
+                <div className="flex justify-start items-center flex-wrap gap-2">
+                  {products.map((po, i) => (
+                    <div key={i} className="px-2 py-1 bg-zinc-100 rounded">
+                      <label htmlFor={po._id}>{po.title}</label>{" "}
+                      {fullData.relatedProducts &&
+                      fullData.relatedProducts.includes(po._id) ? (
                         <input
                           name={po._id}
                           id={po._id}
                           type="checkbox"
                           value={po._id}
-                          onChange={postsRelatedMan}
+                          onChange={productsRelatedMan}
                           defaultChecked
                         />
                       ) : (
@@ -423,7 +598,7 @@ const ProductDetails = ({ goalId }) => {
                           id={po._id}
                           type="checkbox"
                           value={po._id}
-                          onChange={postsRelatedMan}
+                          onChange={productsRelatedMan}
                         />
                       )}
                     </div>
@@ -441,11 +616,6 @@ const ProductDetails = ({ goalId }) => {
                   <>
                     <option value={true}>انتشار</option>
                     <option value={false}>پیش‌نویس</option>
-                  </>
-                ) : fullData.published && fullData.published == false ? (
-                  <>
-                    <option value={false}>پیش‌نویس</option>
-                    <option value={true}>انتشار</option>
                   </>
                 ) : (
                   <>

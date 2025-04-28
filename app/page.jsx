@@ -7,18 +7,26 @@ import Categories from "../components/categories";
 import GraphicSlider from "../components/sliders/graphic-slider";
 import NewBlogs from "../components/newBlogs";
 
-export default function Home() {
+const getData = async () => {
+  const data = await fetch("http://localhost:27017/api/get-new-products", {cache: "no-store"});
+  return data.json();
+}
+
+const Home = async () => {
+  const data = await getData();
   return (
     <div>
       <main className="flex flex-col gap-12">
         <MainSlider />
-        <ProductsSlider title="اپلیکیشن‌ها" linkComp="apps" />
+        <ProductsSlider goalData={data.NewApps} title="اپلیکیشن‌ها" linkComp="apps" />
         <MiddleBanner />
-        <ProductsSlider title="کتاب‌ها" linkComp="books" />
+        <ProductsSlider goalData={data.NewBooks} title="کتاب‌ها" linkComp="books" />
         <Categories />
-        <GraphicSlider />
+        <GraphicSlider goalData={data.NewGFs}/>
         <NewBlogs />
       </main>
     </div>
   );
 }
+
+export default Home;

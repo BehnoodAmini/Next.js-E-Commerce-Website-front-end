@@ -27,7 +27,7 @@ return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");
         />
       </div>
       <div className="flex flex-col gap-4 h-40">
-        <div>{data.title}</div>
+        <div className="text-xl">{data.title}</div>
         <div className="absolute left-3 top-3 flex justify-end items-center gap-2 text-white">
           <div className="text-xs bg-indigo-500 px-3 py-1 rounded">
             {data.updatedAt}
