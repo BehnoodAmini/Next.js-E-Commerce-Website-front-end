@@ -17,9 +17,22 @@ const getData = async (slug) => {
   return data.json();
 };
 
+const getProductsData = async (slug) => {
+  const data = await fetch(
+    `http://localhost:27017/api/get-most-viewed-products`,
+    {
+      cache: "no-store",
+    }
+  );
+  return data.json();
+};
+
 const SingleBlog = async ({ params }) => {
   const resolvedParams = await params;
   const data = await getData(resolvedParams.slug);
+
+  const productsData = await getProductsData();
+
   return (
     <div className="flex justify-between items-start container mx-auto gap-2">
       {data.msg ? (
@@ -73,6 +86,7 @@ const SingleBlog = async ({ params }) => {
               </section>
               <section>
                 <RelatedPosts
+                  typeOfModel="post"
                   relPostsData={data.relatedPosts}
                   title={"مقالات مرتبط"}
                 />
@@ -116,30 +130,20 @@ const SingleBlog = async ({ params }) => {
             <div className="flex flex-col gap-4 rounded-lg p-3 shadow-[0px_0px_8px_rgba(0,0,0,0.35)]">
               <h3 className="text-blue-500">پر فروش‌ترین محصولات</h3>
               <ul className="flex flex-col gap-3">
-                <li>
-                  <Link
-                    href={"/blog"}
-                    className="p-2 flex justify-center items-center text-base sm:text-sm border-r-2 border-zinc-600"
-                  >
-                    مقاله تستی مقاله تستی مقاله تستی مقاله تستی مقاله تستی
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href={"/blog"}
-                    className="p-2 flex justify-center items-center text-base sm:text-sm border-r-2 border-zinc-600"
-                  >
-                    مقاله تستی مقاله تستی مقاله تستی مقاله تستی مقاله تستی
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href={"/blog"}
-                    className="p-2 flex justify-center items-center text-base sm:text-sm border-r-2 border-zinc-600"
-                  >
-                    مقاله تستی مقاله تستی مقاله تستی مقاله تستی مقاله تستی
-                  </Link>
-                </li>
+                {productsData.length < 1 ? (
+                  <div></div>
+                ) : (
+                  productsData.map((da, i) => (
+                    <li key={i}>
+                      <Link
+                        href={`/shop/${da.slug}`}
+                        className="p-2 flex justify-start items-center text-base sm:text-sm border-r-2 border-zinc-600 hover:text-indigo-600! transition-all duration-300"
+                      >
+                        {da.title}
+                      </Link>
+                    </li>
+                  ))
+                )}
               </ul>
             </div>
           </aside>

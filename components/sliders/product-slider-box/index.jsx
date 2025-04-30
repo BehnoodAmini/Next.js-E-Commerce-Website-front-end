@@ -5,29 +5,46 @@ import { IoIosSearch } from "react-icons/io";
 import { IoBookmarkOutline } from "react-icons/io5";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 
-const SlideBox = ({itemData}) => {
+const SlideBox = ({ itemData }) => {
   return (
     <article className="sliderItem p-2 hover:pt-0 transition-all duration-300">
-      <div className="relative bg-white h-[22rem] w-72 rounded-lg">
-        <Link href={`/shop/${itemData.slug}`} className="flex justify-center items-center pt-2">
-            <Image
-              width={260}
-              height={150}
-              className="rounded-md"
-              src={itemData.image}
-              alt={itemData.imageAlt}
-              title={itemData.imageAlt}
-            />
+      <div className="relative bg-white h-[26rem] w-72 rounded-lg">
+        <Link
+          href={`/shop/${itemData.slug}`}
+          className="flex justify-center items-center pt-2"
+        >
+          <Image
+            width={260}
+            height={150}
+            className="rounded-md"
+            src={itemData.image}
+            alt={itemData.imageAlt}
+            title={itemData.imageAlt}
+          />
         </Link>
         <div>
           <div className="flex flex-col gap-6 p-2">
             <Link href={`/shop/${itemData.slug}`}>
-                <h3 className=" m-2 line-clamp-2">{itemData.title}</h3>
+              <h3 className=" m-2 line-clamp-2">{itemData.title}</h3>
             </Link>
             <div className="categories flex justify-start items-center flex-wrap gap-1">
-              <div className="py-1 px-2 rounded bg-zinc-200 transition-all duration-300 hover:bg-zinc-300">
-                  رمان
-              </div>
+              {itemData.categories.length < 1 ? (
+                <div></div>
+              ) : (
+                itemData.categories.map((da, i) =>
+                  i < 3 ? (
+                    <Link
+                      key={i}
+                      href={`/search/products/categories/${da.slug}`}
+                      className="py-1 px-2 rounded bg-zinc-200 transition-all duration-300 hover:bg-zinc-300"
+                    >
+                      {da.title}
+                    </Link>
+                  ) : (
+                    <div key={i}></div>
+                  )
+                )
+              )}
             </div>
           </div>
           <div className=" absolute bottom-2  w-full flex justify-between items-center">
@@ -37,7 +54,7 @@ const SlideBox = ({itemData}) => {
               </div>
               <div className="bg-zinc-200 flex justify-center items-center w-9 h-9 rounded-lg transition-all duration-500 hover:bg-zinc-300 cursor-pointer">
                 <Link href={`/shop/${itemData.slug}`}>
-                    <IoIosSearch className="w-5 h-5 font-bold" />
+                  <IoIosSearch className="w-5 h-5 font-bold" />
                 </Link>
               </div>
             </div>

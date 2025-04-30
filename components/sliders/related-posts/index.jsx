@@ -8,8 +8,10 @@ import { FaChevronRight } from "react-icons/fa";
 import { FaChevronLeft } from "react-icons/fa";
 
 import BlogBox from "@/components/newBlogs/BlogBox";
+import GraphicSlideBox from "../graphic-slider-box";
+import ProductSlideBox from "../product-slider-box";
 
-const RelatedPosts = ({ title, relPostsData }) => {
+const RelatedPosts = ({ typeOfModel, title, relPostsData }) => {
   const carouselRef = useRef();
   const carouselSwitcher = (data) => {
     if (carouselRef.current) {
@@ -21,21 +23,24 @@ const RelatedPosts = ({ title, relPostsData }) => {
     }
   };
 
-  const [relPostsDataState, setrelPostsDataState] = useState([-1]);
+  const [relModelDataState, setrelModelDataState] = useState([-1]);
   const sendingDataForRel = { goalIds: relPostsData };
   useEffect(() => {
-    const url = "http://localhost:27017/api/get-related-posts";
+    const url =
+      typeOfModel == "post"
+        ? "http://localhost:27017/api/get-related-posts"
+        : "http://localhost:27017/api/get-related-products";
     axios
       .post(url, sendingDataForRel)
       .then((d) => {
-        setrelPostsDataState(d.data);
+        setrelModelDataState(d.data);
       })
       .catch((e) => console.log(e));
   }, [relPostsData]);
 
   return (
     <div>
-      <div className="container mx-auto py-8">
+      <div className="container mx-auto py-8 bg-zinc-100 rounded-lg">
         <div className="flex flex-col gap-6 px-2">
           <header className=" flex justify-between items-center">
             <h2 className="text-xl">{title}</h2>
@@ -45,13 +50,13 @@ const RelatedPosts = ({ title, relPostsData }) => {
                   onClick={() => {
                     carouselSwitcher(1);
                   }}
-                  className=" cursor-pointer bg-zinc-200 transition-all duration-300 hover:text-white hover:bg-orange-400 w-10 h-10 p-3 rounded"
+                  className=" cursor-pointer bg-indigo-500 transition-all duration-300 text-white hover:bg-orange-400 w-10 h-10 p-3 rounded"
                 />
                 <FaChevronLeft
                   onClick={() => {
                     carouselSwitcher(-1);
                   }}
-                  className=" cursor-pointer bg-zinc-200 transition-all duration-300 hover:text-white hover:bg-orange-400 w-10 h-10 p-3 rounded"
+                  className=" cursor-pointer bg-indigo-500 transition-all duration-300 text-white hover:bg-orange-400 w-10 h-10 p-3 rounded"
                 />
               </div>
             </div>
@@ -62,7 +67,7 @@ const RelatedPosts = ({ title, relPostsData }) => {
           >
             <div className=" flex justify-between items-center gap-4 ">
               <div className=" flex justify-between items-center gap-4 ">
-                {relPostsDataState[0] == -1 ? (
+                {relModelDataState[0] == -1 ? (
                   <div className=" flex justify-center items-center p-12">
                     <Image
                       alt="loading"
@@ -71,13 +76,21 @@ const RelatedPosts = ({ title, relPostsData }) => {
                       src={"/loading.svg"}
                     />
                   </div>
-                ) : relPostsDataState.length < 1 ? (
+                ) : relModelDataState.length < 1 ? (
                   <div className=" justify-center flex items-center p-4">
-                    مقاله مرتبطی موجود نیست.
+                    محتوای مرتبطی موجود نیست.
                   </div>
-                ) : (
-                  relPostsDataState.map((po, i) => (
+                ) : typeOfModel == "post" ? (
+                  relModelDataState.map((po, i) => (
                     <BlogBox data={po} key={i} />
+                  ))
+                ) : typeOfModel == "gr" ? (
+                  relModelDataState.map((po, i) => (
+                    <GraphicSlideBox itemData={po} key={i} />
+                  ))
+                ) : (
+                  relModelDataState.map((po, i) => (
+                    <ProductSlideBox itemData={po} key={i} />
                   ))
                 )}
               </div>
