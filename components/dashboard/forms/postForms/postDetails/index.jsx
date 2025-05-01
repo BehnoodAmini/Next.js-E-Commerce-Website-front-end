@@ -218,6 +218,9 @@ const PostDetails = ({ goalId }) => {
             <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
               {fullData.pageView ? fullData.pageView : 0} بازدید
             </div>
+            <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
+              {fullData.comments ? fullData.comments.length : 0} دیدگاه
+            </div>
             <div
               className={
                 fullData.published
@@ -393,11 +396,6 @@ const PostDetails = ({ goalId }) => {
                   <>
                     <option value={true}>انتشار</option>
                     <option value={false}>پیش‌نویس</option>
-                  </>
-                ) : fullData.published && fullData.published == false ? (
-                  <>
-                    <option value={false}>پیش‌نویس</option>
-                    <option value={true}>انتشار</option>
                   </>
                 ) : (
                   <>

@@ -6,6 +6,11 @@ import { IoBookmarkOutline } from "react-icons/io5";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 
 const SlideBox = ({ itemData }) => {
+  // PRICE BEAUTIFUL
+  function priceChanger(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   return (
     <article className="sliderItem p-2 hover:pt-0 transition-all duration-300">
       <div className="relative bg-white h-[26rem] w-72 rounded-lg">
@@ -61,7 +66,7 @@ const SlideBox = ({ itemData }) => {
             <div className="flex gap-2 justify-end items-center">
               <HiOutlineShoppingCart className=" mr-1 w-9 h-9 p-2 rounded bg-zinc-200 text-indigo-600  cursor-pointer transition-all duration-300 hover:bg-orange-500 hover:text-white" />
               <div className=" bg-zinc-500 text-white h-9 px-1 flex justify-center items-center rounded-tr-md rounded-br-md">
-                {itemData.price} تومان
+                {priceChanger(itemData.price)} تومان
               </div>
             </div>
           </div>

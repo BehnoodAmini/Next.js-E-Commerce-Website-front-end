@@ -14,7 +14,7 @@ const NewProduct = () => {
       event.preventDefault();
     }
   };
-  
+
   // SPLITER FOR CATEGORIES
   const spliterForCategories = (value) => {
     return value.split("*");
@@ -77,7 +77,7 @@ const NewProduct = () => {
       .then((d) => {
         setProducts(d.data);
       })
-      .catch((e) => console.log("error in loading posts"));
+      .catch((e) => console.log("error in loading products"));
   }, []);
   const productsRelatedMan = (v) => {
     let related = [...relProducts];
@@ -99,7 +99,7 @@ const NewProduct = () => {
       .then((d) => {
         setCategories(d.data);
       })
-      .catch((e) => console.log("error in loading posts"));
+      .catch((e) => console.log("error in loading categories"));
   }, []);
   const productsCategoriesMan = (v) => {
     let related = [...relCategories];
@@ -397,12 +397,12 @@ const NewProduct = () => {
             <div className="flex justify-start items-center flex-wrap gap-2">
               {categories.map((pr, i) => (
                 <div key={i} className="px-2 py-1 bg-zinc-100 rounded">
-                  <label htmlFor={pr.id}>{pr.title}</label>
+                  <label htmlFor={pr._id}>{pr.title}</label>{" "}
                   <input
-                    type="checkbox"
-                    value={`${po._id}*${po.title}*${po.slug}`}
                     name={pr._id}
                     id={pr._id}
+                    type="checkbox"
+                    value={`${pr._id}*${pr.title}*${pr.slug}`}
                     onChange={productsCategoriesMan}
                   />
                 </div>
@@ -427,7 +427,7 @@ const NewProduct = () => {
             <div className="flex justify-start items-center flex-wrap gap-2">
               {products.map((pr, i) => (
                 <div key={i} className="px-2 py-1 bg-zinc-100 rounded">
-                  <label htmlFor={pr.id}>{pr.title}</label>
+                  <label htmlFor={pr._id}>{pr.title}</label>{" "}
                   <input
                     type="checkbox"
                     value={pr._id}

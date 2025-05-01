@@ -115,15 +115,21 @@ const SingleBlog = async ({ params }) => {
             <div className="flex flex-col gap-4 rounded-lg p-3 shadow-[0px_0px_8px_rgba(0,0,0,0.35)]">
               <h3 className="text-blue-500">برچسب‌ها</h3>
               <div className="flex justify-start items-center gap-2 flex-wrap">
-                {data.tags.map((ta, i) => (
-                  <Link
-                    key={i}
-                    href={`/search/tags/${ta}`}
-                    className="p-2 flex justify-center items-center rounded-md text-base sm:text-sm bg-zinc-100 transition-all duration-300 hover:text-white! hover:bg-orange-500"
-                  >
-                    {ta}
-                  </Link>
-                ))}
+                {data.tags.length < 1 ? (
+                  <div className="flex justify-center items-center p-3">
+                    بدون برچسب
+                  </div>
+                ) : (
+                  data.tags.map((ta, i) => (
+                    <Link
+                      key={i}
+                      href={`/search/products/tags/${ta}`}
+                      className="p-2 flex justify-center items-center rounded-md text-base sm:text-sm bg-zinc-100 transition-all duration-300 hover:text-white! hover:bg-orange-500"
+                    >
+                      #{ta}
+                    </Link>
+                  ))
+                )}
               </div>
             </div>
             <MostViewedPosts />
@@ -137,7 +143,7 @@ const SingleBlog = async ({ params }) => {
                     <li key={i}>
                       <Link
                         href={`/shop/${da.slug}`}
-                        className="p-2 flex justify-start items-center text-base sm:text-sm border-r-2 border-zinc-600 hover:text-indigo-600! transition-all duration-300"
+                        className="p-2 flex justify-start items-center text-base sm:text-sm border-r-2 border-zinc-600 hover:text-indigo-600! hover:border-indigo-600 transition-all duration-300"
                       >
                         {da.title}
                       </Link>

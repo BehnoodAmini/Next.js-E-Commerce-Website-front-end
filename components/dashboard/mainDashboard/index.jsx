@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 
 import DashboardCtrl from "../dashboard-ctrl";
+import AdminPanel from "../forms/admin-panel";
 import MiddleBannerAll from "../forms/middleBannerForms";
 import SliderAll from "../forms/sliderForms";
 import PostsMain from "../forms/postForms";
@@ -10,11 +11,13 @@ import CategoryMain from "../forms/categoryForms";
 import ProductForms from "../forms/productForms";
 
 const MainDashboard = () => {
-  const [contentChanger, setContentChanger] = useState("midBan");
+  const [contentChanger, setContentChanger] = useState("admin-panel");
   const [details, setDetails] = useState(<MiddleBannerAll />);
 
   useEffect(() => {
-    if (contentChanger == "midBan") {
+    if (contentChanger == "admin-panel") {
+      setDetails(<AdminPanel />);
+    } else if (contentChanger == "midBan") {
       setDetails(<MiddleBannerAll />);
     } else if (contentChanger == "sliders") {
       setDetails(<SliderAll />);
@@ -29,7 +32,9 @@ const MainDashboard = () => {
 
   return (
     <div className="flex justify-between items-start gap-4 container mx-auto">
-      <div className="sticky top-8 right-0 bottom-8"><DashboardCtrl setContentChanger={setContentChanger} /></div>
+      <div className="sticky top-8 right-0 bottom-8">
+        <DashboardCtrl setContentChanger={setContentChanger} />
+      </div>
       <div className="w-full">{details}</div>
     </div>
   );

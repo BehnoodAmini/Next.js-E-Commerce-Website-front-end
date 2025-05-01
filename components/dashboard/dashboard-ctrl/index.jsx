@@ -5,11 +5,18 @@ import { useState } from "react";
 import DCBtn from "./btn";
 
 const DashboardCtrl = ({ setContentChanger }) => {
-  const [colorChanger, setColorChanger] = useState("midBan");
+  const [colorChanger, setColorChanger] = useState("admin-panel");
 
   return (
     <div className="w-60 bg-zinc-200 p-4 rounded-lg flex justify-center items-center">
       <div className="flex flex-col gap-6 ">
+        <DCBtn
+          title={"پیشخوان"}
+          content={"admin-panel"}
+          setContentChanger={setContentChanger}
+          colorChanger={colorChanger}
+          setColorChanger={setColorChanger}
+        />
         <DCBtn
           title={"بنرهای تبلیغاتی"}
           content={"midBan"}

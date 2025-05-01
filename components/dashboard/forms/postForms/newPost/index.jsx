@@ -253,8 +253,10 @@ const NewPost = () => {
             <div className="flex justify-start items-center flex-wrap gap-2">
               {posts.map((po, i) => (
                 <div key={i} className="px-2 py-1 bg-zinc-100 rounded">
-                  {po.title}{" "}
+                  <label htmlFor={po._id}>{po.title}</label>{" "}
                   <input
+                    name={po._id}
+                    id={po._id}
                     type="checkbox"
                     value={po._id}
                     onChange={postsRelatedMan}

@@ -6,13 +6,18 @@ import { IoBookmarkOutline } from "react-icons/io5";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 
 const SlideBox = ({ itemData }) => {
+  // PRICE BEAUTIFUL
+  function priceChanger(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const spliterForFeatures = (value) => {
     return value.split(":");
   };
 
   return (
     <article className="sliderItem p-2 hover:pt-0 transition-all duration-300">
-      <div className="relative bg-white h-[30rem] w-72 rounded-lg">
+      <div className="relative bg-white h-[31rem] w-72 rounded-lg">
         <Link
           href={`/shop/${itemData.slug}`}
           className="flex justify-center items-center pt-2"
@@ -31,7 +36,7 @@ const SlideBox = ({ itemData }) => {
             <Link href={`/shop/${itemData.slug}`}>
               <h3 className=" m-2 line-clamp-2">{itemData.title}</h3>
             </Link>
-            <div className="flex flex-col gap-1 text-zinc-500 text-base sm:text-sm">
+            <div className="flex flex-col gap-1 text-zinc-500 text-base sm:text-sm absolute right-2 left-2 top-60">
               <div className="flex flex-col gap-2">
                 {itemData.features.length < 1 ? (
                   <div></div>
@@ -54,7 +59,7 @@ const SlideBox = ({ itemData }) => {
                 )}
               </div>
             </div>
-            <div className="categories flex justify-start items-center flex-wrap gap-1">
+            <div className="categories flex justify-start items-center flex-wrap gap-1 absolute right-2 left-2 top-[21rem]">
               {itemData.categories.length < 1 ? (
                 <div></div>
               ) : (
@@ -88,7 +93,7 @@ const SlideBox = ({ itemData }) => {
             <div className="flex gap-2 justify-end items-center">
               <HiOutlineShoppingCart className=" mr-1 w-9 h-9 p-2 rounded bg-zinc-200 text-indigo-600  cursor-pointer transition-all duration-300 hover:bg-orange-500 hover:text-white" />
               <div className=" bg-zinc-500 text-white h-9 px-1 flex justify-center items-center rounded-tr-md rounded-br-md">
-                {itemData.price} تومان
+                {priceChanger(itemData.price)} تومان
               </div>
             </div>
           </div>

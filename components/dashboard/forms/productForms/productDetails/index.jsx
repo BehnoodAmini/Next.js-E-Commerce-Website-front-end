@@ -296,13 +296,16 @@ const ProductDetails = ({ goalId }) => {
               تاریخ ایجاد: {fullData.createdAt ? fullData.createdAt : ""}
             </div>
             <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
-              به‌روزرسانی: {fullData.UpdatedAt ? fullData.UpdatedAt : ""}
+              به‌روزرسانی: {fullData.updatedAt ? fullData.updatedAt : ""}
             </div>
             <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
               {fullData.pageView ? fullData.pageView : 0} بازدید
             </div>
             <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
               {fullData.buyNumber ? fullData.buyNumber : 0} فروش
+            </div>
+            <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
+              {fullData.comments ? fullData.comments.length : 0} دیدگاه
             </div>
             <div
               className={

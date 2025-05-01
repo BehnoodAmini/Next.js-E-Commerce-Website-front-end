@@ -65,35 +65,31 @@ const RelatedPosts = ({ typeOfModel, title, relPostsData }) => {
             ref={carouselRef}
             className="sliderContainer w-full max-w-5xl overflow-x-scroll px-4"
           >
-            <div className=" flex justify-between items-center gap-4 ">
-              <div className=" flex justify-between items-center gap-4 ">
-                {relModelDataState[0] == -1 ? (
-                  <div className=" flex justify-center items-center p-12">
-                    <Image
-                      alt="loading"
-                      width={120}
-                      height={120}
-                      src={"/loading.svg"}
-                    />
-                  </div>
-                ) : relModelDataState.length < 1 ? (
-                  <div className=" justify-center flex items-center p-4">
-                    محتوای مرتبطی موجود نیست.
-                  </div>
-                ) : typeOfModel == "post" ? (
-                  relModelDataState.map((po, i) => (
-                    <BlogBox data={po} key={i} />
-                  ))
-                ) : typeOfModel == "gr" ? (
-                  relModelDataState.map((po, i) => (
-                    <GraphicSlideBox itemData={po} key={i} />
-                  ))
-                ) : (
-                  relModelDataState.map((po, i) => (
-                    <ProductSlideBox itemData={po} key={i} />
-                  ))
-                )}
-              </div>
+            <div className=" flex justify-between items-center gap-4">
+              {relModelDataState[0] == -1 ? (
+                <div className="w-full flex justify-center items-center p-12">
+                  <Image
+                    alt="loading"
+                    width={120}
+                    height={120}
+                    src={"/loading.svg"}
+                  />
+                </div>
+              ) : relModelDataState.length < 1 ? (
+                <div className=" justify-center flex items-center p-4">
+                  محتوای مرتبطی موجود نیست.
+                </div>
+              ) : typeOfModel == "post" ? (
+                relModelDataState.map((po, i) => <BlogBox data={po} key={i} />)
+              ) : typeOfModel == "gr" ? (
+                relModelDataState.map((po, i) => (
+                  <GraphicSlideBox itemData={po} key={i} />
+                ))
+              ) : (
+                relModelDataState.map((po, i) => (
+                  <ProductSlideBox itemData={po} key={i} />
+                ))
+              )}
             </div>
           </div>
         </div>
