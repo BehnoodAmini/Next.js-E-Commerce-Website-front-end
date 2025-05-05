@@ -1,17 +1,23 @@
+"use client";
+
 import ShopComp from "@/components/ShopComp";
+import { useSearchParams } from "next/navigation";
 
-const ShopPage = async ({ searchParams }) => {
-  const { keyword = "" } = await searchParams;
+const ShopPage = () => {
+  const searchParams = useSearchParams();
 
-  return (
-    <div className="container mx-auto flex justify-between items-start gap-2">
-      <aside className="w-80 bg-zinc-100 rounded-lg p-2">aside</aside>
-      <main className="bg-zinc-100 rounded-lg p-2 w-full flex flex-col gap-8">
-        <h1 className="text-xl text-indigo-600">محصولات رمان فروشگاه</h1>
-        <ShopComp keyword={keyword} />
-      </main>
-    </div>
-  );
+  const keyword = searchParams.get("keyword") || "";
+  const orderBy = searchParams.get("orderBy") || "";
+  const type = searchParams.get("type") || "";
+  const maxP = searchParams.get("maxP") || "";
+  const minP = searchParams.get("minP") || "";
+  const categories = searchParams.get("categories") || "";
+  const pn = searchParams.get("pn") || "";
+  const pgn = searchParams.get("pgn") || "";
+
+  const url = { keyword, orderBy, type, maxP, minP,categories, pn, pgn };
+
+  return <ShopComp url={url} />;
 };
 
 export default ShopPage;
