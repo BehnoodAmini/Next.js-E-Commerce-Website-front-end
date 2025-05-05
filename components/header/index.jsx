@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { BsTelegram } from "react-icons/bs";
 import { FaSquareXTwitter } from "react-icons/fa6";
@@ -16,6 +17,14 @@ import { HiShoppingCart } from "react-icons/hi";
 
 const Header = () => {
   const [logohover, setLogohover] = useState(0);
+
+  const router = useRouter();
+  const searchRef = useRef();
+  const ShopSearcher = (e) => {
+    e.preventDefault();
+    const url = `/shop?keyword=${searchRef.current.value}`;
+    router.push(url);
+  };
 
   return (
     <header className="container mx-auto py-2 overflow-x-hidden">
@@ -132,21 +141,23 @@ const Header = () => {
             </div>
           </div>
           <div className="flex justify-between items-center">
-            <div className="relative flex justify-start items-center w-full ml-8">
+            <form
+              onSubmit={ShopSearcher}
+              className="relative flex justify-start items-center w-full ml-8"
+            >
               <input
+                ref={searchRef}
                 className="outline-none w-full h-[3.2rem] p-3 rounded-lg shadow-[0px_0px_5px_rgba(0,0,0,.15)] transition-all duration-500 focus:shadow-[0px_3px_7px_rgba(0,0,0,0.25)]"
-                name="productsSearch"
-                id="productsSearch"
                 type="text"
                 placeholder="جست و جو بین محصولات..."
               />
-              <label
-                htmlFor="productsSearch"
+              <button
+                type="submit"
                 className="w-10 absolute left-0 cursor-pointer"
               >
                 <BiSearchAlt className="w-8 h-8" />
-              </label>
-            </div>
+              </button>
+            </form>
             <div className="flex gap-4 items-center w-[20rem] justify-end">
               <div>
                 <Link href={"/account"}>

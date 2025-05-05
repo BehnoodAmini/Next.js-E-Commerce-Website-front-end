@@ -34,7 +34,7 @@ const SlideBox = ({ itemData }) => {
         <div>
           <div className="flex flex-col gap-6 p-2">
             <Link href={`/shop/${itemData.slug}`}>
-              <h3 className=" m-2 line-clamp-2">{itemData.title}</h3>
+              <h3 className=" m-2 line-clamp-1">{itemData.title}</h3>
             </Link>
             <div className="flex flex-col gap-1 text-zinc-500 text-base sm:text-sm absolute right-2 left-2 top-60">
               <div className="flex flex-col gap-2">
