@@ -25,7 +25,7 @@ const ShopComp = ({ url }) => {
     url.keyword ? `&keyword=${url.keyword}` : ""
   );
   const [orderBy, setOrderBy] = useState(
-    url.orderBy ? `&orderBy=${url.orderBy}` : ""
+    url.orderBy ? `&orderBy=${url.orderBy}` : "&orderBy=date"
   );
   const [typeOfPro, setTypeOfPro] = useState(
     url.type ? `&type=${url.type}` : ""
@@ -35,8 +35,8 @@ const ShopComp = ({ url }) => {
   const [categories, setCategories] = useState(
     url.categories ? `&categories=${url.categories}` : ""
   );
-  const [pgn, setPgn] = useState(url.pgn ? `&pgn=${url.pgn}` : "");
-  const [pn, setPn] = useState(url.pn ? `&pn=${url.pn}` : "");
+  const [pgn, setPgn] = useState(url.pgn ? `&pgn=${url.pgn}` : "&pgn=12");
+  const [pn, setPn] = useState(url.pn ? `&pn=${url.pn}` : "&pn=1");
 
   const queries = `${keyword ? keyword : ""}${orderBy ? orderBy : ""}${
     typeOfPro ? typeOfPro : ""
@@ -111,18 +111,19 @@ const ShopComp = ({ url }) => {
       } else {
         setCategories(`&categories=${v.target.value}`);
       }
-	setResult([-1])
+      setResult([-1]);
     } else {
+      const numberOfCommas = categories.split(",").length - 1;
       const a = categories.includes(`,${v.target.value}`)
-        ? categories.replace(`,${v.target.value}`,"")
-        : categories.replace(`&categories=${v.target.value},`,"");
+        ? categories.replace(`,${v.target.value}`, "")
+        : numberOfCommas == 0
+        ? ""
+        : categories.replace(`${v.target.value},`, "");
       setCategories(a);
     }
-	goTopCtrl()
+    goTopCtrl();
     setPn(`&pn=1`);
     setPgn(`&pgn=12`);
-    console.log(v.target.value);
-    console.log(v.target.checked);
   };
 
   return (
@@ -133,44 +134,87 @@ const ShopComp = ({ url }) => {
           <div className="flex gap-2 items-center flex-wrap justify-between">
             <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 rounded">
               <label htmlFor="date">جدیدترین</label>
-              <input
-                onClick={orderByHandler}
-                type="radio"
-                name="orderBy"
-                id="date"
-                value={"date"}
-                defaultChecked
-              />
+              {orderBy == "&orderBy=date" ? (
+                <input
+                  onClick={orderByHandler}
+                  type="radio"
+                  name="orderBy"
+                  id="date"
+                  value={"date"}
+                  defaultChecked
+                />
+              ) : (
+                <input
+                  onClick={orderByHandler}
+                  type="radio"
+                  name="orderBy"
+                  id="date"
+                  value={"date"}
+                />
+              )}
             </div>
             <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 rounded">
               <label htmlFor="price">قیمت</label>
-              <input
-                onClick={orderByHandler}
-                type="radio"
-                name="orderBy"
-                id="price"
-                value={"price"}
-              />
+              {orderBy == "&orderBy=price" ? (
+                <input
+                  onClick={orderByHandler}
+                  type="radio"
+                  name="orderBy"
+                  id="price"
+                  value={"price"}
+                  defaultChecked
+                />
+              ) : (
+                <input
+                  onClick={orderByHandler}
+                  type="radio"
+                  name="orderBy"
+                  id="price"
+                  value={"price"}
+                />
+              )}
             </div>
             <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 rounded">
               <label htmlFor="pageView">پر بازدیدترین</label>
-              <input
-                onClick={orderByHandler}
-                type="radio"
-                name="orderBy"
-                id="pageView"
-                value={"pageView"}
-              />
+              {orderBy == "&orderBy=pageView" ? (
+                <input
+                  onClick={orderByHandler}
+                  type="radio"
+                  name="orderBy"
+                  id="pageView"
+                  value={"pageView"}
+                  defaultChecked
+                />
+              ) : (
+                <input
+                  onClick={orderByHandler}
+                  type="radio"
+                  name="orderBy"
+                  id="pageView"
+                  value={"pageView"}
+                />
+              )}
             </div>
             <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 rounded">
               <label htmlFor="buyNumber">پر فروش‌ترین</label>
-              <input
-                onClick={orderByHandler}
-                type="radio"
-                name="orderBy"
-                id="buyNumber"
-                value={"buyNumber"}
-              />
+              {orderBy == "&orderBy=buyNumber" ? (
+                <input
+                  onClick={orderByHandler}
+                  type="radio"
+                  name="orderBy"
+                  id="buyNumber"
+                  value={"buyNumber"}
+                  defaultChecked
+                />
+              ) : (
+                <input
+                  onClick={orderByHandler}
+                  type="radio"
+                  name="orderBy"
+                  id="buyNumber"
+                  value={"buyNumber"}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -179,44 +223,87 @@ const ShopComp = ({ url }) => {
           <div className="flex gap-2 items-center flex-wrap justify-between">
             <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 rounded">
               <label htmlFor="allPros">همه</label>
-              <input
-                onClick={typeOfProductHandler}
-                type="radio"
-                name="typeOfProduct"
-                id="allPros"
-                value={"allPros"}
-                defaultChecked
-              />
+              {typeOfPro == "" ? (
+                <input
+                  onClick={typeOfProductHandler}
+                  type="radio"
+                  name="typeOfProduct"
+                  id="allPros"
+                  value={"allPros"}
+                  defaultChecked
+                />
+              ) : (
+                <input
+                  onClick={typeOfProductHandler}
+                  type="radio"
+                  name="typeOfProduct"
+                  id="allPros"
+                  value={"allPros"}
+                />
+              )}
             </div>
             <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 rounded">
               <label htmlFor="app">اپلیکیشن</label>
-              <input
-                onClick={typeOfProductHandler}
-                type="radio"
-                name="typeOfProduct"
-                id="app"
-                value={"app"}
-              />
+              {typeOfPro == "&type=app" ? (
+                <input
+                  onClick={typeOfProductHandler}
+                  type="radio"
+                  name="typeOfProduct"
+                  id="app"
+                  value={"app"}
+                  defaultChecked
+                />
+              ) : (
+                <input
+                  onClick={typeOfProductHandler}
+                  type="radio"
+                  name="typeOfProduct"
+                  id="app"
+                  value={"app"}
+                />
+              )}
             </div>
             <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 rounded">
               <label htmlFor="book">کتاب</label>
-              <input
-                onClick={typeOfProductHandler}
-                type="radio"
-                name="typeOfProduct"
-                id="book"
-                value={"book"}
-              />
+              {typeOfPro == "&type=book" ? (
+                <input
+                  onClick={typeOfProductHandler}
+                  type="radio"
+                  name="typeOfProduct"
+                  id="book"
+                  value={"book"}
+                  defaultChecked
+                />
+              ) : (
+                <input
+                  onClick={typeOfProductHandler}
+                  type="radio"
+                  name="typeOfProduct"
+                  id="book"
+                  value={"book"}
+                />
+              )}
             </div>
             <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 rounded">
               <label htmlFor="gr">فایل گرافیکی</label>
-              <input
-                onClick={typeOfProductHandler}
-                type="radio"
-                name="typeOfProduct"
-                id="gr"
-                value={"gr"}
-              />
+              {typeOfPro == "&type=gr" ? (
+                <input
+                  onClick={typeOfProductHandler}
+                  type="radio"
+                  name="typeOfProduct"
+                  id="gr"
+                  value={"gr"}
+                  defaultChecked
+                />
+              ) : (
+                <input
+                  onClick={typeOfProductHandler}
+                  type="radio"
+                  name="typeOfProduct"
+                  id="gr"
+                  value={"gr"}
+                />
+              )}
             </div>
           </div>
         </div>
