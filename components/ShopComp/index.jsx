@@ -30,8 +30,18 @@ const ShopComp = ({ url }) => {
   const [typeOfPro, setTypeOfPro] = useState(
     url.type ? `&type=${url.type}` : ""
   );
-  const [maxPrice, setMaxPrice] = useState(url.maxP ? `&maxP=${url.maxP}` : "");
-  const [minPrice, setMinPrice] = useState(url.minP ? `&minP=${url.minP}` : "");
+  const [maxPrice, setMaxPrice] = useState(
+    url.maxP ? `&maxP=${url.maxP}` : "&maxP=1000000000"
+  );
+  const [maxPriceInputNumber, setMaxPriceInputNumber] = useState(
+    url.maxP ? url.maxP : 1000000000
+  ); // THIS ONE IS FOR DEFAULT VALUE
+  const [minPrice, setMinPrice] = useState(
+    url.minP ? `&minP=${url.minP}` : "&minP=0"
+  );
+  const [minPriceInputNumber, setMinPriceInputNumber] = useState(
+    url.minP ? url.minP : 0
+  ); // THIS ONE IS FOR DEFAULT VALUE
   const [categories, setCategories] = useState(
     url.categories ? `&categories=${url.categories}` : ""
   );
@@ -47,6 +57,10 @@ const ShopComp = ({ url }) => {
   const mainBackUrl = `http://localhost:27017/api/search-products?${queries}`;
 
   useEffect(() => {
+    goTopCtrl();
+    setPn(`&pn=1`);
+    setPgn(`&pgn=12`);
+    setResult([-1]);
     router.push(mainFrontUrl);
     axios.get(mainBackUrl).then((d) => {
       setResult(d.data.allProducts);
@@ -54,26 +68,23 @@ const ShopComp = ({ url }) => {
     });
   }, [keyword, orderBy, typeOfPro, maxPrice, minPrice, categories, pgn, pn]);
 
+  // KEYWORD
+  useEffect(()=>{
+    setKeyword(`&keyword=${url.keyword.replace(/\s+/g, '_').toLowerCase()}`)
+  },[url.keyword])
+
   // ORDER BY
   const orderByHandler = (v) => {
-    setResult([-1]);
     setOrderBy(`&orderBy=${v.target.value}`);
-    goTopCtrl();
-    setPn(`&pn=1`);
-    setPgn(`&pgn=12`);
   };
 
   // TYPE OF PRODUCT
   const typeOfProductHandler = (v) => {
-    setResult([-1]);
     if (v.target.value == "allPros") {
       setTypeOfPro(``);
     } else {
       setTypeOfPro(`&type=${v.target.value}`);
     }
-    goTopCtrl();
-    setPn(`&pn=1`);
-    setPgn(`&pgn=12`);
   };
 
   // PRICE
@@ -81,7 +92,6 @@ const ShopComp = ({ url }) => {
   const maxPRef = useRef();
   const priceHandler = (e) => {
     e.preventDefault();
-    setResult([-1]);
     if (maxPRef.current.value == "") {
       maxPRef.current.value = 1000000000;
     }
@@ -90,9 +100,6 @@ const ShopComp = ({ url }) => {
     }
     setMaxPrice(`&maxP=${maxPRef.current.value}`);
     setMinPrice(`&minP=${minPRef.current.value}`);
-    goTopCtrl();
-    setPn(`&pn=1`);
-    setPgn(`&pgn=12`);
   };
 
   // CATEGORIES
@@ -111,7 +118,6 @@ const ShopComp = ({ url }) => {
       } else {
         setCategories(`&categories=${v.target.value}`);
       }
-      setResult([-1]);
     } else {
       const numberOfCommas = categories.split(",").length - 1;
       const a = categories.includes(`,${v.target.value}`)
@@ -121,10 +127,18 @@ const ShopComp = ({ url }) => {
         : categories.replace(`${v.target.value},`, "");
       setCategories(a);
     }
-    goTopCtrl();
-    setPn(`&pn=1`);
-    setPgn(`&pgn=12`);
   };
+
+  // FOR DEFAULT VALUES OF CATEGORIES
+  const urlCatsSlugs = url.categories ? url.categories.split(",") : [];
+  const urlCatsIds = [];
+  urlCatsSlugs.map((c) => {
+    for (let i = 0; i < allCats.length; i++) {
+      if (c == allCats[i].slug) {
+        urlCatsIds.push(allCats[i]._id);
+      }
+    }
+  });
 
   return (
     <div className="container mx-auto flex justify-between items-start gap-2">
@@ -316,6 +330,7 @@ const ShopComp = ({ url }) => {
                 type="number"
                 placeholder="حداقل قیمت"
                 ref={minPRef}
+                defaultValue={minPriceInputNumber}
                 min={0}
               />
               <input
@@ -323,6 +338,7 @@ const ShopComp = ({ url }) => {
                 type="number"
                 placeholder="حداکثر قیمت"
                 ref={maxPRef}
+                defaultValue={maxPriceInputNumber}
                 min={0}
               />
             </div>
@@ -349,21 +365,33 @@ const ShopComp = ({ url }) => {
             ) : allCats.length < 1 ? (
               <div>دسته‌ای وجود ندارد.</div>
             ) : (
-              <div className="flex flex-col gap-1">
-                {allCats.map((da, i) => (
-                  <div
-                    key={i}
-                    className="flex gap-1 items-center justify-between p-2 text-base sm:text-xs border-2 border-zinc-200 rounded"
-                  >
-                    <label htmlFor={da.slug}>{da.title}</label>
-                    <input
-                      onClick={categoriesHandler}
-                      type="checkbox"
-                      id={da.slug}
-                      value={da.slug}
-                    />
-                  </div>
-                ))}
+              <div className="flex justify-center items-center w-full">
+                <div className="flex gap-2 flex-wrap justify-around items-center">
+                  {allCats.map((da, i) => (
+                    <div
+                      key={i}
+                      className="w-28 h-12 flex gap-1 items-center justify-between p-2 text-base sm:text-xs border-2 border-zinc-200 rounded"
+                    >
+                      <label htmlFor={da.slug}>{da.title}</label>
+                      {urlCatsIds.length < 1 ? (
+                        <input
+                          onClick={categoriesHandler}
+                          type="checkbox"
+                          id={da.slug}
+                          value={da.slug}
+                        />
+                      ) : (
+                        <input
+                          onClick={categoriesHandler}
+                          type="checkbox"
+                          id={da.slug}
+                          value={da.slug}
+                          defaultChecked={urlCatsIds.includes(da._id)}
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>
@@ -402,8 +430,8 @@ const ShopComp = ({ url }) => {
               btns.map((da, i) => (
                 <button
                   onClick={() => {
-                    setPgn(`pgn=12&`);
-                    setPn(`pn=${da + 1}&`);
+                    setPgn(`&pgn=12`);
+                    setPn(`&pn=${da + 1}`);
                     goTopCtrl();
                     setResult([-1]);
                   }}

@@ -158,9 +158,7 @@ const ProductDetails = ({ goalId }) => {
       tags: tag,
       features: feature,
       typeOfProduct: typeOfProductRef.current.value,
-      pageView: 0,
       published: publishedRef.current.value,
-      comments: [],
       relatedProducts: relProducts,
       categories: relCategories,
     };

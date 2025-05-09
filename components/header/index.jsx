@@ -22,8 +22,9 @@ const Header = () => {
   const searchRef = useRef();
   const ShopSearcher = (e) => {
     e.preventDefault();
-    const url = `/shop?keyword=${searchRef.current.value}`;
+    const url = `/shop?keyword=${searchRef.current.value.replace(/\s+/g, '_').toLowerCase()}`;
     router.push(url);
+    searchRef.current.value = "";
   };
 
   return (
