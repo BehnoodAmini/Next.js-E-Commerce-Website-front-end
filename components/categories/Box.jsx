@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const CatBox = ({data}) => {
+const CatBox = ({ data }) => {
   return (
     <Link
-      href={"/"}
+      href={`/shop?&orderBy=date&maxP=1000000000&minP=0&categories=${data.slug}&pgn=12&pn=1`}
       className="flex justify-between items-center bg-slate-200 transition-all duration-300 hover:bg-slate-300 rounded-lg p-3 w-72"
     >
       <div className="flex flex-col gap-2">

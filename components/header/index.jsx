@@ -6,6 +6,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { BsTelegram } from "react-icons/bs";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { BsYoutube } from "react-icons/bs";
@@ -22,9 +26,23 @@ const Header = () => {
   const searchRef = useRef();
   const ShopSearcher = (e) => {
     e.preventDefault();
-    const url = `/shop?keyword=${searchRef.current.value.replace(/\s+/g, '_').toLowerCase()}`;
-    router.push(url);
-    searchRef.current.value = "";
+    if (searchRef.current.value.length > 0) {
+      const url = `/shop?keyword=${searchRef.current.value.replace(
+        /\s+/g,
+        "_"
+      )}`;
+      router.push(url);
+      searchRef.current.value = "";
+    } else {
+      toast.error("فرم جست و جو خالی است!", {
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   };
 
   return (
@@ -94,26 +112,11 @@ const Header = () => {
                 </li>
                 <li>
                   <Link
-                    href="/"
+                    href="/shop"
+                    target={"_blank"}
                     className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white!"
                   >
-                    اپلیکیشن‌ها
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/"
-                    className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white!"
-                  >
-                    کتاب‌ها
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/"
-                    className="w-32 h-10 rounded-md bg-zinc-200 flex justify-center items-center transition-all duration-300 hover:bg-orange-400 hover:text-white!"
-                  >
-                    فایل‌های گرافیکی
+                    فروشگاه
                   </Link>
                 </li>
                 <li>
@@ -181,6 +184,19 @@ const Header = () => {
           </div>
         </div>
       </div>
+      <ToastContainer
+        bodyClassName={() => "font-[IRANSans] text-sm flex items-center"}
+        position="top-right"
+        autoClose={3000}
+        theme="colored"
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </header>
   );
 };

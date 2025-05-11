@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { BiSearchAlt } from "react-icons/bi";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegComment } from "react-icons/fa";
 import { SlCalender } from "react-icons/sl";
@@ -9,6 +8,8 @@ import { SlCalender } from "react-icons/sl";
 import BreadCrumb from "@/components/breadCrumb";
 import MostViewedPosts from "@/components/mostViewedPosts";
 import RelatedPosts from "@/components/sliders/related-posts";
+
+import SearchBlog from "@/components/search-blog";
 
 const getData = async (slug) => {
   const data = await fetch(`http://localhost:27017/api/get-post/${slug}`, {
@@ -98,14 +99,7 @@ const SingleBlog = async ({ params }) => {
             </div>
           </main>
           <aside className="w-80 max-w-80 rounded-md flex flex-col gap-12">
-            <form className="border-zinc-700 border-2 px-2 rounded-md flex justify-between items-center">
-              <input
-                type="text"
-                className="bg-transparent p-2 outline-none text-sm"
-                placeholder="جست و جو در بلاگ..."
-              />
-              <BiSearchAlt className="w-6 h-6 text-blue-500" />
-            </form>
+            <SearchBlog />
             <div className="flex flex-col gap-4 rounded-lg p-3 shadow-[0px_0px_8px_rgba(0,0,0,0.35)]">
               <h3 className="text-blue-500">توضیحات خلاصه</h3>
               <p className="leading-8 text-base sm:text-sm text-justify">

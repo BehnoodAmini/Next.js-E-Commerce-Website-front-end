@@ -19,7 +19,7 @@ const ShopComp = ({ url }) => {
 
   const [result, setResult] = useState([-1]);
   const [btns, setBtns] = useState([-1]);
-  const title = url.keyword;
+  const [title, setTitle] = useState(url.keyword);
 
   const [keyword, setKeyword] = useState(
     url.keyword ? `&keyword=${url.keyword}` : ""
@@ -56,35 +56,63 @@ const ShopComp = ({ url }) => {
   const mainFrontUrl = `/shop?${queries}`;
   const mainBackUrl = `http://localhost:27017/api/search-products?${queries}`;
 
+  const [searchedProductNumber, setSearchedProductNumber] = useState(0);
+
   useEffect(() => {
     goTopCtrl();
-    setPn(`&pn=1`);
     setPgn(`&pgn=12`);
     setResult([-1]);
     router.push(mainFrontUrl);
     axios.get(mainBackUrl).then((d) => {
       setResult(d.data.allProducts);
       setBtns(d.data.btns);
+      setSearchedProductNumber(d.data.productsNumber);
     });
   }, [keyword, orderBy, typeOfPro, maxPrice, minPrice, categories, pgn, pn]);
 
   // KEYWORD
-  useEffect(()=>{
-    setKeyword(`&keyword=${url.keyword.replace(/\s+/g, '_').toLowerCase()}`)
-  },[url.keyword])
+  useEffect(() => {
+    url.keyword == undefined
+      ? setTitle(``)
+      : setTitle(url.keyword.split("_").join(" "));
+    setPn(`&pn=1`);
+    if (url.keyword && url.keyword.length > 0) {
+      setKeyword(`&keyword=${url.keyword.replace(/\s+/g, "_").toLowerCase()}`);
+    }
+  }, [url.keyword]);
 
   // ORDER BY
   const orderByHandler = (v) => {
     setOrderBy(`&orderBy=${v.target.value}`);
+    setPn(`&pn=1`);
   };
 
   // TYPE OF PRODUCT
   const typeOfProductHandler = (v) => {
     if (v.target.value == "allPros") {
       setTypeOfPro(``);
+      url.keyword == undefined
+        ? setTitle(``)
+        : setTitle(url.keyword.split("_").join(" "));
     } else {
       setTypeOfPro(`&type=${v.target.value}`);
+      url.keyword == undefined
+        ? setTitle(
+            v.target.value == "app"
+              ? `اپلیکیشن‌های`
+              : v.target.value == "gr"
+              ? `محصولات گرافیکی`
+              : `کتاب‌های`
+          )
+        : setTitle(
+            v.target.value == "app"
+              ? `${url.keyword.split("_").join(" ")} از اپلیکیشن‌های`
+              : v.target.value == "gr"
+              ? `${url.keyword.split("_").join(" ")} از محصولات گرافیکی`
+              : `${url.keyword.split("_").join(" ")} از کتاب‌های`
+          );
     }
+    setPn(`&pn=1`);
   };
 
   // PRICE
@@ -92,14 +120,15 @@ const ShopComp = ({ url }) => {
   const maxPRef = useRef();
   const priceHandler = (e) => {
     e.preventDefault();
-    if (maxPRef.current.value == "") {
+    if (maxPRef.current.value == "" || maxPRef.current.value < 0) {
       maxPRef.current.value = 1000000000;
     }
-    if (minPRef.current.value == "") {
+    if (minPRef.current.value == "" || minPRef.current.value < 0) {
       minPRef.current.value = 0;
     }
     setMaxPrice(`&maxP=${maxPRef.current.value}`);
     setMinPrice(`&minP=${minPRef.current.value}`);
+    setPn(`&pn=1`);
   };
 
   // CATEGORIES
@@ -127,6 +156,7 @@ const ShopComp = ({ url }) => {
         : categories.replace(`${v.target.value},`, "");
       setCategories(a);
     }
+    setPn(`&pn=1`);
   };
 
   // FOR DEFAULT VALUES OF CATEGORIES
@@ -145,11 +175,14 @@ const ShopComp = ({ url }) => {
       <aside className="w-80 flex flex-col gap-4">
         <div className="flex flex-col gap-4 bg-zinc-100 rounded-lg p-2">
           <div>مرتب سازی بر اساس</div>
-          <div className="flex gap-2 items-center flex-wrap justify-between">
-            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 rounded">
-              <label htmlFor="date">جدیدترین</label>
+          <div className="flex gap-2 items-center flex-wrap justify-between cursor-pointer">
+            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
+              <label className="cursor-pointer" htmlFor="date">
+                جدیدترین
+              </label>
               {orderBy == "&orderBy=date" ? (
                 <input
+                  className="cursor-pointer"
                   onClick={orderByHandler}
                   type="radio"
                   name="orderBy"
@@ -159,6 +192,7 @@ const ShopComp = ({ url }) => {
                 />
               ) : (
                 <input
+                  className="cursor-pointer"
                   onClick={orderByHandler}
                   type="radio"
                   name="orderBy"
@@ -167,10 +201,13 @@ const ShopComp = ({ url }) => {
                 />
               )}
             </div>
-            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 rounded">
-              <label htmlFor="price">قیمت</label>
+            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
+              <label className="cursor-pointer" htmlFor="price">
+                قیمت
+              </label>
               {orderBy == "&orderBy=price" ? (
                 <input
+                  className="cursor-pointer"
                   onClick={orderByHandler}
                   type="radio"
                   name="orderBy"
@@ -180,6 +217,7 @@ const ShopComp = ({ url }) => {
                 />
               ) : (
                 <input
+                  className="cursor-pointer"
                   onClick={orderByHandler}
                   type="radio"
                   name="orderBy"
@@ -188,10 +226,13 @@ const ShopComp = ({ url }) => {
                 />
               )}
             </div>
-            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 rounded">
-              <label htmlFor="pageView">پر بازدیدترین</label>
+            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
+              <label className="cursor-pointer" htmlFor="pageView">
+                پر بازدیدترین
+              </label>
               {orderBy == "&orderBy=pageView" ? (
                 <input
+                  className="cursor-pointer"
                   onClick={orderByHandler}
                   type="radio"
                   name="orderBy"
@@ -201,6 +242,7 @@ const ShopComp = ({ url }) => {
                 />
               ) : (
                 <input
+                  className="cursor-pointer"
                   onClick={orderByHandler}
                   type="radio"
                   name="orderBy"
@@ -209,10 +251,13 @@ const ShopComp = ({ url }) => {
                 />
               )}
             </div>
-            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 rounded">
-              <label htmlFor="buyNumber">پر فروش‌ترین</label>
+            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
+              <label className="cursor-pointer" htmlFor="buyNumber">
+                پر فروش‌ترین
+              </label>
               {orderBy == "&orderBy=buyNumber" ? (
                 <input
+                  className="cursor-pointer"
                   onClick={orderByHandler}
                   type="radio"
                   name="orderBy"
@@ -222,6 +267,7 @@ const ShopComp = ({ url }) => {
                 />
               ) : (
                 <input
+                  className="cursor-pointer"
                   onClick={orderByHandler}
                   type="radio"
                   name="orderBy"
@@ -234,11 +280,14 @@ const ShopComp = ({ url }) => {
         </div>
         <div className="flex flex-col gap-4 bg-zinc-100 rounded-lg p-2">
           <div>نوع محصول</div>
-          <div className="flex gap-2 items-center flex-wrap justify-between">
-            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 rounded">
-              <label htmlFor="allPros">همه</label>
+          <div className="flex gap-2 items-center flex-wrap justify-between cursor-pointer">
+            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
+              <label className="cursor-pointer" htmlFor="allPros">
+                همه
+              </label>
               {typeOfPro == "" ? (
                 <input
+                  className="cursor-pointer"
                   onClick={typeOfProductHandler}
                   type="radio"
                   name="typeOfProduct"
@@ -248,6 +297,7 @@ const ShopComp = ({ url }) => {
                 />
               ) : (
                 <input
+                  className="cursor-pointer"
                   onClick={typeOfProductHandler}
                   type="radio"
                   name="typeOfProduct"
@@ -256,10 +306,13 @@ const ShopComp = ({ url }) => {
                 />
               )}
             </div>
-            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 rounded">
-              <label htmlFor="app">اپلیکیشن</label>
+            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
+              <label className="cursor-pointer" htmlFor="app">
+                اپلیکیشن
+              </label>
               {typeOfPro == "&type=app" ? (
                 <input
+                  className="cursor-pointer"
                   onClick={typeOfProductHandler}
                   type="radio"
                   name="typeOfProduct"
@@ -269,6 +322,7 @@ const ShopComp = ({ url }) => {
                 />
               ) : (
                 <input
+                  className="cursor-pointer"
                   onClick={typeOfProductHandler}
                   type="radio"
                   name="typeOfProduct"
@@ -277,10 +331,13 @@ const ShopComp = ({ url }) => {
                 />
               )}
             </div>
-            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 rounded">
-              <label htmlFor="book">کتاب</label>
+            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
+              <label className="cursor-pointer" htmlFor="book">
+                کتاب
+              </label>
               {typeOfPro == "&type=book" ? (
                 <input
+                  className="cursor-pointer"
                   onClick={typeOfProductHandler}
                   type="radio"
                   name="typeOfProduct"
@@ -290,6 +347,7 @@ const ShopComp = ({ url }) => {
                 />
               ) : (
                 <input
+                  className="cursor-pointer"
                   onClick={typeOfProductHandler}
                   type="radio"
                   name="typeOfProduct"
@@ -298,10 +356,13 @@ const ShopComp = ({ url }) => {
                 />
               )}
             </div>
-            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 rounded">
-              <label htmlFor="gr">فایل گرافیکی</label>
+            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
+              <label className="cursor-pointer" htmlFor="gr">
+                فایل گرافیکی
+              </label>
               {typeOfPro == "&type=gr" ? (
                 <input
+                  className="cursor-pointer"
                   onClick={typeOfProductHandler}
                   type="radio"
                   name="typeOfProduct"
@@ -311,6 +372,7 @@ const ShopComp = ({ url }) => {
                 />
               ) : (
                 <input
+                  className="cursor-pointer"
                   onClick={typeOfProductHandler}
                   type="radio"
                   name="typeOfProduct"
@@ -326,7 +388,7 @@ const ShopComp = ({ url }) => {
           <form onSubmit={priceHandler} className="flex gap-4 flex-col">
             <div className="flex gap-2 items-center flex-wrap justify-between">
               <input
-                className="text-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 rounded"
+                className="inputLtr text-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 outline-none focus:border-indigo-600 rounded"
                 type="number"
                 placeholder="حداقل قیمت"
                 ref={minPRef}
@@ -334,7 +396,7 @@ const ShopComp = ({ url }) => {
                 min={0}
               />
               <input
-                className="text-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 rounded"
+                className="inputLtr text-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 outline-none focus:border-indigo-600 rounded"
                 type="number"
                 placeholder="حداکثر قیمت"
                 ref={maxPRef}
@@ -366,15 +428,18 @@ const ShopComp = ({ url }) => {
               <div>دسته‌ای وجود ندارد.</div>
             ) : (
               <div className="flex justify-center items-center w-full">
-                <div className="flex gap-2 flex-wrap justify-around items-center">
+                <div className="flex gap-2 flex-wrap justify-around items-center cursor-pointer">
                   {allCats.map((da, i) => (
                     <div
                       key={i}
-                      className="w-28 h-12 flex gap-1 items-center justify-between p-2 text-base sm:text-xs border-2 border-zinc-200 rounded"
+                      className="w-28 h-12 flex gap-1 items-center justify-between p-2 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded"
                     >
-                      <label htmlFor={da.slug}>{da.title}</label>
+                      <label className="cursor-pointer" htmlFor={da.slug}>
+                        {da.title}
+                      </label>
                       {urlCatsIds.length < 1 ? (
                         <input
+                          className="cursor-pointer"
                           onClick={categoriesHandler}
                           type="checkbox"
                           id={da.slug}
@@ -382,6 +447,7 @@ const ShopComp = ({ url }) => {
                         />
                       ) : (
                         <input
+                          className="cursor-pointer"
                           onClick={categoriesHandler}
                           type="checkbox"
                           id={da.slug}
@@ -398,7 +464,12 @@ const ShopComp = ({ url }) => {
         </div>
       </aside>
       <main className="bg-zinc-100 rounded-lg p-2 w-full flex flex-col gap-8">
-        <h1 className="text-xl text-indigo-600">محصولات {title} فروشگاه</h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-xl text-indigo-600">محصولات {title} فروشگاه</h1>
+          <div className="text-base sm:text-sm rounded-md border-2 border-indigo-600 w-20 h-8 flex justify-center items-center">
+            {searchedProductNumber} محصول
+          </div>
+        </div>
         <div className="flex flex-col gap-6">
           <section className="flex justify-between items-center gap-4 flex-wrap">
             {result[0] == -1 ? (
@@ -435,7 +506,11 @@ const ShopComp = ({ url }) => {
                     goTopCtrl();
                     setResult([-1]);
                   }}
-                  className="w-8 h-8 rounded border-2 border-indigo-500 transition-all duration-300 hover:bg-[#571fdb2a]"
+                  className={
+                    pn == `&pn=${da + 1}`
+                      ? "w-8 h-8 rounded border-2 border-indigo-500 transition-all duration-300 bg-indigo-500 text-white hover:text-black hover:bg-[#571fdb2a]"
+                      : "w-8 h-8 rounded border-2 border-indigo-500 transition-all duration-300 hover:bg-[#571fdb2a]"
+                  }
                   key={i}
                 >
                   {da + 1}

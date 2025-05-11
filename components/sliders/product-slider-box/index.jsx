@@ -40,7 +40,8 @@ const SlideBox = ({ itemData }) => {
                   i < 3 ? (
                     <Link
                       key={i}
-                      href={`/search/products/categories/${da.slug}`}
+                      href={`/shop?&orderBy=date&maxP=1000000000&minP=0&categories=${da.slug}&pgn=12&pn=1`}
+                      target="_blank"
                       className="py-1 px-2 rounded bg-zinc-200 transition-all duration-300 hover:bg-zinc-300"
                     >
                       {da.title}
