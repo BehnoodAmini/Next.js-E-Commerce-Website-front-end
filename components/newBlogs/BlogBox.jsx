@@ -8,6 +8,7 @@ const BlogBox = ({ data }) => {
         <Link
           className=" flex justify-center items-center pt-2"
           href={`/blog/${data.slug}`}
+          target="_blank"
         >
           <Image
             width={270}
@@ -20,7 +21,7 @@ const BlogBox = ({ data }) => {
         </Link>
         <div>
           <div className=" flex flex-col gap-6 p-2">
-            <Link href={`/blog/${data.slug}`}>
+            <Link href={`/blog/${data.slug}`} target="_blank">
               <h3 className="absolute top-48 right-2 left-2 line-clamp-2">
                 {data.title}
               </h3>

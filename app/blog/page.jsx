@@ -1,12 +1,21 @@
+"use client";
+
+import { useSearchParams } from "next/navigation";
+
 import BlogPageComp from "@/components/blogPage";
 
-const BlogPage = async () => {
+const BlogPage = () => {
+  const searchParams = useSearchParams();
+
+  const keyword = searchParams.get("keyword") || "";
+  const pn = searchParams.get("pn") || "";
+  const pgn = searchParams.get("pgn") || "";
+
+  const url = { keyword, pn, pgn };
+
   return (
     <div className="container mx-auto">
-        <section className="flex flex-col gap-8">
-            <h1 className="text-center text-xl text-indigo-600">وبلاگ فروشگاه فایل</h1>
-            <BlogPageComp/>
-        </section>
+            <BlogPageComp url={url}/>
     </div>
   );
 };

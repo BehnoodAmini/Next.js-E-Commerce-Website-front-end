@@ -1,7 +1,8 @@
 "use client";
 
-import ShopComp from "@/components/ShopComp";
 import { useSearchParams } from "next/navigation";
+
+import ShopComp from "@/components/ShopComp";
 
 const ShopPage = () => {
   const searchParams = useSearchParams();

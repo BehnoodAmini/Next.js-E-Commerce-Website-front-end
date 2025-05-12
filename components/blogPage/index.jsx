@@ -5,46 +5,35 @@ import axios from "axios";
 import Image from "next/image";
 
 import BlogBox from "../newBlogs/BlogBox";
+import SearchBlog from "../search-blog";
 
-const BlogPageComp = () => {
-  const [posts, setPosts] = useState([-1]);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [numbersOfBtns, setNumbersOfBtns] = useState([-1]);
-  const [filteredBtns, setFilteredBtns] = useState([-1]);
-  const [colorFocus, setColorFocus] = useState(1);
-  const paginate = 4;
+const BlogPageComp = ({ url }) => {
+  const [result, setResult] = useState([-1]);
+  const [btns, setBtns] = useState([-1]);
+  const [searchedPostsNumber, setSearchedPostsNumber] = useState(0);
+
+  const [pgn, setPgn] = useState(url.pgn ? `pgn=${url.pgn}` : "pgn=4");
+  const [pn, setPn] = useState(url.pn ? `&pn=${url.pn}` : "&pn=1");
+  const [keyword, setKeyword] = useState(
+    url.keyword ? `&keyword=${url.keyword}` : ""
+  );
+
+  useEffect(() => {
+    setResult([-1]);
+    setBtns([-1]);
+    setKeyword((url.keyword && url.keyword.length>0) ? `&keyword=${url.keyword}` : "");
+  }, [url.keyword]);
 
   useEffect(() => {
     axios
-      .get(
-        `http://localhost:27017/api/get-blog-page-posts?pn=${pageNumber}&pgn=${paginate}`
-      )
+      .get(`http://localhost:27017/api/search-posts?${pgn}${pn}${keyword}`)
       .then((d) => {
-        setPosts(d.data.GoalPosts);
-        setNumbersOfBtns(
-          Array.from(Array(Math.ceil(d.data.AllPostsNum / paginate)).keys())
-        );
+        setResult(d.data.allPosts);
+        setBtns(d.data.btns);
+        setSearchedPostsNumber(d.data.postsNumber);
       })
       .catch((e) => console.log(e));
-  }, [pageNumber]);
-
-  useEffect(() => {
-    if (numbersOfBtns[0] != -1 && numbersOfBtns.length > 0) {
-      const arr = [];
-      numbersOfBtns.map((n) => {
-        if (
-          n == 0 ||
-          (n < pageNumber + 1 && n > pageNumber - 3) ||
-          n == numbersOfBtns.length - 1
-        ) {
-          arr.push(n);
-        }
-      });
-      setFilteredBtns(arr);
-    } else if (numbersOfBtns.length == 0) {
-      setFilteredBtns([]);
-    }
-  }, [numbersOfBtns]);
+  }, [pn, keyword]);
 
   const goTopCtrl = () => {
     window.scrollTo({
@@ -55,52 +44,72 @@ const BlogPageComp = () => {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex flex-col gap-6">
-        {posts[0] == -1 ? (
-          <div className="flex justify-center items-center p-12">
-            <Image
-              alt="loading"
-              width={120}
-              height={120}
-              src={"/loading.svg"}
-            />
-          </div>
-        ) : posts.length < 1 ? (
-          <div className="flex justify-center items-center w-full p-8">
-            مقاله‌ای موجود نیست...
-          </div>
-        ) : (
-          <div className="flex flex-wrap justify-between items-center gap-2">
-            {posts.map((da, i) => (
-              <BlogBox key={i} data={da} />
-            ))}
-          </div>
-        )}
-      </div>
-      <div className="flex justify-center items-center gap-4">
-        {filteredBtns[0] == -1 ? (
-          <div className="flex justify-center items-center p-12">
-            <Image alt="loading" width={40} height={40} src={"/loading.svg"} />
-          </div>
-        ) : (
-          filteredBtns.map((da, i) => (
-            <button
-              className={
-                colorFocus == da + 1
-                  ? "cursor-pointer flex justify-center items-center bg-orange-600 text-white w-8 h-8 rounded transition-all duration-300 hover:bg-orange-500"
-                  : "cursor-pointer flex justify-center items-center bg-indigo-500 text-white w-8 h-8 rounded transition-all duration-300 hover:bg-orange-500"
-              }
-              onClick={() => {
-                setPageNumber(da + 1);
-                setColorFocus(da + 1);
-                goTopCtrl();
-              }}
-              key={i}
-            >
-              {da + 1}
-            </button>
-          ))
-        )}
+      <section className="flex justify-between items-center gap-8">
+        <div className="flex justify-start items-center gap-4">
+        <h1 className="text-center text-xl text-indigo-600">
+          وبلاگ فروشگاه فایل
+        </h1>
+          <div className="flex justify-center items-center w-20 h-7 rounded text-base sm:text-sm border-2 border-indigo-500">{searchedPostsNumber} مقاله</div>
+        </div>
+        <SearchBlog />
+      </section>
+      <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-6">
+          {result[0] == -1 ? (
+            <div className="flex justify-center items-center p-12">
+              <Image
+                alt="loading"
+                width={120}
+                height={120}
+                src={"/loading.svg"}
+              />
+            </div>
+          ) : result.length < 1 ? (
+            <div className="flex justify-center items-center w-full p-8">
+              مقاله‌ای موجود نیست...
+            </div>
+          ) : (
+            <div className="flex flex-wrap justify-between items-center gap-2">
+              {result.map((da, i) => (
+                <BlogBox key={i} data={da} />
+              ))}
+            </div>
+          )}
+        </div>
+        <section className="flex justify-center items-center gap-4 flex-wrap">
+          {btns[0] == -1 ? (
+            <div className="w-full flex justify-center items-center p-12">
+              <Image
+                alt="loading"
+                width={50}
+                height={50}
+                src={"/loading.svg"}
+              />
+            </div>
+          ) : (
+            btns.map((da, i) => (
+              <button
+                onClick={() => {
+                  if (pn == `&pn=${da + 1}`) {
+                    goTopCtrl();
+                  } else {
+                    setPn(`&pn=${da + 1}`);
+                    goTopCtrl();
+                    setResult([-1]);
+                  }
+                }}
+                className={
+                  pn == `&pn=${da + 1}`
+                    ? "cursor-pointer w-8 h-8 rounded border-2 border-indigo-500 transition-all duration-300 bg-indigo-500 text-white hover:text-zinc-700 hover:bg-[#571fdb2a]"
+                    : "cursor-pointer w-8 h-8 rounded border-2 border-indigo-500 transition-all duration-300 hover:bg-[#571fdb2a]"
+                }
+                key={i}
+              >
+                {da + 1}
+              </button>
+            ))
+          )}
+        </section>
       </div>
     </div>
   );

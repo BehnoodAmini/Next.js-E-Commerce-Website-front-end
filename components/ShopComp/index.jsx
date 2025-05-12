@@ -20,6 +20,7 @@ const ShopComp = ({ url }) => {
   const [result, setResult] = useState([-1]);
   const [btns, setBtns] = useState([-1]);
   const [title, setTitle] = useState(url.keyword);
+  const [searchedProductNumber, setSearchedProductNumber] = useState(0);
 
   const [keyword, setKeyword] = useState(
     url.keyword ? `&keyword=${url.keyword}` : ""
@@ -56,12 +57,11 @@ const ShopComp = ({ url }) => {
   const mainFrontUrl = `/shop?${queries}`;
   const mainBackUrl = `http://localhost:27017/api/search-products?${queries}`;
 
-  const [searchedProductNumber, setSearchedProductNumber] = useState(0);
-
   useEffect(() => {
     goTopCtrl();
     setPgn(`&pgn=12`);
     setResult([-1]);
+    setBtns([-1]);
     router.push(mainFrontUrl);
     axios.get(mainBackUrl).then((d) => {
       setResult(d.data.allProducts);
@@ -508,8 +508,8 @@ const ShopComp = ({ url }) => {
                   }}
                   className={
                     pn == `&pn=${da + 1}`
-                      ? "w-8 h-8 rounded border-2 border-indigo-500 transition-all duration-300 bg-indigo-500 text-white hover:text-black hover:bg-[#571fdb2a]"
-                      : "w-8 h-8 rounded border-2 border-indigo-500 transition-all duration-300 hover:bg-[#571fdb2a]"
+                      ? "cursor-pointer w-8 h-8 rounded border-2 border-indigo-500 transition-all duration-300 bg-indigo-500 text-white hover:text-zinc-700 hover:bg-[#571fdb2a]"
+                      : "cursor-pointer w-8 h-8 rounded border-2 border-indigo-500 transition-all duration-300 hover:bg-[#571fdb2a]"
                   }
                   key={i}
                 >

@@ -37,13 +37,13 @@ const SearchBlog = () => {
     <div>
       <form
         onSubmit={BlogSearcher}
-        className="border-zinc-700 border-2 px-2 rounded-md flex justify-between items-center"
+        className="border-zinc-700 border-2 px-2 rounded-md flex justify-between items-center w-78"
       >
         <input
           ref={searchRef}
           type="text"
           className="bg-transparent p-2 outline-none text-sm"
-          placeholder="جست و جو در بلاگ..."
+          placeholder="جست و جو در وبلاگ..."
         />
         <button type="submit" className="w-10 absolute left-28 cursor-pointer">
           <BiSearchAlt className="w-6 h-6 text-blue-500" />
