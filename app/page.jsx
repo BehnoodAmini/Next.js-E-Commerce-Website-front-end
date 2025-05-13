@@ -8,7 +8,7 @@ import GraphicSlider from "../components/sliders/graphic-slider";
 import NewBlogs from "../components/newBlogs";
 
 const getData = async () => {
-  const data = await fetch("http://localhost:27017/api/get-new-products", {cache: "no-store"});
+  const data = await fetch("https://behnood-fileshop-server.liara.run/api/get-new-products", {cache: "no-store"});
   return data.json();
 }
 

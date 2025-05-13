@@ -41,7 +41,7 @@ const SliderDetails = ({ midBanId }) => {
         minute: "2-digit",
       }),
     };
-    const url = `http://localhost:27017/api/update-slider/${midBanId}`;
+    const url = `https://behnood-fileshop-server.liara.run/api/update-slider/${midBanId}`;
     axios
       .post(url, formData)
       .then((d) => {
@@ -84,7 +84,7 @@ const SliderDetails = ({ midBanId }) => {
   useEffect(() => {
     goTopCtrl();
     axios
-      .get(`http://localhost:27017/api/get-slider/${midBanId}`)
+      .get(`https://behnood-fileshop-server.liara.run/api/get-slider/${midBanId}`)
       .then((d) => {
         setFullData(d.data);
       })
@@ -101,7 +101,7 @@ const SliderDetails = ({ midBanId }) => {
   }, [midBanId]);
 
   const RemoveHandler = () => {
-    const url = `http://localhost:27017/api/delete-slider/${midBanId}`;
+    const url = `https://behnood-fileshop-server.liara.run/api/delete-slider/${midBanId}`;
     axios
       .post(url)
       .then((d) => {

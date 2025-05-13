@@ -39,7 +39,7 @@ const MidBannerDetails = ({ midBanId }) => {
         minute: "2-digit",
       }),
     };
-    const url = `http://localhost:27017/api/update-middle-banner/${midBanId}`;
+    const url = `https://behnood-fileshop-server.liara.run/api/update-middle-banner/${midBanId}`;
     axios
       .post(url, formData)
       .then((d) => {
@@ -82,7 +82,7 @@ const MidBannerDetails = ({ midBanId }) => {
   useEffect(() => {
     goTopCtrl();
     axios
-      .get(`http://localhost:27017/api/get-mid-ban/${midBanId}`)
+      .get(`https://behnood-fileshop-server.liara.run/api/get-mid-ban/${midBanId}`)
       .then((d) => {
         setFullData(d.data);
       })
@@ -99,7 +99,7 @@ const MidBannerDetails = ({ midBanId }) => {
   }, [midBanId]);
 
   const RemoveHandler = () => {
-    const url = `http://localhost:27017/api/delete-middle-banner/${midBanId}`;
+    const url = `https://behnood-fileshop-server.liara.run/api/delete-middle-banner/${midBanId}`;
     axios
       .post(url)
       .then((d) => {

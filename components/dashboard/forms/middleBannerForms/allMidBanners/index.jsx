@@ -21,7 +21,7 @@ const AllMidBanners = ({ setMidBanDetCtrl, setRandNumForBannerClick }) => {
   useEffect(() => {
     axios
       .get(
-        `http://localhost:27017/api/middle-banners?pn=${pageNumber}&&pgn=${paginate}`
+        `https://behnood-fileshop-server.liara.run/api/middle-banners?pn=${pageNumber}&&pgn=${paginate}`
       )
       .then((d) => {
         setBanners(d.data.GoalMidBans);

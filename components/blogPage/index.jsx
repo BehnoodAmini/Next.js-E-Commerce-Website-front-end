@@ -26,7 +26,7 @@ const BlogPageComp = ({ url }) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:27017/api/search-posts?${pgn}${pn}${keyword}`)
+      .get(`https://behnood-fileshop-server.liara.run/api/search-posts?${pgn}${pn}${keyword}`)
       .then((d) => {
         setResult(d.data.allPosts);
         setBtns(d.data.btns);

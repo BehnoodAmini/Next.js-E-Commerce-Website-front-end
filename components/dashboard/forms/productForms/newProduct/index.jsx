@@ -71,7 +71,7 @@ const NewProduct = () => {
   const [products, setProducts] = useState([-1]);
   const [relProducts, setRelProducts] = useState([]);
   useEffect(() => {
-    const productsUrl = `http://localhost:27017/api/products-rel`;
+    const productsUrl = `https://behnood-fileshop-server.liara.run/api/products-rel`;
     axios
       .get(productsUrl)
       .then((d) => {
@@ -93,7 +93,7 @@ const NewProduct = () => {
   const [categories, setCategories] = useState([-1]);
   const [relCategories, setRelCategories] = useState([]);
   useEffect(() => {
-    const categoriesUrl = `http://localhost:27017/api/products-categories-rel`;
+    const categoriesUrl = `https://behnood-fileshop-server.liara.run/api/products-categories-rel`;
     axios
       .get(categoriesUrl)
       .then((d) => {
@@ -155,7 +155,7 @@ const NewProduct = () => {
       relatedProducts: relProducts,
       categories: relCategories,
     };
-    const url = `http://localhost:27017/api/new-product`;
+    const url = `https://behnood-fileshop-server.liara.run/api/new-product`;
     axios
       .post(url, formData)
       .then((d) => {

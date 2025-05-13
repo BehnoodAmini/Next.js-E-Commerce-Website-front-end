@@ -44,7 +44,7 @@ const CategoryDetails = ({ categoryId }) => {
         minute: "2-digit",
       }),
     };
-    const url = `http://localhost:27017/api/update-category/${categoryId}`;
+    const url = `https://behnood-fileshop-server.liara.run/api/update-category/${categoryId}`;
     axios
       .post(url, formData)
       .then((d) => {
@@ -87,7 +87,7 @@ const CategoryDetails = ({ categoryId }) => {
   useEffect(() => {
     goTopCtrl();
     axios
-      .get(`http://localhost:27017/api/get-category/${categoryId}`)
+      .get(`https://behnood-fileshop-server.liara.run/api/get-category/${categoryId}`)
       .then((d) => {
         setFullData(d.data);
       })
@@ -104,7 +104,7 @@ const CategoryDetails = ({ categoryId }) => {
   }, [categoryId]);
 
   const RemoveHandler = () => {
-    const url = `http://localhost:27017/api/delete-category/${categoryId}`;
+    const url = `https://behnood-fileshop-server.liara.run/api/delete-category/${categoryId}`;
     axios
       .post(url)
       .then((d) => {

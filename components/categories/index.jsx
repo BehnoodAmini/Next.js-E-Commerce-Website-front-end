@@ -1,7 +1,7 @@
 import CatBox from "./Box";
 
 const getData = async () => {
-  const data = await fetch("http://localhost:27017/api/get-active-categories", {
+  const data = await fetch("https://behnood-fileshop-server.liara.run/api/get-active-categories", {
     cache: "no-store",
   });
   return data.json();

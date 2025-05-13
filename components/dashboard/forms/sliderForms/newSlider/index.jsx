@@ -33,7 +33,7 @@ const NewSlider = () => {
         minute: "2-digit",
       }),
     };
-    const url = `http://localhost:27017/api/new-slider`;
+    const url = `https://behnood-fileshop-server.liara.run/api/new-slider`;
     axios
       .post(url, formData)
       .then((d) => {

@@ -7,7 +7,7 @@ import BreadCrumb from "@/components/breadCrumb";
 import RelatedPosts from "@/components/sliders/related-posts";
 
 const getData = async (slug) => {
-  const data = await fetch(`http://localhost:27017/api/get-product/${slug}`, {
+  const data = await fetch(`https://behnood-fileshop-server.liara.run/api/get-product/${slug}`, {
     cache: "no-store",
   });
   return data.json();

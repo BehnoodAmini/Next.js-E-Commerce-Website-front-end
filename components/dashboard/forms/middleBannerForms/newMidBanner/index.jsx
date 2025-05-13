@@ -31,7 +31,7 @@ const NewMidBanner = () => {
         minute: "2-digit",
       }),
     };
-    const url = `http://localhost:27017/api/new-middle-banner`;
+    const url = `https://behnood-fileshop-server.liara.run/api/new-middle-banner`;
     axios
       .post(url, formData)
       .then((d) => {

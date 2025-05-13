@@ -1,7 +1,7 @@
 import BlogBox from "./BlogBox";
 
 const getData = async () => {
-  const data = await fetch("http://localhost:27017/api/get-new-posts");
+  const data = await fetch("https://behnood-fileshop-server.liara.run/api/get-new-posts");
   return data.json();
 };
 

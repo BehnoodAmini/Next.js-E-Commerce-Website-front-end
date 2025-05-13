@@ -55,7 +55,7 @@ const ShopComp = ({ url }) => {
     categories ? categories : ""
   }${pgn ? pgn : ""}${pn ? pn : ""}`;
   const mainFrontUrl = `/shop?${queries}`;
-  const mainBackUrl = `http://localhost:27017/api/search-products?${queries}`;
+  const mainBackUrl = `https://behnood-fileshop-server.liara.run/api/search-products?${queries}`;
 
   useEffect(() => {
     goTopCtrl();
@@ -134,7 +134,7 @@ const ShopComp = ({ url }) => {
   // CATEGORIES
   const [allCats, setAllCats] = useState([-1]);
   useEffect(() => {
-    const url = "http://localhost:27017/api/products-categories-rel";
+    const url = "https://behnood-fileshop-server.liara.run/api/products-categories-rel";
     axios.get(url).then((d) => {
       setAllCats(d.data);
     });
@@ -525,20 +525,3 @@ const ShopComp = ({ url }) => {
 };
 
 export default ShopComp;
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const mainUrl = `http://localhost:27017/api/search-products?${searchKeyword}`;
-//         const response = await axios.get(mainUrl);
-//         setResult(response.data.allProducts);
-//         setBtns(response.data.btns);
-//       } catch (error) {
-//         console.error("Error fetching data:", error);
-//       }
-//     };
-
-//     fetchData();
-//   }, [searchKeyword]);
-
-//const keyword = url.keyword ? `keyword=${url.keyword}` : "";

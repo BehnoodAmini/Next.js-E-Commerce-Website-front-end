@@ -12,7 +12,7 @@ import RelatedPosts from "@/components/sliders/related-posts";
 import SearchBlog from "@/components/search-blog";
 
 const getData = async (slug) => {
-  const data = await fetch(`http://localhost:27017/api/get-post/${slug}`, {
+  const data = await fetch(`https://behnood-fileshop-server.liara.run/api/get-post/${slug}`, {
     cache: "no-store",
   });
   return data.json();
@@ -20,7 +20,7 @@ const getData = async (slug) => {
 
 const getProductsData = async (slug) => {
   const data = await fetch(
-    `http://localhost:27017/api/get-most-viewed-products`,
+    `https://behnood-fileshop-server.liara.run/api/get-most-viewed-products`,
     {
       cache: "no-store",
     }

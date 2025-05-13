@@ -37,7 +37,7 @@ const NewMidBanner = () => {
         minute: "2-digit",
       }),
     };
-    const url = `http://localhost:27017/api/new-category`;
+    const url = `https://behnood-fileshop-server.liara.run/api/new-category`;
     axios
       .post(url, formData)
       .then((d) => {

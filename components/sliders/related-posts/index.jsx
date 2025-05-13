@@ -28,8 +28,8 @@ const RelatedPosts = ({ typeOfModel, title, relPostsData }) => {
   useEffect(() => {
     const url =
       typeOfModel == "post"
-        ? "http://localhost:27017/api/get-related-posts"
-        : "http://localhost:27017/api/get-related-products";
+        ? "https://behnood-fileshop-server.liara.run/api/get-related-posts"
+        : "https://behnood-fileshop-server.liara.run/api/get-related-products";
     axios
       .post(url, sendingDataForRel)
       .then((d) => {

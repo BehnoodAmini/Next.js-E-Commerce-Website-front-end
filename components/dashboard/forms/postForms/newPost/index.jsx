@@ -45,7 +45,7 @@ const NewPost = () => {
   const [posts, setPosts] = useState([-1]);
   const [relPosts, setRelPosts] = useState([]);
   useEffect(() => {
-    const postsUrl = `http://localhost:27017/api/posts-rel`;
+    const postsUrl = `https://behnood-fileshop-server.liara.run/api/posts-rel`;
     axios
       .get(postsUrl)
       .then((d) => {
@@ -87,7 +87,7 @@ const NewPost = () => {
       comments: [],
       relatedPosts: relPosts,
     };
-    const url = `http://localhost:27017/api/new-post`;
+    const url = `https://behnood-fileshop-server.liara.run/api/new-post`;
     axios
       .post(url, formData)
       .then((d) => {

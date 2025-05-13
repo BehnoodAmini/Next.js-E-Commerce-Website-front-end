@@ -9,7 +9,7 @@ const MostViewedPosts = () => {
   const [posts, setposts] = useState([-1]);
   useEffect(() => {
     axios
-      .get("http://localhost:27017/api/get-most-viewed-posts")
+      .get("https://behnood-fileshop-server.liara.run/api/get-most-viewed-posts")
       .then((d) => {
         setposts(d.data);
       })

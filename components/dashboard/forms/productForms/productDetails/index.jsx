@@ -79,7 +79,7 @@ const ProductDetails = ({ goalId }) => {
   const [products, setProducts] = useState([-1]);
   const [relProducts, setRelProducts] = useState([]);
   useEffect(() => {
-    const productsUrl = `http://localhost:27017/api/products-rel`;
+    const productsUrl = `https://behnood-fileshop-server.liara.run/api/products-rel`;
     axios
       .get(productsUrl)
       .then((d) => {
@@ -102,7 +102,7 @@ const ProductDetails = ({ goalId }) => {
   const [relCategories, setRelCategories] = useState([]);
   const [thisProductCatsIds, setThisProductCatsIds] = useState([]);
   useEffect(() => {
-    const categoriesUrl = `http://localhost:27017/api/products-categories-rel`;
+    const categoriesUrl = `https://behnood-fileshop-server.liara.run/api/products-categories-rel`;
     axios
       .get(categoriesUrl)
       .then((d) => {
@@ -162,7 +162,7 @@ const ProductDetails = ({ goalId }) => {
       relatedProducts: relProducts,
       categories: relCategories,
     };
-    const url = `http://localhost:27017/api/update-product/${goalId}`;
+    const url = `https://behnood-fileshop-server.liara.run/api/update-product/${goalId}`;
     axios
       .post(url, formData)
       .then((d) => {
@@ -205,7 +205,7 @@ const ProductDetails = ({ goalId }) => {
   };
 
   const RemoveHandler = () => {
-    const url = `http://localhost:27017/api/delete-product/${goalId}`;
+    const url = `https://behnood-fileshop-server.liara.run/api/delete-product/${goalId}`;
     axios
       .post(url)
       .then((d) => {
@@ -240,7 +240,7 @@ const ProductDetails = ({ goalId }) => {
   useEffect(() => {
     goTopCtrl();
     axios
-      .get(`http://localhost:27017/api/get-product-by-id/${goalId}`)
+      .get(`https://behnood-fileshop-server.liara.run/api/get-product-by-id/${goalId}`)
       .then((d) => {
         setFullData(d.data);
         setTag(d.data.tags);

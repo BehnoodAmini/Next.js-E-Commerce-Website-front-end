@@ -20,7 +20,7 @@ const AllPosts = ({ setMidBanDetCtrl, setRandNumForBannerClick }) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:27017/api/posts?pn=${pageNumber}&&pgn=${paginate}`)
+      .get(`https://behnood-fileshop-server.liara.run/api/posts?pn=${pageNumber}&&pgn=${paginate}`)
       .then((d) => {
         setPosts(d.data.GoalPosts);
         setNumbersOfBtns(

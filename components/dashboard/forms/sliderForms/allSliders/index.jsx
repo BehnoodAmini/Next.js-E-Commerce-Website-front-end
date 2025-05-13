@@ -21,7 +21,7 @@ const AllSliders = ({ setMidBanDetCtrl, setRandNumForBannerClick }) => {
   useEffect(() => {
     axios
       .get(
-        `http://localhost:27017/api/sliders?pn=${pageNumber}&&pgn=${paginate}`
+        `https://behnood-fileshop-server.liara.run/api/sliders?pn=${pageNumber}&&pgn=${paginate}`
       )
       .then((d) => {
         setSliders(d.data.GoalSliders);

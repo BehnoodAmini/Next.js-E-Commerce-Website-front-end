@@ -22,7 +22,7 @@ const AllProducts = ({ setProductDetCtrl, setRandNumForProductClick }) => {
   useEffect(() => {
     axios
       .get(
-        `http://localhost:27017/api/${categoryUrl}?pn=${pageNumber}&&pgn=${paginate}`
+        `https://behnood-fileshop-server.liara.run/api/${categoryUrl}?pn=${pageNumber}&&pgn=${paginate}`
       )
       .then((d) => {
         setProducts(d.data.GoalProducts);

@@ -60,7 +60,7 @@ const SlideBox = ({ itemData }) => {
                 <IoBookmarkOutline className="w-5 h-5 font-bold" />
               </div>
               <div className="bg-zinc-200 flex justify-center items-center w-9 h-9 rounded-lg transition-all duration-500 hover:bg-zinc-300 cursor-pointer">
-                <Link href={`http://localhost:3000/shop?&keyword=${itemData.title}&orderBy=date&maxP=1000000000&minP=0&pgn=12&pn=1`} target="_blank">
+                <Link href={`/shop?&keyword=${itemData.title}&orderBy=date&maxP=1000000000&minP=0&pgn=12&pn=1`} target="_blank">
                   <IoIosSearch className="w-5 h-5 font-bold" />
                 </Link>
               </div>

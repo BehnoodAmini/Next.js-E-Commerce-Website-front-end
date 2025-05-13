@@ -52,7 +52,7 @@ const PostDetails = ({ goalId }) => {
   const [posts, setPosts] = useState([-1]);
   const [relPosts, setRelPosts] = useState([]);
   useEffect(() => {
-    const postsUrl = `http://localhost:27017/api/posts-rel`;
+    const postsUrl = `https://behnood-fileshop-server.liara.run/api/posts-rel`;
     axios
       .get(postsUrl)
       .then((d) => {
@@ -87,7 +87,7 @@ const PostDetails = ({ goalId }) => {
       published: publishedRef.current.value,
       relatedPosts: relPosts,
     };
-    const url = `http://localhost:27017/api/update-post/${goalId}`;
+    const url = `https://behnood-fileshop-server.liara.run/api/update-post/${goalId}`;
     axios
       .post(url, formData)
       .then((d) => {
@@ -127,7 +127,7 @@ const PostDetails = ({ goalId }) => {
   };
 
   const RemoveHandler = () => {
-    const url = `http://localhost:27017/api/delete-post/${goalId}`;
+    const url = `https://behnood-fileshop-server.liara.run/api/delete-post/${goalId}`;
     axios
       .post(url)
       .then((d) => {
@@ -162,7 +162,7 @@ const PostDetails = ({ goalId }) => {
   useEffect(() => {
     goTopCtrl();
     axios
-      .get(`http://localhost:27017/api/get-post-by-id/${goalId}`)
+      .get(`https://behnood-fileshop-server.liara.run/get-post-by-id/${goalId}`)
       .then((d) => {
         setFullData(d.data);
         setTag(d.data.tags);
