@@ -162,22 +162,22 @@ const Header = () => {
                 <BiSearchAlt className="w-8 h-8" />
               </button>
             </form>
-            <div className="flex gap-4 items-center w-[20rem] justify-end">
-              <div>
-                <Link href={"/account"}>
-                  <IoPerson className="bg-zinc-400 text-white rounded p-2 w-12 h-12" />
-                </Link>
-              </div>
-              <Link
-                href={"/cart"}
-                className="flex gap-2 justify-center items-center bg-orange-400 p-2 rounded-md"
-              >
-                <div className="text-orange-500 bg-white rounded-full w-8 h-8 flex justify-center items-center">
-                  2
+            <div className="flex items-center justify-end gap-4 w-[20rem]">
+              <Link href="/account">
+                <div className="w-12 h-12 bg-zinc-400 rounded-full flex items-center justify-center hover:bg-zinc-500 shadow-[0px_0.5rem_0.5rem_rgba(0,0,0,.15)] transition-all duration-300 hover:shadow-[0px_0.5rem_0.5rem_rgba(0,0,0,.45)]">
+                  <IoPerson className="text-white w-6 h-6" />
                 </div>
-                <div className="text-white">سبد خرید</div>
-                <div className="text-orange-500 bg-white rounded-lg w-8 h-8 flex justify-center items-center">
-                  <HiShoppingCart className="w-6 h-6" />
+              </Link>
+              <Link
+                href="/cart"
+                className="flex items-center gap-2 bg-orange-400 hover:bg-orange-500 text-white rounded-xl py-2 px-4 shadow-orange-300 transition-all duration-300 hover:shadow-[0.5rem_0.5rem_1rem_rgba(0,0,0,.35)]"
+              >
+                <div className="w-7 h-7 bg-white text-orange-500 text-sm font-bold rounded-full flex items-center justify-center shadow">
+                  ۲
+                </div>
+                <span className="text-sm font-medium text-white">سبد خرید</span>
+                <div className="w-8 h-8 bg-white text-orange-500 rounded-lg flex items-center justify-center shadow">
+                  <HiShoppingCart className="w-5 h-5" />
                 </div>
               </Link>
             </div>
