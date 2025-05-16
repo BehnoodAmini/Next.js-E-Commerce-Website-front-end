@@ -22,17 +22,11 @@ const RegisterForm = () => {
   const router = useRouter();
 
   // IF USER HAVE TOKEN SHOULD BE REDIRECTED TO ACCOUNT PAGE
-  const [authCookie, setAuthCookie] = useState(Cookies.get("authCookie"));
+  const [authCookie, setAuthCookie] = useState(Cookies.get("auth_cookie"));
 
   useEffect(() => {
-    setAuthCookie(Cookies.get("authCookie"));
-  }, [Cookies.get("authCookie")]);
-
-  useEffect(() => {
-    if (authCookie != undefined && authCookie.length > 0) {
-      router.push("/account");
-    }
-  }, [authCookie]);
+    setAuthCookie(Cookies.get("auth_cookie"));
+  }, [Cookies.get("auth_cookie")]);
 
   const formSubmitHandler = () => {
     const formData = {
@@ -54,7 +48,7 @@ const RegisterForm = () => {
     axios
       .post(backendUrl, formData)
       .then((d) => {
-        Cookies.set("authCookie", d.data.auth);
+        Cookies.set("auth_cookie", d.data.auth,{expires:30});
         const message = d.data.msg
           ? d.data.msg
           : "ثبت نام شما با موفقیت انجام شد!";

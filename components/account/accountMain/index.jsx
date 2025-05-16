@@ -8,17 +8,19 @@ import Cookies from "js-cookie";
 
 const AccountMainComp = () => {
   const router = useRouter();
-  const [authCookie, setAuthCookie] = useState(Cookies.get("authCookie"));
+  const [authCookie, setAuthCookie] = useState(Cookies.get("auth_cookie"));
+  const [authCookie2, setAuthCookie2] = useState(Cookies.get("auth_cookie"));
 
   useEffect(() => {
-    setAuthCookie(Cookies.get("authCookie"));
-  }, [Cookies.get("authCookie")]);
-
-  useEffect(() => {
-    if (authCookie == undefined || authCookie.length < 1) {
+    if (authCookie !== authCookie2) {
+      Cookies.remove("auth_cookie");
       router.push("/login");
     }
   }, [authCookie]);
+
+  useEffect(() => {
+    setAuthCookie2(Cookies.get("auth_cookie"));
+  }, [Cookies.get("auth_cookie")]);
 
   return <div>Enter</div>;
 };
