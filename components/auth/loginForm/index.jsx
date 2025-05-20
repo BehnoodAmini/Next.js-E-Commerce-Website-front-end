@@ -50,7 +50,7 @@ const LoginForm = () => {
           draggable: true,
           progress: undefined,
         });
-        router.push("./account");
+        router.push("./account/info");
       })
       .catch((err) => {
         const errorMsg =
@@ -149,6 +149,19 @@ const LoginForm = () => {
           </div>
         </button>
       </form>
+      <ToastContainer
+        bodyClassName={() => "font-[IRANSans] text-sm flex items-center"}
+        position="top-right"
+        autoClose={3000}
+        theme="colored"
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </section>
   );
 };

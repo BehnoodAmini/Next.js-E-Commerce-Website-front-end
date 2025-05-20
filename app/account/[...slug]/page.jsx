@@ -21,7 +21,7 @@ const AccountPage = async ({ params }) => {
   const data = await getAuthData(cookieValue);
   if (!data._id) {
     redirect("/login");
-  }
+  } 
 
   return (
     <section className="container mx-auto flex justify-center items-center">

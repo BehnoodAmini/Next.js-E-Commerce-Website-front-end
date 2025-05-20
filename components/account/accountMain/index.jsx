@@ -12,6 +12,13 @@ import Comments from "../comments";
 import Payments from "../payments";
 
 const AccountMainComp = ({ items }) => {
+  const goTopCtrl = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   const router = useRouter();
   const [authCookie, setAuthCookie] = useState(Cookies.get("auth_cookie"));
   const [authCookie2, setAuthCookie2] = useState(Cookies.get("auth_cookie"));
@@ -32,29 +39,34 @@ const AccountMainComp = ({ items }) => {
 
   useEffect(() => {
     if (items.slug[0] == "info") {
-      setDetails(<Info />);
-    } else if (items.slug[0] == "favourite") {
-      setDetails(<Favourite />);
+      setDetails(<Info cookie={authCookie} />);
+    } else if (items.slug[0] == "favourites") {
+      setDetails(<Favourite cookie={authCookie} />);
     } else if (items.slug[0] == "purchased") {
-      setDetails(<Purchased />);
+      setDetails(<Purchased cookie={authCookie} />);
     } else if (items.slug[0] == "comments") {
-      setDetails(<Comments />);
+      setDetails(<Comments cookie={authCookie} />);
     } else if (items.slug[0] == "payments") {
-      setDetails(<Payments />);
+      setDetails(<Payments cookie={authCookie} />);
     } else {
-      setDetails(<Info />);
+      setDetails(<Info cookie={authCookie} />);
     }
   }, [items.slug[0]]);
 
   return (
     <div className="container mx-auto">
-      <div className="flex justify-between items-center gap-2">
-        <div className="w-55 min-w-55 bg-zinc-100 p-6 rounded-md">
+      <div className="flex justify-between items-start gap-2">
+        <div className="w-55 min-w-55 bg-zinc-100 p-6 rounded-md sticky top-8 right-0 bottom-8">
           <nav className="flex justify-center items-center">
             <ul className="flex flex-col gap-6 w-full">
               <li>
                 <Link
-                  className="rounded-md bg-indigo-600 hover:bg-indigo-500 transition-all duration-300 text-white! hover:text-white! flex justify-center items-center w-full h-12"
+                  onClick={goTopCtrl}
+                  className={
+                    items.slug[0] == "info"
+                      ? "rounded-md bg-indigo-600 hover:bg-indigo-500 transition-all duration-300 text-white! hover:text-white! flex justify-center items-center w-full h-12"
+                      : "rounded-md bg-orange-500 hover:bg-orange-600 transition-all duration-300 text-white! hover:text-white! flex justify-center items-center w-full h-12"
+                  }
                   href={"/account/info"}
                 >
                   اطلاعات
@@ -62,15 +74,25 @@ const AccountMainComp = ({ items }) => {
               </li>
               <li>
                 <Link
-                  className="rounded-md bg-indigo-600 hover:bg-indigo-500 transition-all duration-300 text-white! hover:text-white! flex justify-center items-center w-full h-12"
-                  href={"/account/favourite"}
+                  onClick={goTopCtrl}
+                  className={
+                    items.slug[0] == "favourites"
+                      ? "rounded-md bg-indigo-600 hover:bg-indigo-500 transition-all duration-300 text-white! hover:text-white! flex justify-center items-center w-full h-12"
+                      : "rounded-md bg-orange-500 hover:bg-orange-600 transition-all duration-300 text-white! hover:text-white! flex justify-center items-center w-full h-12"
+                  }
+                  href={"/account/favourites"}
                 >
                   محصولات مورد علاقه
                 </Link>
               </li>
               <li>
                 <Link
-                  className="rounded-md bg-indigo-600 hover:bg-indigo-500 transition-all duration-300 text-white! hover:text-white! flex justify-center items-center w-full h-12"
+                  onClick={goTopCtrl}
+                  className={
+                    items.slug[0] == "purchased"
+                      ? "rounded-md bg-indigo-600 hover:bg-indigo-500 transition-all duration-300 text-white! hover:text-white! flex justify-center items-center w-full h-12"
+                      : "rounded-md bg-orange-500 hover:bg-orange-600 transition-all duration-300 text-white! hover:text-white! flex justify-center items-center w-full h-12"
+                  }
                   href={"/account/purchased"}
                 >
                   محصولات
@@ -78,7 +100,12 @@ const AccountMainComp = ({ items }) => {
               </li>
               <li>
                 <Link
-                  className="rounded-md bg-indigo-600 hover:bg-indigo-500 transition-all duration-300 text-white! hover:text-white! flex justify-center items-center w-full h-12"
+                  onClick={goTopCtrl}
+                  className={
+                    items.slug[0] == "comments"
+                      ? "rounded-md bg-indigo-600 hover:bg-indigo-500 transition-all duration-300 text-white! hover:text-white! flex justify-center items-center w-full h-12"
+                      : "rounded-md bg-orange-500 hover:bg-orange-600 transition-all duration-300 text-white! hover:text-white! flex justify-center items-center w-full h-12"
+                  }
                   href={"/account/comments"}
                 >
                   دیدگاه‌ها
@@ -86,7 +113,12 @@ const AccountMainComp = ({ items }) => {
               </li>
               <li>
                 <Link
-                  className="rounded-md bg-indigo-600 hover:bg-indigo-500 transition-all duration-300 text-white! hover:text-white! flex justify-center items-center w-full h-12"
+                  onClick={goTopCtrl}
+                  className={
+                    items.slug[0] == "payments"
+                      ? "rounded-md bg-indigo-600 hover:bg-indigo-500 transition-all duration-300 text-white! hover:text-white! flex justify-center items-center w-full h-12"
+                      : "rounded-md bg-orange-500 hover:bg-orange-600 transition-all duration-300 text-white! hover:text-white! flex justify-center items-center w-full h-12"
+                  }
                   href={"/account/payments"}
                 >
                   سفارش‌ها

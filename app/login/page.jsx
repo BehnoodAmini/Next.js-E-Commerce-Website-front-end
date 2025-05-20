@@ -17,7 +17,7 @@ const LoginPage = async () => {
   const cookieValue = (auth_cookie && auth_cookie.value) ? auth_cookie.value : undefined;
   const data = await getAuthData(cookieValue);
   if (data._id) {
-    redirect("/account");
+    redirect("/account/info");
   }
 
   return <LoginForm />;
