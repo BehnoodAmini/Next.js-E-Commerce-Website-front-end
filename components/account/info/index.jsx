@@ -132,9 +132,9 @@ const Info = ({ cookie }) => {
 
   // FOR ADVERTISE EMAILS
   const [bulkEmailSituation, setBulkEmailSituation] = useState(true);
-  const bulkEmailChanger = () => {
+  const bulkEmailChanger = (input) => {
     const formData = {
-      emailSend: bulkEmailSituation,
+      emailSend: input,
     };
     const backendUrl = `https://behnood-fileshop-server.liara.run/api/update-email-user`;
     axios
@@ -151,6 +151,7 @@ const Info = ({ cookie }) => {
           draggable: true,
           progress: undefined,
         });
+        setBulkEmailSituation(input);
       })
       .catch((err) => {
         const errorMsg =
@@ -348,23 +349,24 @@ const Info = ({ cookie }) => {
               </form>
             </div>
             <div className="flex justify-between items-center gap-6 bg-zinc-100 w-full text-sm rounded-xl p-4 shadow-sm">
-              <div className="flex items-center justify-evenly w-85 h-12 bg-white rounded-xl border border-zinc-300 px-4 py-2">
-                <span className="text-zinc-700">
+              <div className="flex items-center justify-between w-85 h-12 bg-white rounded-xl border border-zinc-300 px-4 py-2 shadow-sm">
+                <span>
                   اطلاع رسانی جشنواره‌ها از طریق ایمیل
                 </span>
-                {data.emailSend === true ? (
-                  <button onClick={()=>{setBulkEmailSituation(false); bulkEmailChanger()}} className="cursor-pointer bg-rose-600 hover:bg-rose-700 text-white text-sm px-4 py-1 rounded-md shadow">
-                    خاموش
-                  </button>
-                ) : (
-                  <button onClick={()=>{setBulkEmailSituation(true); bulkEmailChanger()}} className="cursor-pointer bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-1 rounded-md shadow">
-                    روشن
-                  </button>
-                )}
+
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    className="sr-only peer"
+                    checked={bulkEmailSituation}
+                    onChange={(e) => bulkEmailChanger(e.target.checked)}
+                  />
+                  <div className="group peer ring-0 bg-rose-400 rounded-full outline-none duration-300 after:duration-300 w-16 h-8 shadow-md peer-checked:bg-emerald-500 peer-focus:outline-none  after:content-['✖️'] after:rounded-full after:absolute after:bg-gray-50 after:outline-none after:h-6 after:w-6 after:top-1 after:left-1 after:-rotate-180 after:flex after:justify-center after:items-center after:text-[0.85rem] after:leading-none peer-checked:after:translate-x-8 peer-checked:after:content-['✔️'] peer-hover:after:scale-95  peer-checked:after:rotate-0"></div>
+                </label>
               </div>
               <button
                 onClick={logoutHandler}
-                className="cursor-pointer bg-white text-center w-85 rounded-2xl h-12 relative text-black text-sm group"
+                className="cursor-pointer bg-white text-center w-85 rounded-2xl h-12 relative text-sm group"
                 type="button"
               >
                 <div className="bg-rose-500 rounded-xl h-12 w-1/4 flex items-center justify-center absolute left-1 top-[1px] group-hover:w-85 z-10 duration-500">
@@ -384,7 +386,7 @@ const Info = ({ cookie }) => {
                     />
                   </svg>
                 </div>
-                <p className="translate-x-2">خروج از حساب کاربری</p>
+                <p className="translate-x-2 absolute right-6 top-3.5">خروج از حساب کاربری</p>
               </button>
             </div>
           </div>
