@@ -13,7 +13,6 @@ import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 
 import { FiRefreshCw } from "react-icons/fi";
-import { MdEmail } from "react-icons/md";
 
 const Info = ({ cookie }) => {
   const [data, setData] = useState([-1]);
@@ -361,7 +360,7 @@ const Info = ({ cookie }) => {
                     checked={bulkEmailSituation}
                     onChange={(e) => bulkEmailChanger(e.target.checked)}
                   />
-                  <div className="group peer ring-0 bg-rose-400 rounded-full outline-none duration-300 after:duration-300 w-16 h-8 shadow-md peer-checked:bg-emerald-500 peer-focus:outline-none  after:content-['✖️'] after:rounded-full after:absolute after:bg-gray-50 after:outline-none after:h-6 after:w-6 after:top-1 after:left-1 after:-rotate-180 after:flex after:justify-center after:items-center after:text-[0.85rem] after:leading-none peer-checked:after:translate-x-8 peer-checked:after:content-['✔️'] peer-hover:after:scale-95  peer-checked:after:rotate-0"></div>
+                  <div className="group peer ring-0 bg-rose-400 rounded-full outline-none duration-300 after:duration-300 w-16 h-8 shadow-md peer-checked:bg-emerald-500 peer-focus:outline-none after:rounded-full after:absolute after:bg-gray-50 after:outline-none after:h-6 after:w-5.5 after:top-1 after:left-1 after:-rotate-180 after:flex after:justify-center after:items-center after:text-[0.85rem] after:leading-none peer-checked:after:translate-x-8 peer-checked:after:content-['✔️'] peer-hover:after:scale-95  peer-checked:after:rotate-0"></div>{/*after:content-['✖️']*/}
                 </label>
               </div>
               <button

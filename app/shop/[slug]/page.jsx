@@ -5,6 +5,7 @@ import { TiTickOutline } from "react-icons/ti";
 
 import BreadCrumb from "@/components/breadCrumb";
 import RelatedPosts from "@/components/sliders/related-posts";
+import SingleProductPageFav from "@/components/singleProductPageFav";
 
 const getData = async (slug) => {
   const data = await fetch(`https://behnood-fileshop-server.liara.run/api/get-product/${slug}`, {
@@ -166,9 +167,7 @@ const SingleProduct = async ({ params }) => {
               <button className="cursor-pointer flex justify-center items-center text-center rounded-md p-2 w-full bg-orange-500 transition-all duration-500 hover:bg-orange-600 text-white">
                 افزودن به سبد خرید - {priceChanger(data.price)} تومان
               </button>
-              <button className="cursor-pointer flex justify-center items-center text-center rounded-md p-2 w-full bg-blue-500 transition-all duration-500 hover:bg-blue-600 text-white">
-                افزودن به علاقه مندی‌ها
-              </button>
+              <SingleProductPageFav data={data._id} />
             </div>
             <div className="rounded-lg p-3 shadow-[0px_0px_8px_rgba(0,0,0,0.35)]">
               <ul className="flex flex-col gap-3">

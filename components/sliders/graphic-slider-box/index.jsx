@@ -1,5 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import axios from "axios";
+import Cookies from "js-cookie";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 import { IoIosSearch } from "react-icons/io";
 import { IoBookmarkOutline } from "react-icons/io5";
@@ -13,6 +21,46 @@ const SlideBox = ({ itemData }) => {
 
   const spliterForFeatures = (value) => {
     return value.split(":");
+  };
+
+  const auth_cookie = Cookies.get("auth_cookie");
+  const FavAdder = () => {
+    const productData = {
+      method: "push",
+      newFavProduct: itemData._id,
+    };
+
+    const backendUrl = `https://behnood-fileshop-server.liara.run/api/favourite-products`;
+    axios
+      .post(backendUrl, productData, { headers: { auth_cookie: auth_cookie } })
+      .then((d) => {
+        const message = d.data.msg
+          ? d.data.msg
+          : "تغییر اطلاعات با موفقیت انجام شد!";
+        toast.success(message, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      })
+      .catch((err) => {
+        const errorMsg =
+          err.response && err.response.data && err.response.data.msg
+            ? err.response.data.msg
+            : "خطا!";
+        console.log(err);
+        toast.error(errorMsg, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
   };
 
   return (
@@ -83,11 +131,17 @@ const SlideBox = ({ itemData }) => {
           </div>
           <div className=" absolute bottom-2  w-full flex justify-between items-center">
             <div className="flex gap-2 justify-start items-center mr-1">
-              <div className="bg-zinc-200 flex justify-center items-center w-9 h-9 rounded-lg transition-all duration-500 hover:bg-zinc-300 cursor-pointer">
+              <div
+                onClick={() => FavAdder()}
+                className="bg-zinc-200 flex justify-center items-center w-9 h-9 rounded-lg transition-all duration-500 hover:bg-zinc-300 cursor-pointer"
+              >
                 <IoBookmarkOutline className="w-5 h-5 font-bold" />
               </div>
               <div className="bg-zinc-200 flex justify-center items-center w-9 h-9 rounded-lg transition-all duration-500 hover:bg-zinc-300 cursor-pointer">
-                <Link href={`/shop?&keyword=${itemData.title}&orderBy=date&maxP=1000000000&minP=0&pgn=12&pn=1`} target="_blank">
+                <Link
+                  href={`/shop?&keyword=${itemData.title}&orderBy=date&maxP=1000000000&minP=0&pgn=12&pn=1`}
+                  target="_blank"
+                >
                   <IoIosSearch className="w-5 h-5 font-bold" />
                 </Link>
               </div>
@@ -101,6 +155,19 @@ const SlideBox = ({ itemData }) => {
           </div>
         </div>
       </div>
+      <ToastContainer
+        bodyClassName={() => "font-[IRANSans] text-sm flex items-center"}
+        position="top-right"
+        autoClose={3000}
+        theme="colored"
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </article>
   );
 };
