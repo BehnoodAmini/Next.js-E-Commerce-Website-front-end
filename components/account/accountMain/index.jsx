@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Cookies from "js-cookie";
+import axios from "axios";
 
 import Info from "../info";
 import Favourite from "../favourite";
@@ -27,6 +28,21 @@ const AccountMainComp = ({ items }) => {
     if (authCookie !== authCookie2) {
       Cookies.remove("auth_cookie");
       router.push("/login");
+    } else if (!authCookie || authCookie == "") {
+      router.push("/login");
+    } else {
+      axios
+        .get("https://behnood-fileshop-server.liara.run/api/get-user-data", {
+          headers: { auth_cookie: authCookie },
+        })
+        .then((d) => {
+          if (!d.data._id) {
+            router.push("./login");
+          }
+        })
+        .catch((e) => {
+          router.push("./login");
+        });
     }
   }, [authCookie]);
 

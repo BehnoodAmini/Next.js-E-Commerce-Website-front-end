@@ -164,7 +164,7 @@ const Header = () => {
             </form>
             <div className="flex items-center justify-end gap-4 w-[20rem]">
               <Link href="/account/info">
-                <div className="w-12 h-12 bg-zinc-400 rounded-full flex items-center justify-center hover:bg-zinc-500 shadow-[0px_0.5rem_0.5rem_rgba(0,0,0,.15)] transition-all duration-300 hover:shadow-[0px_0.5rem_0.5rem_rgba(0,0,0,.3)]">
+                <div className="w-12 h-12 bg-indigo-500 rounded-full flex items-center justify-center hover:bg-indigo-600 shadow-[0px_0.5rem_0.5rem_rgba(0,0,0,.15)] transition-all duration-300 hover:shadow-[0px_0.5rem_0.5rem_rgba(0,0,0,.3)]">
                   <IoPerson className="text-white w-6 h-6" />
                 </div>
               </Link>

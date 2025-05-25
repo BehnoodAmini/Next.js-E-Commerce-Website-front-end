@@ -12,6 +12,15 @@ import { toast } from "react-toastify";
 import { FiRefreshCw } from "react-icons/fi";
 
 const Favourite = ({ cookie }) => {
+  const spliterForFeatures = (value) => {
+    return value.split(":");
+  };
+
+  // PRICE BEAUTIFUL
+  function priceChanger(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const [data, setData] = useState([-1]);
   const [needRefresh, setNeedRefresh] = useState(0);
   useEffect(() => {
@@ -22,9 +31,7 @@ const Favourite = ({ cookie }) => {
           { headers: { auth_cookie: cookie } }
         )
         .then((d) => {
-          console.log(d.data);
           setData(d.data);
-          setNeedRefresh(0);
         })
         .catch((e) => {
           toast.error("خطا در لود اطلاعات", {
@@ -36,8 +43,43 @@ const Favourite = ({ cookie }) => {
             progress: undefined,
           });
         });
+      setNeedRefresh(0);
     }
   }, [cookie, needRefresh]);
+
+  const productRemoveHandler = (input) => {
+    const formData = {
+      method: "remove",
+      goalFavProductId: input,
+    };
+    axios
+      .post(
+        "https://behnood-fileshop-server.liara.run/api/favourite-products",
+        formData,
+        { headers: { auth_cookie: cookie } }
+      )
+      .then((d) => {
+        toast.success(d.data.msg, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setNeedRefresh(1);
+      })
+      .catch((e) => {
+        toast.error("خطا در لود اطلاعات", {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+  };
 
   return (
     <div>
@@ -64,23 +106,18 @@ const Favourite = ({ cookie }) => {
             </div>
 
             {data.length < 1 ? (
-              <div>محصولی موجود نیست...</div>
+              <div className="flex justify-center items-center p-8 w-full">
+                محصولی موجود نیست...
+              </div>
             ) : (
               <div className="w-full flex flex-col gap-8">
                 {data.map((da, i) => (
                   <div
                     key={i}
-                    className="w-full flex flex-col gap-4 bg-zinc-200 text-sm rounded-md p-1"
+                    className="w-full flex flex-col gap-4 bg-zinc-200 text-sm rounded-md p-4 relative"
                   >
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <div>{da.title}</div>
-                      </div>
-                      <Link
-                        href={`/shop/${da.slug}`}
-                        className="flex justify-center items-center pt-2"
-                        target="_blank"
-                      >
+                    <div className="flex justify-between items-start gap-4">
+                      <div className="flex justify-center items-center">
                         <Image
                           width={260}
                           height={150}
@@ -89,7 +126,71 @@ const Favourite = ({ cookie }) => {
                           alt={da.title}
                           title={da.title}
                         />
-                      </Link>
+                      </div>
+                      <div className="relative w-full flex flex-col gap-4">
+                        <div className="absolute top-0 left-0 bg-indigo-400 text-white! rounded-md text-xs flex justify-center items-center w-20 h-6">
+                          {da.typeOfProduct == "book" ? (
+                            <span>کتاب</span>
+                          ) : da.typeOfProduct == "app" ? (
+                            <span>اپلیکیشن</span>
+                          ) : (
+                            <span>فایل گرافیکی</span>
+                          )}
+                        </div>
+                        <Link
+                          href={`/shop/${da.slug}`}
+                          className="absolute top-0 left-22 flex justify-center items-center text-xs bg-indigo-400 text-white! transition-all duration-300 hover:bg-indigo-500 rounded-md w-20 h-6"
+                          target="_blank"
+                        >
+                          لینک محصول
+                        </Link>
+                        <h3 className="text-base">{da.title}</h3>
+                        <p>{da.shortDesc}</p>
+                        <div className="flex justify-start items-center gap-4">
+                          <div>{da.buyNumber} فروش</div>
+                          <div>{priceChanger(da.price)} تومان</div>
+                        </div>
+                        <div className="w-[95%] h-0.5 bg-zinc-400 rounded-md"></div>
+                        <div className="flex flex-col gap-2">
+                          {da.features.length < 1 ? (
+                            <div></div>
+                          ) : (
+                            da.features.map((fe, i) => (
+                              <div
+                                key={i}
+                                className="flex justify-center items-center gap-6"
+                              >
+                                <div className="flex justify-start items-center gap-1">
+                                  {spliterForFeatures(fe)[0]}
+                                </div>
+                                <div>{spliterForFeatures(fe)[1]}</div>
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="w-20 h-6 absolute bottom-5 left-5">
+                      <button
+                        onClick={() => productRemoveHandler(da._id)}
+                        className="cursor-pointer h-8 inline-flex items-center px-4 py-2 bg-rose-600 transition ease-in-out delay-75 hover:bg-rose-700 text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
+                      >
+                        حذف
+                        <svg
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          className="h-5 w-5 mr-2"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            strokeWidth={2}
+                            strokeLinejoin="round"
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                      </button>
                     </div>
                   </div>
                 ))}

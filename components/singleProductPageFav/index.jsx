@@ -3,7 +3,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
@@ -56,19 +55,6 @@ const SingleProductPageFav = ({ data }) => {
       >
         افزودن به علاقه مندی‌ها
       </button>
-      <ToastContainer
-        bodyClassName={() => "font-[IRANSans] text-sm flex items-center"}
-        position="top-right"
-        autoClose={3000}
-        theme="colored"
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={true}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
     </div>
   );
 };

@@ -5,13 +5,15 @@ import Link from "next/link";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
 import { IoIosSearch } from "react-icons/io";
-import { IoBookmarkOutline } from "react-icons/io5";
+import { MdFavoriteBorder } from "react-icons/md";
 import { HiOutlineShoppingCart } from "react-icons/hi";
+
+
+import Like from "@/components/likeComp";
 
 const SlideBox = ({ itemData }) => {
   // PRICE BEAUTIFUL
@@ -135,7 +137,7 @@ const SlideBox = ({ itemData }) => {
                 onClick={() => FavAdder()}
                 className="bg-zinc-200 flex justify-center items-center w-9 h-9 rounded-lg transition-all duration-500 hover:bg-zinc-300 cursor-pointer"
               >
-                <IoBookmarkOutline className="w-5 h-5 font-bold" />
+                <Like />
               </div>
               <div className="bg-zinc-200 flex justify-center items-center w-9 h-9 rounded-lg transition-all duration-500 hover:bg-zinc-300 cursor-pointer">
                 <Link
@@ -155,19 +157,6 @@ const SlideBox = ({ itemData }) => {
           </div>
         </div>
       </div>
-      <ToastContainer
-        bodyClassName={() => "font-[IRANSans] text-sm flex items-center"}
-        position="top-right"
-        autoClose={3000}
-        theme="colored"
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={true}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
     </article>
   );
 };

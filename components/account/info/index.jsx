@@ -26,7 +26,6 @@ const Info = ({ cookie }) => {
         )
         .then((d) => {
           setData(d.data);
-          setNeedRefresh(0);
           setBulkEmailSituation(d.data.emailSend);
         })
         .catch((e) => {
@@ -39,6 +38,7 @@ const Info = ({ cookie }) => {
             progress: undefined,
           });
         });
+      setNeedRefresh(0);
     }
   }, [cookie, needRefresh]);
 
@@ -71,6 +71,7 @@ const Info = ({ cookie }) => {
           draggable: true,
           progress: undefined,
         });
+        setNeedRefresh(1);
       })
       .catch((err) => {
         const errorMsg =
@@ -111,6 +112,7 @@ const Info = ({ cookie }) => {
           draggable: true,
           progress: undefined,
         });
+        setNeedRefresh(1);
       })
       .catch((err) => {
         const errorMsg =
@@ -259,7 +261,7 @@ const Info = ({ cookie }) => {
                 <div className="flex flex-col gap-1">
                   <input
                     type="text"
-                    placeholder="نام نمایشی"
+                    placeholder="نام نمایشی جدید"
                     autoComplete="off"
                     className="p-2 rounded-md w-full outline-none border-zinc-400 border-2 focus:border-orange-300 shadow-[0px_0px_5px_rgba(0,0,0,.15)] transition-all duration-500 focus:shadow-orange-400"
                     {...register("displayname", {
@@ -290,7 +292,7 @@ const Info = ({ cookie }) => {
                 <div className="flex flex-col gap-1">
                   <input
                     type="password"
-                    placeholder="رمز عبور"
+                    placeholder="رمز عبور جدید"
                     autoComplete="off"
                     className="p-2 rounded-md w-full outline-none border-zinc-400 border-2 focus:border-orange-300 shadow-[0px_0px_5px_rgba(0,0,0,.15)] transition-all duration-500 focus:shadow-orange-400"
                     {...register("password", {
@@ -318,7 +320,7 @@ const Info = ({ cookie }) => {
                 <div className="flex flex-col gap-1">
                   <input
                     type="password"
-                    placeholder="تکرار رمز عبور"
+                    placeholder="تکرار رمز عبور جدید"
                     autoComplete="off"
                     className="p-2 rounded-md w-full outline-none border-zinc-400 border-2 focus:border-orange-300 shadow-[0px_0px_5px_rgba(0,0,0,.15)] transition-all duration-500 focus:shadow-orange-400"
                     {...register("rePassword", {
@@ -349,9 +351,7 @@ const Info = ({ cookie }) => {
             </div>
             <div className="flex justify-between items-center gap-6 bg-zinc-100 w-full text-sm rounded-xl p-4 shadow-sm">
               <div className="flex items-center justify-between w-85 h-12 bg-white rounded-xl border border-zinc-300 px-4 py-2 shadow-sm">
-                <span>
-                  اطلاع رسانی جشنواره‌ها از طریق ایمیل
-                </span>
+                <span>اطلاع رسانی جشنواره‌ها از طریق ایمیل</span>
 
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
@@ -360,7 +360,8 @@ const Info = ({ cookie }) => {
                     checked={bulkEmailSituation}
                     onChange={(e) => bulkEmailChanger(e.target.checked)}
                   />
-                  <div className="group peer ring-0 bg-rose-400 rounded-full outline-none duration-300 after:duration-300 w-16 h-8 shadow-md peer-checked:bg-emerald-500 peer-focus:outline-none after:rounded-full after:absolute after:bg-gray-50 after:outline-none after:h-6 after:w-5.5 after:top-1 after:left-1 after:-rotate-180 after:flex after:justify-center after:items-center after:text-[0.85rem] after:leading-none peer-checked:after:translate-x-8 peer-checked:after:content-['✔️'] peer-hover:after:scale-95  peer-checked:after:rotate-0"></div>{/*after:content-['✖️']*/}
+                  <div className="group peer ring-0 bg-rose-400 rounded-full outline-none duration-300 after:duration-300 w-16 h-8 shadow-md peer-checked:bg-emerald-500 peer-focus:outline-none after:rounded-full after:absolute after:bg-gray-50 after:outline-none after:h-6 after:w-5.5 after:top-1 after:left-1 after:-rotate-180 after:flex after:justify-center after:items-center after:text-[0.85rem] after:leading-none peer-checked:after:translate-x-8 peer-checked:after:content-['✔️'] peer-hover:after:scale-95  peer-checked:after:rotate-0"></div>
+                  {/*after:content-['✖️']*/}
                 </label>
               </div>
               <button
@@ -385,7 +386,9 @@ const Info = ({ cookie }) => {
                     />
                   </svg>
                 </div>
-                <p className="translate-x-2 absolute right-6 top-3.5">خروج از حساب کاربری</p>
+                <p className="translate-x-2 absolute right-6 top-3.5">
+                  خروج از حساب کاربری
+                </p>
               </button>
             </div>
           </div>
