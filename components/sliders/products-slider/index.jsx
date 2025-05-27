@@ -48,7 +48,7 @@ const ProductsSlider = ({ title, linkComp, goalData }) => {
                     />
                   </div>
                   <Link
-                    href={`/${linkComp}`}
+                    href={`/shop?&orderBy=date&type=${linkComp}&maxP=1000000000&minP=0&pgn=12&pn=1`}
                     className="flex items-center text-white! border-white border-2 bg-orange-500 px-4 py-1 rounded-md transition-all duration-500 hover:bg-orange-600"
                   >
                     مشاهده همه

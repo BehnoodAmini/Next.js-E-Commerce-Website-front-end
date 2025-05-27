@@ -48,7 +48,7 @@ const GraphicSlider = ({ goalData }) => {
                     />
                   </div>
                   <Link
-                    href={"/"}
+                    href={"/shop?&orderBy=date&type=gr&maxP=1000000000&minP=0&pgn=12&pn=1"}
                     className="flex items-center text-white! border-white border-2 bg-indigo-500 px-4 py-1 rounded-md transition-all duration-500 hover:bg-indigo-600"
                   >
                     مشاهده همه

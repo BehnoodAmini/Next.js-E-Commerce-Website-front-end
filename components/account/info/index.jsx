@@ -197,17 +197,17 @@ const Info = ({ cookie }) => {
                 setNeedRefresh(1);
                 setData([-1]);
               }}
-              className="absolute top-1 left-1 cursor-pointer text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-28 h-10"
+              className="absolute top-0 left-0 cursor-pointer text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-28 h-10"
             >
               <FiRefreshCw /> به روز رسانی
             </div>
             {data.userIsActive == false ? (
-              <div className="flex flex-col gap-8 bg-zinc-200 w-full text-sm rounded-xl p-4">
+              <div className="flex flex-col gap-8 bg-zinc-200 w-full text-sm rounded-xl p-4 mt-5">
                 <form
                   onSubmit={emailConfirmHandler}
                   className="flex flex-col gap-8 items-center"
                 >
-                  <div>کد تایید حساب کاربری</div>
+                  <div className="text-base">کد تایید حساب کاربری</div>
                   <input
                     type="text"
                     ref={ActivateCodeRef}

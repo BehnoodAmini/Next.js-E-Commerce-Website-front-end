@@ -72,7 +72,7 @@ const AccountMainComp = ({ items }) => {
   return (
     <div className="container mx-auto">
       <div className="flex justify-between items-start gap-2">
-        <div className="w-55 min-w-55 bg-zinc-100 p-6 rounded-md sticky top-8 right-0 bottom-8">
+        <div className="w-55 min-w-55 bg-zinc-100 p-6 sticky top-8 right-0 bottom-8 shadow-[1px_0px_5px_rgba(0,0,0,.3)] rounded-lg">
           <nav className="flex justify-center items-center">
             <ul className="flex flex-col gap-6 w-full">
               <li>
