@@ -9,9 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
 import { IoIosSearch } from "react-icons/io";
-import { MdFavoriteBorder } from "react-icons/md";
 import { HiOutlineShoppingCart } from "react-icons/hi";
-
 
 import Like from "@/components/likeComp";
 
@@ -39,6 +37,43 @@ const SlideBox = ({ itemData }) => {
         const message = d.data.msg
           ? d.data.msg
           : "تغییر اطلاعات با موفقیت انجام شد!";
+        toast.success(message, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      })
+      .catch((err) => {
+        const errorMsg =
+          err.response && err.response.data && err.response.data.msg
+            ? err.response.data.msg
+            : "خطا!";
+        console.log(err);
+        toast.error(errorMsg, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+  };
+
+  const CartAdder = () => {
+    const productData = {
+      method: "push",
+      newCartProduct: itemData._id,
+    };
+
+    const backendUrl = `https://behnood-fileshop-server.liara.run/api/cart-managment`;
+    axios
+      .post(backendUrl, productData, { headers: { auth_cookie: auth_cookie } })
+      .then((d) => {
+        const message = d.data.msg ? d.data.msg : "به سبد خرید افزوده شد.";
         toast.success(message, {
           autoClose: 3000,
           hideProgressBar: false,
@@ -149,7 +184,10 @@ const SlideBox = ({ itemData }) => {
               </div>
             </div>
             <div className="flex gap-2 justify-end items-center">
-              <HiOutlineShoppingCart className=" mr-1 w-9 h-9 p-2 rounded bg-zinc-200 text-indigo-600  cursor-pointer transition-all duration-300 hover:bg-orange-500 hover:text-white" />
+              <HiOutlineShoppingCart
+                onClick={() => CartAdder()}
+                className=" mr-1 w-9 h-9 p-2 rounded bg-zinc-200 text-indigo-600  cursor-pointer transition-all duration-300 hover:bg-orange-500 hover:text-white"
+              />
               <div className=" bg-zinc-500 text-white h-9 px-1 flex justify-center items-center rounded-tr-md rounded-br-md">
                 {priceChanger(itemData.price)} تومان
               </div>

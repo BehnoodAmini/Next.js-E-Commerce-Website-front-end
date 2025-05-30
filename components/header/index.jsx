@@ -164,13 +164,13 @@ const Header = () => {
             </form>
             <div className="flex items-center justify-end gap-4 w-[20rem]">
               <Link href="/account/info">
-                <div className="w-12 h-12 bg-indigo-500 rounded-full flex items-center justify-center hover:bg-indigo-600 shadow-[0px_0.5rem_0.5rem_rgba(0,0,0,.15)] transition-all duration-300 hover:shadow-[0px_0.5rem_0.5rem_rgba(0,0,0,.3)]">
+                <div className="w-12 h-12 bg-indigo-500 rounded-full flex items-center justify-center hover:bg-indigo-600 shadow-indigo-400 shadow-[1px_3px_5px_rgba(0,0,0,.05)] transition-all duration-300 hover:shadow-[0px_0.5rem_0.5rem_rgba(0,0,0,.3)]">
                   <IoPerson className="text-white w-6 h-6" />
                 </div>
               </Link>
               <Link
                 href="/cart"
-                className="flex items-center gap-2 bg-orange-400 hover:bg-orange-500 text-white rounded-xl py-2 px-4 shadow-orange-300 transition-all duration-300 hover:shadow-[0.5rem_0.5rem_1rem_rgba(0,0,0,.35)]"
+                className="flex items-center gap-2 bg-orange-400 hover:bg-orange-500 text-white rounded-xl py-2 px-4 shadow-orange-300 shadow-[1px_3px_5px_rgba(0,0,0,.05)] transition-all duration-300 hover:shadow-[0.5rem_0.5rem_1rem_rgba(0,0,0,.35)]"
               >
                 <div className="w-7 h-7 bg-white text-orange-500 text-sm font-bold rounded-full flex items-center justify-center shadow">
                   ۲

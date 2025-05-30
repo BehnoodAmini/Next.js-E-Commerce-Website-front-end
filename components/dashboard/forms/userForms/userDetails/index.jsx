@@ -117,6 +117,7 @@ const UserDetails = ({ goalId }) => {
       .get(`https://behnood-fileshop-server.liara.run/api/get-user/${goalId}`)
       .then((d) => {
         setFullData(d.data);
+        console.log(d.data)
       })
       .catch((e) => {
         toast.error("خطا در لود اطلاعات!", {
@@ -246,6 +247,38 @@ const UserDetails = ({ goalId }) => {
                     <div>بدون محصول مورد علاقه</div>
                   ) : (
                     fullData.favoriteProducts.map((da, i) => (
+                      <div key={i} className="bg-zinc-100 rounded-lg p-4 flex flex-col gap-2 shadow-[0px_0px_5px_rgba(0,0,0,.15)]">
+                        <div className="flex justify-between items-center gap-2">
+                          <div>شناسه: </div>
+                          <div>{da._id}</div>
+                        </div>
+                        <div className="flex justify-between items-center gap-4">
+                          <div>عنوان: </div>
+                          <div>{da.title}</div>
+                        </div>
+                        <div className="flex justify-center">
+                        <Link
+                          href={`/shop/${da.slug}`}
+                          target={"_blank"}
+                          className="rounded-lg flex justify-center items-center w-12 h-6 text-xs bg-indigo-500 text-white! hover:bg-indigo-600 transition-all duration-300"
+                        >
+                          لینک
+                        </Link>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              }
+            </div>
+            <div className="flex flex-col gap-2">
+              <div>سبد خرید کاربر</div>
+              {
+                <div className="flex justify-start items-center gap-4 text-xs flex-wrap">
+                  {fullData.cart.length < 1 ? (
+                    <div>محصولی در سبد خرید کاربر نیست!</div>
+                  ) : (
+                    fullData.cart.map((da, i) => (
                       <div key={i} className="bg-zinc-100 rounded-lg p-4 flex flex-col gap-2 shadow-[0px_0px_5px_rgba(0,0,0,.15)]">
                         <div className="flex justify-between items-center gap-2">
                           <div>شناسه: </div>

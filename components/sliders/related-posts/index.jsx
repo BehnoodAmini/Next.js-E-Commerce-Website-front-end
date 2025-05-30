@@ -9,7 +9,6 @@ import { FaChevronLeft } from "react-icons/fa";
 
 import BlogBox from "@/components/newBlogs/BlogBox";
 import GraphicSlideBox from "../graphic-slider-box";
-import ProductSlideBox from "../product-slider-box";
 
 const RelatedPosts = ({ typeOfModel, title, relPostsData }) => {
   const carouselRef = useRef();
@@ -81,13 +80,9 @@ const RelatedPosts = ({ typeOfModel, title, relPostsData }) => {
                 </div>
               ) : typeOfModel == "post" ? (
                 relModelDataState.map((po, i) => <BlogBox data={po} key={i} />)
-              ) : typeOfModel == "gr" ? (
-                relModelDataState.map((po, i) => (
-                  <GraphicSlideBox itemData={po} key={i} />
-                ))
               ) : (
                 relModelDataState.map((po, i) => (
-                  <ProductSlideBox itemData={po} key={i} />
+                  <GraphicSlideBox itemData={po} key={i} />
                 ))
               )}
             </div>

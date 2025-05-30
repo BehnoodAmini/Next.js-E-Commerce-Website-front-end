@@ -6,21 +6,21 @@ import Cookies from "js-cookie";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
-const SingleProductPageFav = ({ data }) => {
+const SingleProductPageCart = ({ data, price }) => {
   const auth_cookie = Cookies.get("auth_cookie");
-  const FavAdder = () => {
+  const CartAdder = () => {
     const productData = {
       method: "push",
-      newFavProduct: data
+      newCartProduct: data
     };
 
-    const backendUrl = `https://behnood-fileshop-server.liara.run/api/favourite-products`;
+    const backendUrl = `https://behnood-fileshop-server.liara.run/api/cart-managment`;
     axios
       .post(backendUrl, productData, { headers: { auth_cookie: auth_cookie } })
       .then((d) => {
         const message = d.data.msg
           ? d.data.msg
-          : "به محصولات مورد علاقه افزوده شد.";
+          : "به سبد خرید افزوده شد.";
         toast.success(message, {
           autoClose: 3000,
           hideProgressBar: false,
@@ -50,13 +50,13 @@ const SingleProductPageFav = ({ data }) => {
   return (
     <div>
       <button
-        onClick={() => FavAdder()}
-        className="cursor-pointer flex justify-center items-center text-center rounded-lg p-2 w-full bg-blue-500 transition-all duration-300 hover:bg-blue-600 text-white"
+        onClick={() => CartAdder()}
+        className="cursor-pointer flex justify-center items-center text-center rounded-lg p-2 w-full bg-orange-500 transition-all duration-300 hover:bg-orange-600 text-white"
       >
-        افزودن به علاقه مندی‌ها
+        افزودن به سبد خرید - {price} تومان
       </button>
     </div>
   );
 };
 
-export default SingleProductPageFav;
+export default SingleProductPageCart;

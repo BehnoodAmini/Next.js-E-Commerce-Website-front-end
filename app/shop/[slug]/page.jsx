@@ -6,26 +6,30 @@ import { TiTickOutline } from "react-icons/ti";
 import BreadCrumb from "@/components/breadCrumb";
 import RelatedPosts from "@/components/sliders/related-posts";
 import SingleProductPageFav from "@/components/singleProductPageFav";
+import SingleProductPageCart from "@/components/singleProductPageCart";
 
 const getData = async (slug) => {
-  const data = await fetch(`https://behnood-fileshop-server.liara.run/api/get-product/${slug}`, {
-    cache: "no-store",
-  });
+  const data = await fetch(
+    `https://behnood-fileshop-server.liara.run/api/get-product/${slug}`,
+    {
+      cache: "no-store",
+    }
+  );
   return data.json();
 };
 
 const SingleProduct = async ({ params }) => {
+  // MAKE PRICE BEAUTIFUL
+  function priceChanger(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const resolvedParams = await params;
   const data = await getData(resolvedParams.slug);
 
   const spliterForFeatures = (value) => {
     return value.split(":");
   };
-
-  // PRICE BEAUTIFUL
-  function priceChanger(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
 
   return (
     <div className="flex justify-between items-start container mx-auto gap-4">
@@ -164,9 +168,10 @@ const SingleProduct = async ({ params }) => {
           </main>
           <aside className="w-80 max-w-80 rounded-md flex flex-col gap-8">
             <div className="flex flex-col gap-6">
-              <button className="cursor-pointer flex justify-center items-center text-center rounded-md p-2 w-full bg-orange-500 transition-all duration-500 hover:bg-orange-600 text-white">
-                افزودن به سبد خرید - {priceChanger(data.price)} تومان
-              </button>
+              <SingleProductPageCart
+                data={data._id}
+                price={priceChanger(data.price)}
+              />
               <SingleProductPageFav data={data._id} />
             </div>
             <div className="rounded-lg p-3 shadow-[0px_0px_8px_rgba(0,0,0,0.35)]">
@@ -195,7 +200,9 @@ const SingleProduct = async ({ params }) => {
               <h3 className="text-blue-500">دسته بندی‌ها</h3>
               <div className="flex justify-start items-center gap-2 flex-wrap">
                 {data.categories.length < 1 ? (
-                  <div className="flex justify-center items-center p-3">بدون دسته بندی</div>
+                  <div className="flex justify-center items-center p-3">
+                    بدون دسته بندی
+                  </div>
                 ) : (
                   data.categories.map((da, i) => (
                     <Link
@@ -213,7 +220,9 @@ const SingleProduct = async ({ params }) => {
               <h3 className="text-blue-500">برچسب‌ها</h3>
               <div className="flex justify-start items-center gap-2 flex-wrap">
                 {data.tags.length < 1 ? (
-                  <div className="flex justify-center items-center p-3">بدون برچسب</div>
+                  <div className="flex justify-center items-center p-3">
+                    بدون برچسب
+                  </div>
                 ) : (
                   data.tags.map((da, i) => (
                     <Link
