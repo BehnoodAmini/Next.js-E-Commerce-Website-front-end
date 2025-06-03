@@ -6,10 +6,10 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
 
 import { IoIosSearch } from "react-icons/io";
-import { MdFavoriteBorder } from "react-icons/md";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 
 import Like from "@/components/likeComp";
@@ -169,6 +169,19 @@ const SlideBox = ({ itemData }) => {
           </div>
         </div>
       </div>
+      <ToastContainer
+        bodyClassName={() => "font-[IRANSans] text-sm flex items-center"}
+        position="top-right"
+        autoClose={3000}
+        theme="colored"
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </article>
   );
 };

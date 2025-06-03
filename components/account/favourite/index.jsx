@@ -81,6 +81,43 @@ const Favourite = ({ cookie }) => {
       });
   };
 
+  const cartAdder = (input) => {
+    const productData = {
+      method: "push",
+      newCartProduct: input,
+    };
+
+    const backendUrl = `https://behnood-fileshop-server.liara.run/api/cart-managment`;
+    axios
+      .post(backendUrl, productData, { headers: { auth_cookie: cookie } })
+      .then((d) => {
+        const message = d.data.msg ? d.data.msg : "به سبد خرید افزوده شد.";
+        toast.success(message, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      })
+      .catch((err) => {
+        const errorMsg =
+          err.response && err.response.data && err.response.data.msg
+            ? err.response.data.msg
+            : "خطا!";
+        console.log(err);
+        toast.error(errorMsg, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+  };
+
   return (
     <div>
       <div>
@@ -128,7 +165,7 @@ const Favourite = ({ cookie }) => {
                         />
                       </div>
                       <div className="relative w-full flex flex-col gap-4">
-                        <div className="absolute top-0 left-0 bg-indigo-400 text-white! rounded-md text-xs flex justify-center items-center w-20 h-6">
+                        <div className="absolute top-0 left-50 bg-indigo-400 text-white! rounded-md text-xs flex justify-center items-center w-20 h-6">
                           {da.typeOfProduct == "book" ? (
                             <span>کتاب</span>
                           ) : da.typeOfProduct == "app" ? (
@@ -137,9 +174,12 @@ const Favourite = ({ cookie }) => {
                             <span>فایل گرافیکی</span>
                           )}
                         </div>
+                        <div onClick={()=>cartAdder(da._id)} className="absolute top-0 left-22 bg-emerald-500 text-white! rounded-md text-xs flex justify-center items-center w-26 h-6 transition-all duration-300 hover:bg-emerald-600 cursor-pointer">
+                          افزودن به سبد خرید
+                        </div>
                         <Link
                           href={`/shop/${da.slug}`}
-                          className="absolute top-0 left-22 flex justify-center items-center text-xs bg-indigo-400 text-white! transition-all duration-300 hover:bg-indigo-500 rounded-md w-20 h-6"
+                          className="absolute top-0 left-0 flex justify-center items-center text-xs bg-blue-500 text-white! transition-all duration-300 hover:bg-blue-600 rounded-md w-20 h-6"
                           target="_blank"
                         >
                           لینک محصول
