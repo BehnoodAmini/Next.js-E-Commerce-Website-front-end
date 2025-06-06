@@ -5,11 +5,11 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
 import { FiRefreshCw } from "react-icons/fi";
+
+import { useAppContext } from "@/context/appContext";
 
 const Favourite = ({ cookie }) => {
   const spliterForFeatures = (value) => {
@@ -81,6 +81,9 @@ const Favourite = ({ cookie }) => {
       });
   };
 
+  // CONTEXT OF CART NUMBER
+  const { cartNumber, setCartNumber } = useAppContext();
+
   const cartAdder = (input) => {
     const productData = {
       method: "push",
@@ -100,6 +103,7 @@ const Favourite = ({ cookie }) => {
           draggable: true,
           progress: undefined,
         });
+        setCartNumber(cartNumber + 1);
       })
       .catch((err) => {
         const errorMsg =
@@ -174,7 +178,10 @@ const Favourite = ({ cookie }) => {
                             <span>فایل گرافیکی</span>
                           )}
                         </div>
-                        <div onClick={()=>cartAdder(da._id)} className="absolute top-0 left-22 bg-emerald-500 text-white! rounded-md text-xs flex justify-center items-center w-26 h-6 transition-all duration-300 hover:bg-emerald-600 cursor-pointer">
+                        <div
+                          onClick={() => cartAdder(da._id)}
+                          className="absolute top-0 left-22 bg-emerald-500 text-white! rounded-md text-xs flex justify-center items-center w-26 h-6 transition-all duration-300 hover:bg-emerald-600 cursor-pointer"
+                        >
                           افزودن به سبد خرید
                         </div>
                         <Link
@@ -239,19 +246,6 @@ const Favourite = ({ cookie }) => {
           </div>
         )}
       </div>
-      <ToastContainer
-        bodyClassName={() => "font-[IRANSans] text-sm flex items-center"}
-        position="top-right"
-        autoClose={3000}
-        theme="colored"
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={true}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
     </div>
   );
 };

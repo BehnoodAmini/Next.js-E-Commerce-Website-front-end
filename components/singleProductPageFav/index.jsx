@@ -3,7 +3,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
 const SingleProductPageFav = ({ data }) => {

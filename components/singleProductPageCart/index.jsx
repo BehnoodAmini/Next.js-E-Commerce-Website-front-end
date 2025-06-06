@@ -3,24 +3,27 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
+
+import { useAppContext } from "@/context/appContext";
 
 const SingleProductPageCart = ({ data, price }) => {
   const auth_cookie = Cookies.get("auth_cookie");
+
+  // CONTEXT OF CART NUMBER
+  const { cartNumber, setCartNumber } = useAppContext();
+
   const CartAdder = () => {
     const productData = {
       method: "push",
-      newCartProduct: data
+      newCartProduct: data,
     };
 
     const backendUrl = `https://behnood-fileshop-server.liara.run/api/cart-managment`;
     axios
       .post(backendUrl, productData, { headers: { auth_cookie: auth_cookie } })
       .then((d) => {
-        const message = d.data.msg
-          ? d.data.msg
-          : "به سبد خرید افزوده شد.";
+        const message = d.data.msg ? d.data.msg : "به سبد خرید افزوده شد.";
         toast.success(message, {
           autoClose: 3000,
           hideProgressBar: false,
@@ -29,6 +32,7 @@ const SingleProductPageCart = ({ data, price }) => {
           draggable: true,
           progress: undefined,
         });
+        setCartNumber(cartNumber + 1);
       })
       .catch((err) => {
         const errorMsg =

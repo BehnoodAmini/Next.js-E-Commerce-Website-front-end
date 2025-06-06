@@ -5,13 +5,13 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
 import { FiRefreshCw } from "react-icons/fi";
 
 import Like from "../likeComp";
+
+import { useAppContext } from "@/context/appContext";
 
 const CartPageComp = ({ cookie }) => {
   const spliterForFeatures = (value) => {
@@ -26,6 +26,8 @@ const CartPageComp = ({ cookie }) => {
   const [data, setData] = useState([-1]);
   const [needRefresh, setNeedRefresh] = useState(0);
   const [priceSum, setPriceSum] = useState(0);
+  // CONTEXT OF CART NUMBER
+  const { cartNumber, setCartNumber } = useAppContext();
 
   useEffect(() => {
     if (cookie && cookie.length > 0) {
@@ -83,6 +85,7 @@ const CartPageComp = ({ cookie }) => {
           progress: undefined,
         });
         setNeedRefresh(1);
+        setCartNumber(cartNumber - 1);
       })
       .catch((e) => {
         toast.error("خطا در حذف محصول", {
@@ -96,7 +99,7 @@ const CartPageComp = ({ cookie }) => {
       });
   };
 
-  const FavAdder = (input) => {
+  const favAdder = (input) => {
     const productData = {
       method: "push",
       newFavProduct: input,
@@ -133,6 +136,44 @@ const CartPageComp = ({ cookie }) => {
           progress: undefined,
         });
       });
+  };
+
+  const paymentHandler = () => {
+    console.log("yes");
+    // const formData = {
+    //   method: "remove",
+    //   goalCartProductId: input,
+    // };
+    // axios
+    //   .post(
+    //     "https://behnood-fileshop-server.liara.run/api/cart-managment",
+    //     formData,
+    //     { headers: { auth_cookie: cookie } }
+    //   )
+    //   .then((d) => {
+    //     const message =
+    //       d.data && d.data.msg ? d.data.msg : "محصول از سبد خرید حذف شد!";
+    //     toast.success(message, {
+    //       autoClose: 3000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //     });
+    //     setNeedRefresh(1);
+    //     setCartNumber(cartNumber - 1);
+    //   })
+    //   .catch((e) => {
+    //     toast.error("خطا در حذف محصول", {
+    //       autoClose: 3000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //     });
+    //   });
   };
 
   return (
@@ -205,7 +246,7 @@ const CartPageComp = ({ cookie }) => {
                               لینک محصول
                             </Link>
                             <div
-                              onClick={() => FavAdder(da._id)}
+                              onClick={() => favAdder(da._id)}
                               className="absolute top-0 left-0 text-xs flex justify-center items-center w-10 h-6 cursor-pointer"
                             >
                               <Like />
@@ -269,6 +310,7 @@ const CartPageComp = ({ cookie }) => {
                   <div>{priceChanger(priceSum)} تومان</div>
                 </div>
                 <button
+                  onClick={paymentHandler}
                   className="cursor-pointer bg-white text-center rounded-2xl h-10 relative group"
                   type="button"
                 >
@@ -296,19 +338,6 @@ const CartPageComp = ({ cookie }) => {
           </div>
         )}
       </div>
-      <ToastContainer
-        bodyClassName={() => "font-[IRANSans] text-sm flex items-center"}
-        position="top-right"
-        autoClose={3000}
-        theme="colored"
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={true}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
     </div>
   );
 };

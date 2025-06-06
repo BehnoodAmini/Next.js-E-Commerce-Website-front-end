@@ -3,9 +3,7 @@
 import { useRef } from "react";
 import { useRouter } from "next/navigation";
 
-import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 import { BiSearchAlt } from "react-icons/bi";
 
@@ -49,19 +47,6 @@ const SearchBlog = () => {
           <BiSearchAlt className="w-6 h-6 text-blue-500" />
         </button>
       </form>
-      <ToastContainer
-        bodyClassName={() => "font-[IRANSans] text-sm flex items-center"}
-        position="top-right"
-        autoClose={3000}
-        theme="colored"
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={true}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
     </div>
   );
 };

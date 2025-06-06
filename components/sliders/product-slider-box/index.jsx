@@ -5,14 +5,14 @@ import Link from "next/link";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
 
 import { IoIosSearch } from "react-icons/io";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 
 import Like from "@/components/likeComp";
+
+import { useAppContext } from "@/context/appContext";
 
 const SlideBox = ({ itemData }) => {
   // PRICE BEAUTIFUL
@@ -60,6 +60,9 @@ const SlideBox = ({ itemData }) => {
       });
   };
 
+  // CONTEXT OF CART NUMBER
+  const { cartNumber, setCartNumber } = useAppContext();
+
   const CartAdder = () => {
     const productData = {
       method: "push",
@@ -79,6 +82,7 @@ const SlideBox = ({ itemData }) => {
           draggable: true,
           progress: undefined,
         });
+        setCartNumber(cartNumber + 1);
       })
       .catch((err) => {
         const errorMsg =
@@ -169,19 +173,6 @@ const SlideBox = ({ itemData }) => {
           </div>
         </div>
       </div>
-      <ToastContainer
-        bodyClassName={() => "font-[IRANSans] text-sm flex items-center"}
-        position="top-right"
-        autoClose={3000}
-        theme="colored"
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={true}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
     </article>
   );
 };

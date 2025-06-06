@@ -3,8 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import { toast } from "react-toastify";
 
 const NewPost = () => {
@@ -283,19 +282,6 @@ const NewPost = () => {
           ارسال
         </button>
       </form>
-      <ToastContainer
-        bodyClassName={() => "font-[IRANSans] text-sm flex items-center"}
-        position="top-right"
-        autoClose={3000}
-        theme="colored"
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={true}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
     </div>
   );
 };
