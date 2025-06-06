@@ -14,6 +14,8 @@ import { HiOutlineShoppingCart } from "react-icons/hi";
 
 import Like from "@/components/likeComp";
 
+import { useAppContext } from "@/context/appContext";
+
 const SlideBox = ({ itemData }) => {
   // PRICE BEAUTIFUL
   function priceChanger(x) {
@@ -23,6 +25,9 @@ const SlideBox = ({ itemData }) => {
   const spliterForFeatures = (value) => {
     return value.split(":");
   };
+
+  // CONTEXT OF CART NUMBER
+  const { cartNumber, setCartNumber } = useAppContext();
 
   const auth_cookie = Cookies.get("auth_cookie");
   const FavAdder = () => {
@@ -83,6 +88,7 @@ const SlideBox = ({ itemData }) => {
           draggable: true,
           progress: undefined,
         });
+        setCartNumber(cartNumber + 1);
       })
       .catch((err) => {
         const errorMsg =

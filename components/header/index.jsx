@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -19,7 +19,12 @@ import { BiSearchAlt } from "react-icons/bi";
 import { IoPerson } from "react-icons/io5";
 import { HiShoppingCart } from "react-icons/hi";
 
+import { useAppContext } from "@/context/appContext";
+
 const Header = () => {
+  // CONTEXT OF CART NUMBER
+  const { cartNumber } = useAppContext();
+
   const [logohover, setLogohover] = useState(0);
 
   const router = useRouter();
@@ -173,7 +178,7 @@ const Header = () => {
                 className="flex items-center gap-2 bg-orange-400 hover:bg-orange-500 text-white rounded-xl py-2 px-4 shadow-orange-300 shadow-[1px_3px_5px_rgba(0,0,0,.05)] transition-all duration-300 hover:shadow-[0.5rem_0.5rem_1rem_rgba(0,0,0,.35)]"
               >
                 <div className="w-7 h-7 bg-white text-orange-500 text-sm font-bold rounded-full flex items-center justify-center shadow">
-                  ۲
+                  {cartNumber == -1 ? <div></div> : cartNumber}
                 </div>
                 <span className="text-sm font-medium text-white">سبد خرید</span>
                 <div className="w-8 h-8 bg-white text-orange-500 rounded-lg flex items-center justify-center shadow">

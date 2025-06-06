@@ -197,12 +197,6 @@ const CartPageComp = ({ cookie }) => {
                                 <span>فایل گرافیکی</span>
                               )}
                             </div>
-                            {/* <div
-                              onClick={() => FavAdder(da._id)}
-                              className="absolute top-0 left-22 bg-emerald-500 text-white! rounded-md text-xs flex justify-center items-center w-32 h-6 transition-all duration-300 hover:bg-emerald-600 cursor-pointer"
-                            >
-                              افزودن به مورد علاقه‌ها
-                            </div> */}
                             <Link
                               href={`/shop/${da.slug}`}
                               className="absolute top-0 left-12 flex justify-center items-center text-xs bg-blue-500 text-white! transition-all duration-300 hover:bg-blue-600 rounded-md w-20 h-6"
