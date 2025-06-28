@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { toast } from "react-toastify";
 
@@ -26,8 +27,12 @@ const CartPageComp = ({ cookie }) => {
   const [data, setData] = useState([-1]);
   const [needRefresh, setNeedRefresh] = useState(0);
   const [priceSum, setPriceSum] = useState(0);
+
   // CONTEXT OF CART NUMBER
   const { cartNumber, setCartNumber } = useAppContext();
+
+  const [cartProductsIds, setCartProductsIds] = useState([-1]);
+  const router=useRouter();
 
   useEffect(() => {
     if (cookie && cookie.length > 0) {
@@ -48,6 +53,10 @@ const CartPageComp = ({ cookie }) => {
             }
             setPriceSum(i);
           }
+
+          // JUST PRODUCT IDS
+          const ids=d.data.map(da=>da._id);
+          setCartProductsIds(ids);
         })
         .catch((e) => {
           toast.error("خطا در لود اطلاعات", {
@@ -139,41 +148,42 @@ const CartPageComp = ({ cookie }) => {
   };
 
   const paymentHandler = () => {
-    console.log("yes");
-    // const formData = {
-    //   method: "remove",
-    //   goalCartProductId: input,
-    // };
-    // axios
-    //   .post(
-    //     "https://behnood-fileshop-server.liara.run/api/cart-managment",
-    //     formData,
-    //     { headers: { auth_cookie: cookie } }
-    //   )
-    //   .then((d) => {
-    //     const message =
-    //       d.data && d.data.msg ? d.data.msg : "محصول از سبد خرید حذف شد!";
-    //     toast.success(message, {
-    //       autoClose: 3000,
-    //       hideProgressBar: false,
-    //       closeOnClick: true,
-    //       pauseOnHover: true,
-    //       draggable: true,
-    //       progress: undefined,
-    //     });
-    //     setNeedRefresh(1);
-    //     setCartNumber(cartNumber - 1);
-    //   })
-    //   .catch((e) => {
-    //     toast.error("خطا در حذف محصول", {
-    //       autoClose: 3000,
-    //       hideProgressBar: false,
-    //       closeOnClick: true,
-    //       pauseOnHover: true,
-    //       draggable: true,
-    //       progress: undefined,
-    //     });
-    //   });
+    const formData = {
+      amount: Number(priceSum)*10,
+      products: cartProductsIds,
+    };
+    axios
+      .post(
+        "https://behnood-fileshop-server.liara.run/api/new-payment",
+        formData,
+        { headers: { auth_cookie: cookie } }
+      )
+      .then((d) => {
+        const message =
+          d.data && d.data.msg ? d.data.msg : "در حال انتقال به درگاه پرداخت.";
+        toast.success(message, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        router.push('/payment-gateway')
+      })
+      .catch((e) => {
+        console.log(e);
+        const message =
+          e.response && e.response.data && e.response.data.msg ? e.response.data.msg : "خطا در انتقال به درگاه پرداخت!";
+        toast.error(message, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
   };
 
   return (

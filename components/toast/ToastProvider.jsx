@@ -1,10 +1,10 @@
-"use client"; // This makes this component a Client Component
+"use client";
 
 import dynamic from "next/dynamic";
 
 // Dynamically import ClientToastContainer here, inside a Client Component
 const DynamicToastContainer = dynamic(
-  () => import("./ClientToastContainer"), // Relative path since they are in the same folder
+  () => import("./ClientToastContainer"),
   { ssr: false } // ssr: false is now allowed because this file is a Client Component
 );
 
