@@ -1,11 +1,36 @@
-const Page = () => {
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
+import PaymentResultComp from "@/components/PaymentResultComp";
+
+
+const getAuthData = async (cookieValue) => {
+  const goalData = await fetch(
+    "https://behnood-fileshop-server.liara.run/api/get-user-data",
+    { cache: "no-store", headers: { auth_cookie: cookieValue } }
+  );
+  const data = await goalData.json();
+  if (!data._id) {
+    redirect("/login");
+  } else {
+    return data;
+  }
+};
+
+const PaymentResultPage = async ({searchParams}) => {
+    const resolvedParams = await searchParams;
+
+    const cookieStore = await cookies();
+      const auth_cookie = cookieStore.get("auth_cookie");
+      const cookieValue =
+        auth_cookie && auth_cookie.value ? auth_cookie.value : undefined;
+      const data = await getAuthData(cookieValue);
+
     return (
         <section className="container mx-auto p-12 flex justify-center items-center">
-            <div className="px-8 py-4 rounded-md bg-orange-500 text-white">
-                سبد خرید
-            </div>
+            <PaymentResultComp resolvedParams={resolvedParams} cookie={cookieValue}/>
         </section>
     );
 }
 
-export default Page;
+export default PaymentResultPage;

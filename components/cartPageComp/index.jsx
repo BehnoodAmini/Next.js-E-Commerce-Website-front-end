@@ -32,7 +32,7 @@ const CartPageComp = ({ cookie }) => {
   const { cartNumber, setCartNumber } = useAppContext();
 
   const [cartProductsIds, setCartProductsIds] = useState([-1]);
-  const router=useRouter();
+  const router = useRouter();
 
   useEffect(() => {
     if (cookie && cookie.length > 0) {
@@ -55,7 +55,7 @@ const CartPageComp = ({ cookie }) => {
           }
 
           // JUST PRODUCT IDS
-          const ids=d.data.map(da=>da._id);
+          const ids = d.data.map((da) => da._id);
           setCartProductsIds(ids);
         })
         .catch((e) => {
@@ -149,7 +149,7 @@ const CartPageComp = ({ cookie }) => {
 
   const paymentHandler = () => {
     const formData = {
-      amount: Number(priceSum)*10,
+      amount: Number(priceSum) * 10,
       products: cartProductsIds,
     };
     axios
@@ -159,6 +159,7 @@ const CartPageComp = ({ cookie }) => {
         { headers: { auth_cookie: cookie } }
       )
       .then((d) => {
+        const resnumber = d.data.resnumber;
         const message =
           d.data && d.data.msg ? d.data.msg : "در حال انتقال به درگاه پرداخت.";
         toast.success(message, {
@@ -169,12 +170,14 @@ const CartPageComp = ({ cookie }) => {
           draggable: true,
           progress: undefined,
         });
-        router.push('/payment-gateway')
+        router.push(`/payment-gateway?Authority=${resnumber}`);
       })
       .catch((e) => {
         console.log(e);
         const message =
-          e.response && e.response.data && e.response.data.msg ? e.response.data.msg : "خطا در انتقال به درگاه پرداخت!";
+          e.response && e.response.data && e.response.data.msg
+            ? e.response.data.msg
+            : "خطا در انتقال به درگاه پرداخت!";
         toast.error(message, {
           autoClose: 3000,
           hideProgressBar: false,
