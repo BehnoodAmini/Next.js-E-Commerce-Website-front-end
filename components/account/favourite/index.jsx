@@ -123,7 +123,16 @@ const Favourite = ({ cookie }) => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-8 relative pt-20">
+      <div
+        onClick={() => {
+          setNeedRefresh(1);
+          setData([-1]);
+        }}
+        className="absolute top-1 left-1 cursor-pointer text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-28 h-10"
+      >
+        <FiRefreshCw /> به روز رسانی
+      </div>
       <div>
         {data[0] == -1 ? (
           <div className="flex justify-center items-center p-12">
@@ -135,17 +144,7 @@ const Favourite = ({ cookie }) => {
             />
           </div>
         ) : (
-          <div className="flex flex-col gap-8 relative pt-20">
-            <div
-              onClick={() => {
-                setNeedRefresh(1);
-                setData([-1]);
-              }}
-              className="absolute top-1 left-1 cursor-pointer text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-28 h-10"
-            >
-              <FiRefreshCw /> به روز رسانی
-            </div>
-
+          <div>
             {data.length < 1 ? (
               <div className="flex justify-center items-center p-8 w-full">
                 محصولی موجود نیست...

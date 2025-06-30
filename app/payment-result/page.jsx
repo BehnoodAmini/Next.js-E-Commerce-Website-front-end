@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 
 import PaymentResultComp from "@/components/PaymentResultComp";
 
-
 const getAuthData = async (cookieValue) => {
   const goalData = await fetch(
     "https://behnood-fileshop-server.liara.run/api/get-user-data",
@@ -17,20 +16,20 @@ const getAuthData = async (cookieValue) => {
   }
 };
 
-const PaymentResultPage = async ({searchParams}) => {
-    const resolvedParams = await searchParams;
+const PaymentResultPage = async ({ searchParams }) => {
+  const resolvedParams = await searchParams;
 
-    const cookieStore = await cookies();
-      const auth_cookie = cookieStore.get("auth_cookie");
-      const cookieValue =
-        auth_cookie && auth_cookie.value ? auth_cookie.value : undefined;
-      const data = await getAuthData(cookieValue);
+  const cookieStore = await cookies();
+  const auth_cookie = cookieStore.get("auth_cookie");
+  const cookieValue =
+    auth_cookie && auth_cookie.value ? auth_cookie.value : undefined;
+  const data = await getAuthData(cookieValue);
 
-    return (
-        <section className="container mx-auto p-12 flex justify-center items-center">
-            <PaymentResultComp resolvedParams={resolvedParams} cookie={cookieValue}/>
-        </section>
-    );
-}
+  return (
+    <section className="container mx-auto p-12 flex justify-center items-center">
+      <PaymentResultComp resolvedParams={resolvedParams} cookie={cookieValue} />
+    </section>
+  );
+};
 
 export default PaymentResultPage;

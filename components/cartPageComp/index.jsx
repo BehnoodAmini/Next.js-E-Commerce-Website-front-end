@@ -149,7 +149,7 @@ const CartPageComp = ({ cookie }) => {
 
   const paymentHandler = () => {
     const formData = {
-      amount: Number(priceSum) * 10,
+      amount: Number(priceSum),
       products: cartProductsIds,
     };
     axios

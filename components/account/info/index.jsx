@@ -177,7 +177,16 @@ const Info = ({ cookie }) => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-8 relative pt-8">
+      <div
+        onClick={() => {
+          setNeedRefresh(1);
+          setData([-1]);
+        }}
+        className="absolute top-0 left-0 cursor-pointer text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-28 h-10"
+      >
+        <FiRefreshCw /> به روز رسانی
+      </div>
       <div>
         {data[0] == -1 ? (
           <div className="flex justify-center items-center p-12">
@@ -189,16 +198,7 @@ const Info = ({ cookie }) => {
             />
           </div>
         ) : (
-          <div className="flex flex-col gap-8 relative pt-8">
-            <div
-              onClick={() => {
-                setNeedRefresh(1);
-                setData([-1]);
-              }}
-              className="absolute top-0 left-0 cursor-pointer text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-28 h-10"
-            >
-              <FiRefreshCw /> به روز رسانی
-            </div>
+          <div className="flex flex-col gap-8">
             {data.userIsActive == false ? (
               <div className="flex flex-col gap-8 bg-zinc-200 w-full text-sm rounded-xl p-4 mt-5">
                 <form

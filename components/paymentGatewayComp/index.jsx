@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-const PaymentGatewayComp = ({resnumber}) => {
+const PaymentGatewayComp = ({ resnumber }) => {
   const router = useRouter();
 
   const handleCancel = () =>

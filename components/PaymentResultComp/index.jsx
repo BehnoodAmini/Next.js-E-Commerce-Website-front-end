@@ -1,9 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { toast } from "react-toastify";
