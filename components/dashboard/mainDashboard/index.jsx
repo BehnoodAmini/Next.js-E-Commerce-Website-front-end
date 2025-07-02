@@ -10,6 +10,7 @@ import PostsMain from "../forms/postForms";
 import CategoryMain from "../forms/categoryForms";
 import ProductForms from "../forms/productForms";
 import UserForms from "../forms/userForms"
+import PaymentForms from "../forms/paymentForms"
 
 const MainDashboard = () => {
   const [contentChanger, setContentChanger] = useState("admin-panel");
@@ -30,6 +31,8 @@ const MainDashboard = () => {
       setDetails(<ProductForms />);
     } else if (contentChanger == "users") {
       setDetails(<UserForms />);
+    } else if (contentChanger == "payments") {
+      setDetails(<PaymentForms />);
     }
   }, [contentChanger]);
 

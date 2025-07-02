@@ -25,7 +25,7 @@ const PostsMain = () => {
   return (
     <div className="flex flex-col gap-8">
       <section className="flex justify-between items-center gap-2">
-        <h1 className="text-blue-500 text-lg">پست‌ها</h1>
+        <h1 className="text-blue-500 text-lg">کاربرها</h1>
         <div className="flex justify-end items-center gap-2">
           <button
             onClick={() =>

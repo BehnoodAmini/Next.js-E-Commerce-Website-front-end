@@ -152,7 +152,7 @@ const CategoryDetails = ({ categoryId }) => {
           </div>
           <div className="flex justify-between items-center">
             <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
-              {fullData._id ? fullData._id : ""}
+              شناسه دسته بندی: {fullData._id ? fullData._id : ""}
             </div>
             <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
               {fullData.date ? fullData.date : ""}

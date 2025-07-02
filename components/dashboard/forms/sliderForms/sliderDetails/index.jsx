@@ -83,7 +83,9 @@ const SliderDetails = ({ midBanId }) => {
   useEffect(() => {
     goTopCtrl();
     axios
-      .get(`https://behnood-fileshop-server.liara.run/api/get-slider/${midBanId}`)
+      .get(
+        `https://behnood-fileshop-server.liara.run/api/get-slider/${midBanId}`
+      )
       .then((d) => {
         setFullData(d.data);
       })
@@ -140,16 +142,32 @@ const SliderDetails = ({ midBanId }) => {
         <div className="flex flex-col gap-8">
           <div className="flex justify-between items-center">
             <h2 className="text-orange-500">جزئیات بنر</h2>
-            <button
-              onClick={() => RemoveHandler()}
-              className="bg-rose-600 text-white px-4 py-1 rounded-md text-xs transition-all duration-300 hover:bg-rose-700"
-            >
-              حذف
-            </button>
+            <div className="w-20 h-6 flex justify-center items-center m-1">
+              <button
+                onClick={() => RemoveHandler()}
+                className="cursor-pointer h-8 inline-flex items-center px-4 py-2 bg-rose-600 transition ease-in-out delay-75 hover:bg-rose-700 text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
+              >
+                حذف
+                <svg
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  className="h-5 w-5 mr-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    strokeWidth={2}
+                    strokeLinejoin="round"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
           <div className="flex justify-between items-center">
             <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
-              {fullData._id ? fullData._id : ""}
+              شناسه اسلایدر: {fullData._id ? fullData._id : ""}
             </div>
             <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
               {fullData.date ? fullData.date : ""}

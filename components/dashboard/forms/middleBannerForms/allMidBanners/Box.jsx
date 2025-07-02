@@ -23,7 +23,7 @@ const Box = ({ data, setMidBanDetCtrl, setRandNumForBannerClick }) => {
       </div>
       <div className="flex items-center gap-3 absolute bottom-3 left-3">
         {data.situation == true ? (
-          <div className="text-xs bg-green-600 text-white px-3 py-1 rounded">
+          <div className="text-xs bg-emerald-600 text-white px-3 py-1 rounded">
             فعال
           </div>
         ) : (

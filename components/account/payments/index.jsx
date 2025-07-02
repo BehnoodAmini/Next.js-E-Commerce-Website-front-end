@@ -12,11 +12,7 @@ import { FiRefreshCw } from "react-icons/fi";
 
 import SlideBox from "@/components/sliders/product-slider-box";
 
-const Payments = ({ cookie }) => {
-  const spliterForFeatures = (value) => {
-    return value.split(":");
-  };
-
+const AccountPayments = ({ cookie }) => {
   // PRICE BEAUTIFUL
   function priceChanger(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -117,4 +113,4 @@ const Payments = ({ cookie }) => {
   );
 };
 
-export default Payments;
+export default AccountPayments;

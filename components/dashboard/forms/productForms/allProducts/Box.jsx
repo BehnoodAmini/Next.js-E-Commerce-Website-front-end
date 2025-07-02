@@ -53,7 +53,7 @@ return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");
             بازدید: {data.pageView}
           </div>
           {data.published == true ? (
-            <div className="text-xs bg-green-600 px-3 py-1 rounded">
+            <div className="text-xs bg-emerald-600 px-3 py-1 rounded">
               منتشر شده
             </div>
           ) : (

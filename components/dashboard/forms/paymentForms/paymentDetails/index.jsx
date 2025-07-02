@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 
 import { toast } from "react-toastify";
 
-const UserDetails = ({ goalId }) => {
+const PaymentDetails = ({ goalId }) => {
   //PREVENT FORM TO BE SENT WITH ENTER
   const FormKeyNotSuber = (event) => {
     if (event.key == "Enter") {
@@ -23,96 +23,17 @@ const UserDetails = ({ goalId }) => {
   };
 
   const viewedRef = useRef();
+  const amountRef = useRef();
+  const payedRef = useRef();
   const emailRef = useRef();
   const usernameRef = useRef();
-  const displaynameRef = useRef();
-  const activateCodeRef = useRef();
-  const userIsActiveRef = useRef();
-  const emailSendRef = useRef();
 
-  const UpdateHandler = (e) => {
-    e.preventDefault();
-    const formData = {
-      updatedAt: new Date().toLocaleDateString("fa-IR", {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-      email: emailRef.current.value,
-      username: usernameRef.current.value,
-      viewed: viewedRef.current.value,
-      displayname: displaynameRef.current.value,
-      userIsActive: userIsActiveRef.current.value,
-      activateCode: activateCodeRef.current.value,
-      emailSend: emailSendRef.current.value,
-    };
-    const url = `https://behnood-fileshop-server.liara.run/api/update-user/${goalId}`;
-    axios
-      .post(url, formData)
-      .then((d) => {
-        toast.success("کاربر با موفقیت به‌روزرسانی شد.", {
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      })
-      .catch((e) => {
-        let message = "متاسفانه ناموفق بود.";
-        if (e.response.data.msg) {
-          message = e.response.data.msg;
-        }
-
-        toast.error(message, {
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      });
-  };
-
-  const RemoveHandler = () => {
-    const url = `https://behnood-fileshop-server.liara.run/api/delete-user/${goalId}`;
-    axios
-      .post(url)
-      .then((d) => {
-        toast.success("کاربر با موفقیت حذف شد.", {
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        Cookies.remove("auth_cookie");
-      })
-      .catch((e) => {
-        let message = "متاسفانه ناموفق بود.";
-        if (e.response.data.msg) {
-          message = e.response.data.msg;
-        }
-
-        toast.error(message, {
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      });
-  };
-
-  // LOADING DEFAULT VALUES
+    // LOADING DEFAULT VALUES
   const [fullData, setFullData] = useState([-1]);
   useEffect(() => {
     goTopCtrl();
     axios
-      .get(`https://behnood-fileshop-server.liara.run/api/get-user/${goalId}`)
+      .get(`https://behnood-fileshop-server.liara.run/api/get-payment/${goalId}`)
       .then((d) => {
         setFullData(d.data);
         console.log(d.data);
@@ -129,6 +50,80 @@ const UserDetails = ({ goalId }) => {
       });
   }, [goalId]);
 
+  const UpdateHandler = (e) => {
+    e.preventDefault();
+    const formData = {
+      updatedAt: new Date().toLocaleDateString("fa-IR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+      viewed: viewedRef.current.value,
+      amount: amountRef.current.value,
+      payed: payedRef.current.value,
+      email: emailRef.current.value,
+      username: usernameRef.current.value,
+      products: fullData.products,
+    };
+    const url = `https://behnood-fileshop-server.liara.run/api/update-payment/${goalId}`;
+    axios
+      .post(url, formData)
+      .then((d) => {
+        toast.success("سفارش با موفقیت به‌روزرسانی شد.", {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      })
+      .catch((e) => {
+        let message = "متاسفانه ناموفق بود.";
+        if (e.response.data.msg) {
+          message = e.response.data.msg;
+        }
+        toast.error(message, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+  };
+
+  const RemoveHandler = () => {
+    const url = `https://behnood-fileshop-server.liara.run/api/delete-payment/${goalId}`;
+    axios
+      .post(url)
+      .then((d) => {
+        toast.success("سفارش با موفقیت حذف شد.", {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        Cookies.remove("auth_cookie");
+      })
+      .catch((e) => {
+        let message = "متاسفانه ناموفق بود.";
+        if (e.response.data.msg) {
+          message = e.response.data.msg;
+        }
+        toast.error(message, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+  };
+
   return (
     <div className="flex flex-col gap-8">
       {fullData[0] == -1 ? (
@@ -138,7 +133,7 @@ const UserDetails = ({ goalId }) => {
       ) : (
         <div className="flex flex-col gap-8">
           <div className="flex justify-between items-center">
-            <h2 className="text-orange-500">جزئیات کاربر</h2>
+            <h2 className="text-orange-500">جزئیات سفارش</h2>
             <div className="w-20 h-6 flex justify-center items-center m-1">
               <button
                 onClick={() => RemoveHandler()}
@@ -164,13 +159,13 @@ const UserDetails = ({ goalId }) => {
           </div>
           <div className="flex justify-between items-center">
             <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
-              شناسه کاربر: {fullData._id ? fullData._id : ""}
-            </div>
-            <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
-              تاریخ ایجاد: {fullData.createdAt ? fullData.createdAt : ""}
+              کد پرداختی: {fullData.resnumber ? fullData.resnumber : ""}
             </div>
             <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
               به‌روزرسانی: {fullData.updatedAt ? fullData.updatedAt : ""}
+            </div>
+            <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
+              تاریخ ایجاد: {fullData.createdAt ? fullData.createdAt : ""}
             </div>
           </div>
           <form
@@ -198,7 +193,7 @@ const UserDetails = ({ goalId }) => {
               </select>
             </div>
             <div className="flex flex-col gap-2">
-              <div>ایمیل کاربر</div>
+              <div>ایمیل جدید کاربر</div>
               <input
                 defaultValue={fullData.email ? fullData.email : ""}
                 required={true}
@@ -208,7 +203,7 @@ const UserDetails = ({ goalId }) => {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <div>نام کاربری(username)</div>
+              <div>نام کاربری جدید(username)</div>
               <input
                 defaultValue={fullData.username ? fullData.username : ""}
                 required={true}
@@ -218,39 +213,24 @@ const UserDetails = ({ goalId }) => {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <div>نام نمایشی(displayname)</div>
+              <div>مبلغ جدید:(تومان)</div>
               <input
-                defaultValue={fullData.displayname ? fullData.displayname : ""}
+                defaultValue={fullData.amount ? fullData.amount : ""}
                 required={true}
-                type="text"
-                ref={displaynameRef}
-                className="inputLtr p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+                type="number"
+                ref={amountRef}
+                className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
               />
             </div>
             <div className="flex flex-col gap-2">
-              <div>کد فعال سازی حساب کاربر</div>
-              <input
-                defaultValue={
-                  fullData.activateCode ? fullData.activateCode : ""
-                }
-                required={true}
-                type="text"
-                ref={activateCodeRef}
-                className="inputLtr p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <div>محصولات مورد علاقه کاربر</div>
+              <div>محصولات</div>
               {
                 <div className="flex justify-start items-center gap-4 text-xs flex-wrap">
-                  {fullData.favoriteProducts.length < 1 ? (
-                    <div>بدون محصول مورد علاقه</div>
+                  {fullData.products.length < 1 ? (
+                    <div>بدون محصول</div>
                   ) : (
-                    fullData.favoriteProducts.map((da, i) => (
-                      <div
-                        key={i}
-                        className="bg-zinc-100 rounded-lg p-4 flex flex-col gap-2 shadow-[0px_0px_5px_rgba(0,0,0,.15)]"
-                      >
+                    fullData.products.map((da, i) => (
+                      <div key={i} className="bg-zinc-100 rounded-lg p-4 flex flex-col gap-2 shadow-[0px_0px_5px_rgba(0,0,0,.15)]">
                         <div className="flex justify-between items-center gap-1">
                           <div>شناسه: </div>
                           <div>{da._id}</div>
@@ -260,13 +240,13 @@ const UserDetails = ({ goalId }) => {
                           <div>{da.title}</div>
                         </div>
                         <div className="flex justify-center">
-                          <Link
-                            href={`/shop/${da.slug}`}
-                            target={"_blank"}
-                            className="rounded-lg flex justify-center items-center w-12 h-6 text-xs bg-indigo-500 text-white! hover:bg-indigo-600 transition-all duration-300"
-                          >
-                            لینک
-                          </Link>
+                        <Link
+                          href={`/shop/${da.slug}`}
+                          target={"_blank"}
+                          className="rounded-lg flex justify-center items-center w-12 h-6 text-xs bg-indigo-500 text-white! hover:bg-indigo-600 transition-all duration-300"
+                        >
+                          لینک
+                        </Link>
                         </div>
                       </div>
                     ))
@@ -275,74 +255,20 @@ const UserDetails = ({ goalId }) => {
               }
             </div>
             <div className="flex flex-col gap-2">
-              <div>سبد خرید کاربر</div>
-              {
-                <div className="flex justify-start items-center gap-4 text-xs flex-wrap">
-                  {fullData.cart.length < 1 ? (
-                    <div>محصولی در سبد خرید کاربر نیست!</div>
-                  ) : (
-                    fullData.cart.map((da, i) => (
-                      <div
-                        key={i}
-                        className="bg-zinc-100 rounded-lg p-4 flex flex-col gap-2 shadow-[0px_0px_5px_rgba(0,0,0,.15)]"
-                      >
-                        <div className="flex justify-between items-center gap-2">
-                          <div>شناسه: </div>
-                          <div>{da._id}</div>
-                        </div>
-                        <div className="flex justify-between items-center gap-4">
-                          <div>عنوان: </div>
-                          <div>{da.title}</div>
-                        </div>
-                        <div className="flex justify-center">
-                          <Link
-                            href={`/shop/${da.slug}`}
-                            target={"_blank"}
-                            className="rounded-lg flex justify-center items-center w-12 h-6 text-xs bg-indigo-500 text-white! hover:bg-indigo-600 transition-all duration-300"
-                          >
-                            لینک
-                          </Link>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-              }
-            </div>
-            <div className="flex flex-col gap-2">
-              <div>وضعیت حساب کاربری</div>
+              <div>وضعیت پرداخت</div>
               <select
-                ref={userIsActiveRef}
+                ref={payedRef}
                 className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
               >
-                {fullData.userIsActive && fullData.userIsActive == true ? (
+                {fullData.payed && fullData.payed == true ? (
                   <>
-                    <option value={true}>فعال</option>
-                    <option value={false}>غیرفعال</option>
+                    <option value={true}>پرداخت شده</option>
+                    <option value={false}>پرداخت نشده</option>
                   </>
                 ) : (
                   <>
-                    <option value={false}>غیرفعال</option>
-                    <option value={true}>فعال</option>
-                  </>
-                )}
-              </select>
-            </div>
-            <div className="flex flex-col gap-2">
-              <div>وضعیت ارسال ایمیل تبلیغاتی</div>
-              <select
-                ref={emailSendRef}
-                className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
-              >
-                {fullData.emailSend && fullData.emailSend == true ? (
-                  <>
-                    <option value={true}>ارسال می‌شود</option>
-                    <option value={false}>ارسال نمی‌شود</option>
-                  </>
-                ) : (
-                  <>
-                    <option value={false}>ارسال نمی‌شود</option>
-                    <option value={true}>ارسال می‌شود</option>
+                    <option value={false}>پرداخت نشده</option>
+                    <option value={true}>پرداخت شده</option>
                   </>
                 )}
               </select>
@@ -360,4 +286,4 @@ const UserDetails = ({ goalId }) => {
   );
 };
 
-export default UserDetails;
+export default PaymentDetails;
