@@ -16,6 +16,11 @@ const UserDetails = ({ goalId }) => {
     }
   };
 
+  // PRICE BEAUTIFUL
+  function priceChanger(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const goTopCtrl = () => {
     window.scrollTo({
       top: 0,
@@ -29,6 +34,7 @@ const UserDetails = ({ goalId }) => {
   const activateCodeRef = useRef();
   const userIsActiveRef = useRef();
   const emailSendRef = useRef();
+  const activateCodeCounterRef = useRef();
 
   const UpdateHandler = (e) => {
     e.preventDefault();
@@ -44,6 +50,7 @@ const UserDetails = ({ goalId }) => {
       userIsActive: userIsActiveRef.current.value,
       activateCode: activateCodeRef.current.value,
       emailSend: emailSendRef.current.value,
+      activateCodeCounter: activateCodeCounterRef.current.value,
     };
     const url = `https://behnood-fileshop-server.liara.run/api/update-user/${goalId}`;
     axios
@@ -115,7 +122,6 @@ const UserDetails = ({ goalId }) => {
       .get(`https://behnood-fileshop-server.liara.run/api/get-user/${goalId}`)
       .then((d) => {
         setFullData(d.data);
-        console.log(d.data);
       })
       .catch((e) => {
         toast.error("خطا در لود اطلاعات!", {
@@ -128,6 +134,38 @@ const UserDetails = ({ goalId }) => {
         });
       });
   }, [goalId]);
+
+  const uncheckerHandler = (goalId) => {
+    const url = `https://behnood-fileshop-server.liara.run/api/uncheck-payment/${goalId}`;
+    axios
+      .get(url)
+      .then((d) => {
+        toast.success("به بخش سفارش‌ها افزوده شد.", {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        Cookies.remove("auth_cookie");
+      })
+      .catch((e) => {
+        let message = "متاسفانه ناموفق بود.";
+        if (e.response.data.msg) {
+          message = e.response.data.msg;
+        }
+
+        toast.error(message, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+  };
 
   return (
     <div className="flex flex-col gap-8">
@@ -240,6 +278,20 @@ const UserDetails = ({ goalId }) => {
               />
             </div>
             <div className="flex flex-col gap-2">
+              <div>تعداد باقی مانده ارسال کد فعال سازی به کاربر</div>
+              <input
+                defaultValue={
+                  fullData.activateCodeCounter
+                    ? fullData.activateCodeCounter
+                    : 0
+                }
+                required={true}
+                type="number"
+                ref={activateCodeCounterRef}
+                className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
               <div>محصولات مورد علاقه کاربر</div>
               {
                 <div className="flex justify-start items-center gap-4 text-xs flex-wrap">
@@ -286,11 +338,11 @@ const UserDetails = ({ goalId }) => {
                         key={i}
                         className="bg-zinc-100 rounded-lg p-4 flex flex-col gap-2 shadow-[0px_0px_5px_rgba(0,0,0,.15)]"
                       >
-                        <div className="flex justify-between items-center gap-2">
+                        <div className="flex justify-between items-center gap-1">
                           <div>شناسه: </div>
                           <div>{da._id}</div>
                         </div>
-                        <div className="flex justify-between items-center gap-4">
+                        <div className="flex justify-start items-center gap-1">
                           <div>عنوان: </div>
                           <div>{da.title}</div>
                         </div>
@@ -302,6 +354,81 @@ const UserDetails = ({ goalId }) => {
                           >
                             لینک
                           </Link>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              }
+            </div>
+            <div className="flex flex-col gap-2">
+              <div>محصولات خریداری شده</div>
+              {
+                <div className="flex justify-start items-center gap-4 text-xs flex-wrap">
+                  {fullData.userProducts.length < 1 ? (
+                    <div>بدون محصول خریداری شده.</div>
+                  ) : (
+                    fullData.userProducts.map((da, i) => (
+                      <div
+                        key={i}
+                        className="bg-zinc-100 rounded-lg p-4 flex flex-col gap-2 shadow-[0px_0px_5px_rgba(0,0,0,.15)]"
+                      >
+                        <div className="flex justify-between items-center gap-1">
+                          <div>شناسه: </div>
+                          <div>{da._id}</div>
+                        </div>
+                        <div className="flex justify-start items-center gap-1">
+                          <div>عنوان: </div>
+                          <div>{da.title}</div>
+                        </div>
+                        <div className="flex justify-center">
+                          <Link
+                            href={`/shop/${da.slug}`}
+                            target={"_blank"}
+                            className="rounded-lg flex justify-center items-center w-12 h-6 text-xs bg-indigo-500 text-white! hover:bg-indigo-600 transition-all duration-300"
+                          >
+                            لینک
+                          </Link>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              }
+            </div>
+            <div className="flex flex-col gap-2">
+              <div>سفارش‌ها</div>
+              {
+                <div className="flex justify-start items-center gap-4 text-xs flex-wrap">
+                  {fullData.payments.length < 1 ? (
+                    <div>بدون سفارش.</div>
+                  ) : (
+                    fullData.payments.map((da, i) => (
+                      <div
+                        key={i}
+                        className="bg-zinc-100 rounded-lg p-4 flex flex-col gap-2 shadow-[0px_0px_5px_rgba(0,0,0,.15)]"
+                      >
+                        <div className="flex justify-between items-center gap-1">
+                          <div>مبلغ: </div>
+                          <div>{priceChanger(da.amount)} تومان</div>
+                        </div>
+                        <div className="flex justify-between items-center gap-4">
+                          <div>وضعیت: </div>
+                          <div>
+                            {da.payed == true
+                              ? "پرداخت شده✅"
+                              : "پرداخت نشده❌"}
+                          </div>
+                        </div>
+                        <div className="flex justify-between items-center gap-4">
+                          <div>تاریخ: </div>
+                          <div>{da.createdAt}</div>
+                        </div>
+                        <div
+                          onClick={() => uncheckerHandler(da._id)}
+                          className="cursor-pointer rounded-lg flex justify-center items-center w-35 h-6 text-xs bg-indigo-500 text-white! hover:bg-indigo-600 transition-all duration-300"
+                        >
+                          نمایش در بخش سفارش‌ها
                         </div>
                       </div>
                     ))

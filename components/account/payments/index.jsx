@@ -5,7 +5,6 @@ import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-
 import { toast } from "react-toastify";
 
 import { FiRefreshCw } from "react-icons/fi";
@@ -48,6 +47,7 @@ const AccountPayments = ({ cookie }) => {
 
   return (
     <div className="flex flex-col gap-8 relative pt-20">
+      <h3 className="text-xl absolute top-1 right-1">سفارش‌های من</h3>
       <div
         onClick={() => {
           setNeedRefresh(1);
@@ -92,13 +92,20 @@ const AccountPayments = ({ cookie }) => {
                           پرداخت شده
                         </div>
                       ) : (
-                        <div onClick={()=>{router.push(`/payment-gateway?Authority=${da.resnumber}`)}} className="cursor-pointer flex justify-center items-center w-30 h-8 rounded-lg text-sm text-white! bg-rose-600">
+                        <div
+                          onClick={() => {
+                            router.push(
+                              `/payment-gateway?Authority=${da.resnumber}`
+                            );
+                          }}
+                          className="cursor-pointer flex justify-center items-center w-30 h-8 rounded-lg text-sm text-white! bg-rose-600"
+                        >
                           در انتظار پرداخت
                         </div>
                       )}
                     </div>
                     <div className="flex justify-start items-center gap-13.5 flex-wrap">
-                      {da.products.map((da,i)=>(
+                      {da.products.map((da, i) => (
                         <SlideBox itemData={da} key={i} />
                       ))}
                     </div>

@@ -1,6 +1,11 @@
 "use client";
 
 const Box = ({ data, setPaymentCtrl, setRandNumForPaymentClick }) => {
+   // PRICE BEAUTIFUL
+  function priceChanger(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   return (
     <div
       onClick={() => {
@@ -10,7 +15,7 @@ const Box = ({ data, setPaymentCtrl, setRandNumForPaymentClick }) => {
       className="relative flex justify-start gap-8 items-center cursor-pointer w-full p-6 rounded-lg bg-zinc-100 border-2 border-zinc-200 transition-all duration-300 hover:border-orange-500"
     >
       <div className="flex flex-col gap-4">
-        <div>مبلغ: {data.amount}</div>
+        <div>مبلغ: {priceChanger(data.amount)}</div>
         <div>ایمیل: {data.email}</div>
         <div className="text-xs absolute left-3 top-3 bg-orange-500 text-white px-3 py-1 rounded-md">
           {data.updatedAt}

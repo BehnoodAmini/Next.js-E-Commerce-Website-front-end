@@ -129,6 +129,40 @@ const Info = ({ cookie }) => {
       });
   };
 
+  // FOR CONFIRMING USER ACCOUNT USING EMAIL
+  const sendEmailReactivator = () => {
+    const backendUrl = `https://behnood-fileshop-server.liara.run/api/user-reactivation-code`;
+    axios
+      .post(backendUrl, { item: 1 }, { headers: { auth_cookie: cookie } })
+      .then((d) => {
+        const message = d.data.msg ? d.data.msg : "ایمیل دوباره ارسال شد!";
+        toast.success(message, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setNeedRefresh(1);
+      })
+      .catch((err) => {
+        const errorMsg =
+          err.response && err.response.data && err.response.data.msg
+            ? err.response.data.msg
+            : "خطا!";
+        console.log(err);
+        toast.error(errorMsg, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+  };
+
   // FOR ADVERTISE EMAILS
   const [bulkEmailSituation, setBulkEmailSituation] = useState(true);
   const bulkEmailChanger = (input) => {
@@ -178,6 +212,7 @@ const Info = ({ cookie }) => {
 
   return (
     <div className="flex flex-col gap-8 relative pt-8">
+      <h3 className="text-xl absolute top-1 right-1">اطلاعات من</h3>
       <div
         onClick={() => {
           setNeedRefresh(1);
@@ -205,12 +240,20 @@ const Info = ({ cookie }) => {
                   onSubmit={emailConfirmHandler}
                   className="flex flex-col gap-8 items-center"
                 >
-                  <div className="text-base">کد تایید حساب کاربری</div>
+                  <div className="flex justify-between items-center gap-4 w-full">
+                    <h3 className="text-lg">تایید حساب کاربری</h3>
+                    <div
+                      onClick={() => sendEmailReactivator()}
+                      className="cursor-pointer bg-sky-600 text-white! rounded-lg px-4 py-2 transition-all duration-300 hover:bg-sky-700 text-xs"
+                    >
+                      ارسال دوباره ایمیل ( {data.activateCodeCounter} )
+                    </div>
+                  </div>
                   <input
                     type="text"
                     ref={ActivateCodeRef}
                     required
-                    placeholder="لطفا کدی که برایتان ارسال شده است را وارد کنید تا حساب کاربری فعال شود"
+                    placeholder="لطفا کدی که برایتان ارسال شده است را وارد کنید تا حساب کاربری فعال شود."
                     autoComplete="off"
                     className="p-2 rounded-md w-full outline-none border-zinc-400 border-2 focus:border-orange-300 shadow-[0px_0px_5px_rgba(0,0,0,.15)] transition-all duration-500 focus:shadow-orange-400"
                   />
@@ -367,7 +410,7 @@ const Info = ({ cookie }) => {
                 className="cursor-pointer bg-white text-center w-85 rounded-2xl h-12 relative text-sm group"
                 type="button"
               >
-                <div className="bg-rose-500 rounded-xl h-12 w-1/4 flex items-center justify-center absolute left-1 top-[1px] group-hover:w-85 z-10 duration-500">
+                <div className="bg-rose-500 rounded-xl h-12 w-1/4 flex items-center justify-center absolute left-0 top-[1px] group-hover:w-85 z-10 duration-500">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 1024 1024"

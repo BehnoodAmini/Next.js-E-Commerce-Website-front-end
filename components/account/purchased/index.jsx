@@ -38,6 +38,7 @@ const Purchased = ({ cookie }) => {
 
   return (
     <div className="flex flex-col gap-8 relative pt-20">
+      <h3 className="text-xl absolute top-1 right-1">فایل‌های خریداری شده من</h3>
       <div
         onClick={() => {
           setNeedRefresh(1);
