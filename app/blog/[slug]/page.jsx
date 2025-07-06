@@ -8,13 +8,16 @@ import { SlCalender } from "react-icons/sl";
 import BreadCrumb from "@/components/breadCrumb";
 import MostViewedPosts from "@/components/mostViewedPosts";
 import RelatedPosts from "@/components/sliders/related-posts";
-
+import CommentsManager from "@/components/commentsManagement";
 import SearchBlog from "@/components/search-blog";
 
 const getData = async (slug) => {
-  const data = await fetch(`https://behnood-fileshop-server.liara.run/api/get-post/${slug}`, {
-    cache: "no-store",
-  });
+  const data = await fetch(
+    `https://behnood-fileshop-server.liara.run/api/get-post/${slug}`,
+    {
+      cache: "no-store",
+    }
+  );
   return data.json();
 };
 
@@ -33,6 +36,7 @@ const SingleBlog = async ({ params }) => {
   const data = await getData(resolvedParams.slug);
 
   const productsData = await getProductsData();
+  const commentProps = { src_id: data._id, typeOfModel: "post" };
 
   return (
     <div className="flex justify-between items-start container mx-auto gap-2">
@@ -92,10 +96,7 @@ const SingleBlog = async ({ params }) => {
                   title={"مقالات مرتبط"}
                 />
               </section>
-              <section className="flex flex-col gap-6">
-                <h2 className="text-xl">دیدگاه‌ها</h2>
-                <form className="bg-zinc-500 rounded-md h-48">1</form>
-              </section>
+              <CommentsManager commentProps={commentProps} />
             </div>
           </main>
           <aside className="w-80 max-w-80 rounded-md flex flex-col gap-12">
