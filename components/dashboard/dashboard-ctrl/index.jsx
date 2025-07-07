@@ -8,8 +8,8 @@ const DashboardCtrl = ({ setContentChanger }) => {
   const [colorChanger, setColorChanger] = useState("admin-panel");
 
   return (
-    <div className="w-60 bg-zinc-200 p-4 rounded-lg flex justify-center items-center">
-      <div className="flex flex-col gap-6 ">
+    <div className="w-60 flex justify-center items-center h-[100vh]">
+      <div className="flex flex-col bg-zinc-200 rounded-lg w-full h-[98vh] items-center justify-around p-4 shadow-[1px_0px_5px_rgba(0,0,0,.3)]">
         <DCBtn
           title={"پیشخوان"}
           content={"admin-panel"}
@@ -62,6 +62,13 @@ const DashboardCtrl = ({ setContentChanger }) => {
         <DCBtn
           title={"سفارش‌ها"}
           content={"payments"}
+          setContentChanger={setContentChanger}
+          colorChanger={colorChanger}
+          setColorChanger={setColorChanger}
+        />
+        <DCBtn
+          title={"دیدگاه‌ها"}
+          content={"comments"}
           setContentChanger={setContentChanger}
           colorChanger={colorChanger}
           setColorChanger={setColorChanger}

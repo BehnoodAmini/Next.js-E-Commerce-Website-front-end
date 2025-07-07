@@ -4,7 +4,6 @@ import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
-import Cookies from "js-cookie";
 
 import { toast } from "react-toastify";
 
@@ -95,7 +94,6 @@ const UserDetails = ({ goalId }) => {
           draggable: true,
           progress: undefined,
         });
-        Cookies.remove("auth_cookie");
       })
       .catch((e) => {
         let message = "متاسفانه ناموفق بود.";
@@ -148,7 +146,6 @@ const UserDetails = ({ goalId }) => {
           draggable: true,
           progress: undefined,
         });
-        Cookies.remove("auth_cookie");
       })
       .catch((e) => {
         let message = "متاسفانه ناموفق بود.";

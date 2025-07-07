@@ -9,12 +9,13 @@ import SliderAll from "../forms/sliderForms";
 import PostsMain from "../forms/postForms";
 import CategoryMain from "../forms/categoryForms";
 import ProductForms from "../forms/productForms";
-import UserForms from "../forms/userForms"
-import PaymentForms from "../forms/paymentForms"
+import UserForms from "../forms/userForms";
+import PaymentForms from "../forms/paymentForms";
+import CommentsMain from "../forms/commentForms";
 
 const MainDashboard = () => {
   const [contentChanger, setContentChanger] = useState("admin-panel");
-  const [details, setDetails] = useState(<MiddleBannerAll />);
+  const [details, setDetails] = useState(<AdminPanel />);
 
   useEffect(() => {
     if (contentChanger == "admin-panel") {
@@ -33,12 +34,14 @@ const MainDashboard = () => {
       setDetails(<UserForms />);
     } else if (contentChanger == "payments") {
       setDetails(<PaymentForms />);
+    } else if (contentChanger == "comments") {
+      setDetails(<CommentsMain />);
     }
   }, [contentChanger]);
 
   return (
     <div className="flex justify-between items-start gap-4 container mx-auto">
-      <div className="sticky top-8 right-0 bottom-8 shadow-[1px_0px_5px_rgba(0,0,0,.3)] rounded-lg">
+      <div className="sticky top-0 right-0 bottom-0">
         <DashboardCtrl setContentChanger={setContentChanger} />
       </div>
       <div className="w-full">{details}</div>

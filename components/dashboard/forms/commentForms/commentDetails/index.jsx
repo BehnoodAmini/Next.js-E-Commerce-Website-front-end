@@ -7,7 +7,7 @@ import axios from "axios";
 
 import { toast } from "react-toastify";
 
-const PaymentDetails = ({ goalId }) => {
+const CommentDetails = ({ goalId }) => {
   //PREVENT FORM TO BE SENT WITH ENTER
   const FormKeyNotSuber = (event) => {
     if (event.key == "Enter") {
@@ -22,20 +22,22 @@ const PaymentDetails = ({ goalId }) => {
   };
 
   const viewedRef = useRef();
-  const amountRef = useRef();
-  const payedRef = useRef();
+  const publishedRef = useRef();
   const emailRef = useRef();
-  const usernameRef = useRef();
+  const displaynameRef = useRef();
+  const messageRef = useRef();
 
-    // LOADING DEFAULT VALUES
-  const [fullData, setFullData] = useState([-1]);
+  const [fullData, setFullData] = useState([-1]); // LOADING DEFAULT VALUES
+  const [needRefresh, setNeedRefresh] = useState(1);
+
   useEffect(() => {
     goTopCtrl();
     axios
-      .get(`https://behnood-fileshop-server.liara.run/api/get-payment/${goalId}`)
+      .get(
+        `https://behnood-fileshop-server.liara.run/api/get-comment/${goalId}`
+      )
       .then((d) => {
         setFullData(d.data);
-        console.log(d.data);
       })
       .catch((e) => {
         toast.error("خطا در لود اطلاعات!", {
@@ -47,27 +49,22 @@ const PaymentDetails = ({ goalId }) => {
           progress: undefined,
         });
       });
-  }, [goalId]);
+  }, [goalId, needRefresh]);
 
   const UpdateHandler = (e) => {
     e.preventDefault();
     const formData = {
-      updatedAt: new Date().toLocaleDateString("fa-IR", {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
       viewed: viewedRef.current.value,
-      amount: amountRef.current.value,
-      payed: payedRef.current.value,
+      published: publishedRef.current.value,
       email: emailRef.current.value,
-      username: usernameRef.current.value,
-      products: fullData.products,
+      displayname: displaynameRef.current.value,
+      message: messageRef.current.value,
     };
-    const url = `https://behnood-fileshop-server.liara.run/api/update-payment/${goalId}`;
+    const url = `https://behnood-fileshop-server.liara.run/api/update-comment/${goalId}`;
     axios
       .post(url, formData)
       .then((d) => {
-        toast.success("سفارش با موفقیت به‌روزرسانی شد.", {
+        toast.success("دیدگاه با موفقیت به‌روزرسانی شد.", {
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -93,11 +90,11 @@ const PaymentDetails = ({ goalId }) => {
   };
 
   const RemoveHandler = () => {
-    const url = `https://behnood-fileshop-server.liara.run/api/delete-payment/${goalId}`;
+    const url = `https://behnood-fileshop-server.liara.run/api/delete-comment/${goalId}`;
     axios
       .post(url)
       .then((d) => {
-        toast.success("سفارش با موفقیت حذف شد.", {
+        toast.success("دیدگاه با موفقیت حذف شد.", {
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -105,6 +102,43 @@ const PaymentDetails = ({ goalId }) => {
           draggable: true,
           progress: undefined,
         });
+      })
+      .catch((e) => {
+        let message = "متاسفانه ناموفق بود.";
+        if (e.response.data.msg) {
+          message = e.response.data.msg;
+        }
+        toast.error(message, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+  };
+
+  const PublishHandler = () => {
+    const sendingData = {
+      goalId: fullData._id,
+      parentId: fullData.parentId,
+      email: fullData.email,
+    };
+    const url = `https://behnood-fileshop-server.liara.run/api/publish-comment`;
+    axios
+      .post(url, sendingData)
+      .then((d) => {
+        toast.success("انتشار دیدگاه با موفقیت انجام شد.", {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setFullData([-1]);
+        setNeedRefresh(needRefresh * -1);
       })
       .catch((e) => {
         let message = "متاسفانه ناموفق بود.";
@@ -131,8 +165,14 @@ const PaymentDetails = ({ goalId }) => {
       ) : (
         <div className="flex flex-col gap-8">
           <div className="flex justify-between items-center">
-            <h2 className="text-orange-500">جزئیات سفارش</h2>
-            <div className="w-20 h-6 flex justify-center items-center m-1">
+            <h2 className="text-orange-500">جزئیات دیدگاه</h2>
+            <div className="flex justify-end items-center gap-4">
+              <button
+                onClick={() => PublishHandler()}
+                className="cursor-pointer h-8 inline-flex items-center px-4 py-2 bg-sky-600 transition ease-in-out delay-75 hover:bg-sky-700 text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
+              >
+                انتشار + ارسال ایمیل در صورت پاسخ بودن
+              </button>
               <button
                 onClick={() => RemoveHandler()}
                 className="cursor-pointer h-8 inline-flex items-center px-4 py-2 bg-rose-600 transition ease-in-out delay-75 hover:bg-rose-700 text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
@@ -156,11 +196,21 @@ const PaymentDetails = ({ goalId }) => {
             </div>
           </div>
           <div className="flex justify-between items-center">
+            <Link
+              target="_blank"
+              href={
+                fullData.typeOfModel == "post"
+                  ? `/blog/${fullData.src.slug}`
+                  : `/shop/${fullData.src.slug}`
+              }
+              className="bg-blue-600 text-white! rounded px-3 py-1 text-sm"
+            >
+              {fullData.typeOfModel == "post"
+                ? `لینک مقاله: ${fullData.src.title}`
+                : `لینک محصول: ${fullData.src.title}`}
+            </Link>
             <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
-              کد پرداختی: {fullData.resnumber ? fullData.resnumber : ""}
-            </div>
-            <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
-              به‌روزرسانی: {fullData.updatedAt ? fullData.updatedAt : ""}
+              شناسه دیدگاه: {fullData._id ? fullData._id : ""}
             </div>
             <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
               تاریخ ایجاد: {fullData.createdAt ? fullData.createdAt : ""}
@@ -191,7 +241,26 @@ const PaymentDetails = ({ goalId }) => {
               </select>
             </div>
             <div className="flex flex-col gap-2">
-              <div>ایمیل جدید کاربر</div>
+              <div>منتشر شود؟</div>
+              <select
+                ref={publishedRef}
+                className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+              >
+                {fullData.published && fullData.published == true ? (
+                  <>
+                    <option value={true}>بله</option>
+                    <option value={false}>خیر</option>
+                  </>
+                ) : (
+                  <>
+                    <option value={false}>خیر</option>
+                    <option value={true}>بله</option>
+                  </>
+                )}
+              </select>
+            </div>
+            <div className="flex flex-col gap-2">
+              <div>ایمیل کاربر</div>
               <input
                 defaultValue={fullData.email ? fullData.email : ""}
                 required={true}
@@ -201,75 +270,27 @@ const PaymentDetails = ({ goalId }) => {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <div>نام کاربری جدید(username)</div>
+              <div>نام نمایشی(displayname)</div>
               <input
-                defaultValue={fullData.username ? fullData.username : ""}
+                defaultValue={fullData.displayname ? fullData.displayname : ""}
                 required={true}
                 type="text"
-                ref={usernameRef}
-                className="inputLtr p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+                ref={displaynameRef}
+                className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
               />
             </div>
             <div className="flex flex-col gap-2">
-              <div>مبلغ جدید:(تومان)</div>
-              <input
-                defaultValue={fullData.amount ? fullData.amount : ""}
+              <div>دیدگاه اصلی</div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <div>متن دیدگاه</div>
+              <textarea
+                defaultValue={fullData.message ? fullData.message : ""}
                 required={true}
-                type="number"
-                ref={amountRef}
+                rows="6"
+                ref={messageRef}
                 className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
               />
-            </div>
-            <div className="flex flex-col gap-2">
-              <div>محصولات</div>
-              {
-                <div className="flex justify-start items-center gap-4 text-xs flex-wrap">
-                  {fullData.products.length < 1 ? (
-                    <div>بدون محصول</div>
-                  ) : (
-                    fullData.products.map((da, i) => (
-                      <div key={i} className="bg-zinc-100 rounded-lg p-4 flex flex-col gap-2 shadow-[0px_0px_5px_rgba(0,0,0,.15)]">
-                        <div className="flex justify-between items-center gap-1">
-                          <div>شناسه: </div>
-                          <div>{da._id}</div>
-                        </div>
-                        <div className="flex justify-start items-center gap-1">
-                          <div>عنوان: </div>
-                          <div>{da.title}</div>
-                        </div>
-                        <div className="flex justify-center">
-                        <Link
-                          href={`/shop/${da.slug}`}
-                          target={"_blank"}
-                          className="rounded-lg flex justify-center items-center w-12 h-6 text-xs bg-indigo-500 text-white! hover:bg-indigo-600 transition-all duration-300"
-                        >
-                          لینک
-                        </Link>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-              }
-            </div>
-            <div className="flex flex-col gap-2">
-              <div>وضعیت پرداخت</div>
-              <select
-                ref={payedRef}
-                className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
-              >
-                {fullData.payed && fullData.payed == true ? (
-                  <>
-                    <option value={true}>پرداخت شده</option>
-                    <option value={false}>پرداخت نشده</option>
-                  </>
-                ) : (
-                  <>
-                    <option value={false}>پرداخت نشده</option>
-                    <option value={true}>پرداخت شده</option>
-                  </>
-                )}
-              </select>
             </div>
             <button
               type="submit"
@@ -284,4 +305,4 @@ const PaymentDetails = ({ goalId }) => {
   );
 };
 
-export default PaymentDetails;
+export default CommentDetails;
