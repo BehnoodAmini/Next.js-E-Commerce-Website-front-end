@@ -281,6 +281,22 @@ const CommentDetails = ({ goalId }) => {
             </div>
             <div className="flex flex-col gap-2">
               <div>دیدگاه اصلی</div>
+              <div className=" border-2 border-zinc-300 bg-zinc-50 p-1 rounded-md flex flex-col gap-2">
+                <div className="flex justify-between items-center flex-wrap">
+                  <div className="px-2 py-1 rounded-lg bg-zinc-200">
+                    {fullData.displayname}
+                  </div>
+                  <div className="px-2 py-1 rounded-lg bg-zinc-200">
+                    {fullData.email}
+                  </div>
+                  <div className="px-2 py-1 rounded-lg bg-indigo-500 text-white!">
+                    {fullData.createdAt}
+                  </div>
+                </div>
+                <p className="text-black leading-7 text-justify p-2">
+                  {fullData.message}
+                </p>
+              </div>
             </div>
             <div className="flex flex-col gap-2">
               <div>متن دیدگاه</div>

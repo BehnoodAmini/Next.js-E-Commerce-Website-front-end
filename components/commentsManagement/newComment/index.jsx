@@ -1,14 +1,13 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-
 import { toast } from "react-toastify";
 
 import Cookies from "js-cookie";
 
-const NewComment = ({ commentProps }) => {
+const NewComment = ({ commentProps, text, itemParentId }) => {
   //PREVENT FORM TO BE SENT WITH ENTER
   const FormKeyNotSuber = (event) => {
     if (event.key == "Enter") {
@@ -21,6 +20,13 @@ const NewComment = ({ commentProps }) => {
 
   const messageRef = useRef();
 
+  let theParentId="null";
+  useEffect(()=>{
+    if(itemParentId!=undefined){
+      theParentId=itemParentId;
+    }
+  },[])
+
   const formSubmitHandler = (e) => {
     e.preventDefault();
     if (authCookie == undefined || authCookie.length < 10) {
@@ -30,7 +36,7 @@ const NewComment = ({ commentProps }) => {
       const formData = {
         message: messageRef.current.value,
         src_id: commentProps.src_id,
-        parentId: "null",
+        parentId: theParentId,
         typeOfModel: commentProps.typeOfModel,
       };
       const backendUrl =
@@ -51,6 +57,7 @@ const NewComment = ({ commentProps }) => {
             draggable: true,
             progress: undefined,
           });
+          messageRef.current.value = "";
         })
         .catch((err) => {
           const errorMsg =
@@ -86,7 +93,7 @@ const NewComment = ({ commentProps }) => {
         type="submit"
         className="cursor-pointer bg-gradient-to-b from-indigo-500 to-indigo-600 shadow-[0px_4px_32px_0_rgba(99,102,241,.50)] px-6 py-3 rounded-xl border-[1px] border-slate-500 text-white font-medium"
       >
-        ثبت دیدگاه
+        {text}
       </button>
     </form>
   );
