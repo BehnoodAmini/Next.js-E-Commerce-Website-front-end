@@ -14,7 +14,8 @@ const MostViewedPosts = () => {
         setposts(d.data);
       })
       .catch((e) => console.log(e));
-  });
+  },[]);
+
   return (
     <div className=" flex flex-col gap-4 rounded-lg p-3 shadow-[0px_0px_8px_rgba(0,0,0,0.35)]">
       <h3 className=" text-blue-500">پربازدیدترین مقالات</h3>

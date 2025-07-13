@@ -19,7 +19,9 @@ const AllComments = ({ setCommentCtrl, setRandNumForCommentClick }) => {
 
   useEffect(() => {
     axios
-      .get(`https://behnood-fileshop-server.liara.run/api/comments?pn=${pageNumber}&&pgn=${paginate}`)
+      .get(
+        `https://behnood-fileshop-server.liara.run/api/comments?pn=${pageNumber}&&pgn=${paginate}`
+      )
       .then((d) => {
         setComments(d.data.GoalComments);
         setNumbersOfBtns(
@@ -67,7 +69,8 @@ const AllComments = ({ setCommentCtrl, setRandNumForCommentClick }) => {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex justify-end">
+      <div className="flex justify-between items-center">
+        <div>همه دیدگاه‌‌ها</div>
         <div className="w-32 h-10 rounded bg-indigo-600 flex justify-center items-center text-white">
           {allCommentsNumber} دیدگاه‌
         </div>

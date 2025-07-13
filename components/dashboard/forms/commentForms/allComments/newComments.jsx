@@ -8,26 +8,26 @@ import { toast } from "react-toastify";
 
 import Box from "./Box";
 
-const AllPayments = ({ setPaymentCtrl, setRandNumForPaymentClick }) => {
-  const [payments, setPayments] = useState([-1]);
+const AllNewComments = ({ setCommentCtrl, setRandNumForCommentClick }) => {
+  const [comments, setComments] = useState([-1]);
   const [pageNumber, setPageNumber] = useState(1);
   const [numbersOfBtns, setNumbersOfBtns] = useState([-1]);
   const [filteredBtns, setFilteredBtns] = useState([-1]);
-  const [allPaymentsNumber, setAllPaymentsNumber] = useState(0);
+  const [allCommentsNumber, setAllCommentsNumber] = useState(0);
   const [colorFocus, setColorFocus] = useState(1);
   const paginate = 10;
 
   useEffect(() => {
     axios
       .get(
-        `https://behnood-fileshop-server.liara.run/api/payments?pn=${pageNumber}&&pgn=${paginate}`
+        `https://behnood-fileshop-server.liara.run/api/not-viewed-comments?pn=${pageNumber}&&pgn=${paginate}`
       )
       .then((d) => {
-        setPayments(d.data.GoalPayment);
+        setComments(d.data.GoalComments);
         setNumbersOfBtns(
-          Array.from(Array(Math.ceil(d.data.AllPaymentsNum / paginate)).keys())
+          Array.from(Array(Math.ceil(d.data.AllCommentsNum / paginate)).keys())
         );
-        setAllPaymentsNumber(d.data.AllPaymentsNum);
+        setAllCommentsNumber(d.data.AllCommentsNum);
       })
       .catch((e) => {
         toast.error("خطا در لود اطلاعات!", {
@@ -70,13 +70,13 @@ const AllPayments = ({ setPaymentCtrl, setRandNumForPaymentClick }) => {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex justify-between items-center">
-        <div>همه سفارش‌ها</div>
+        <div>دیدگاه‌‌های دیده نشده(جدید)</div>
         <div className="w-32 h-10 rounded bg-indigo-600 flex justify-center items-center text-white">
-          {allPaymentsNumber} سفارش
+          {allCommentsNumber} دیدگاه‌
         </div>
       </div>
       <div className="flex flex-col gap-6">
-        {payments[0] == -1 ? (
+        {comments[0] == -1 ? (
           <div className="flex justify-center items-center p-12">
             <Image
               alt="loading"
@@ -85,15 +85,15 @@ const AllPayments = ({ setPaymentCtrl, setRandNumForPaymentClick }) => {
               src={"/loading.svg"}
             />
           </div>
-        ) : payments.length < 1 ? (
+        ) : comments.length < 1 ? (
           <div className="flex justify-center items-center w-full p-8">
-            سفارشی ثبت نشده است...
+            دیدگاهی ثبت نشده است...
           </div>
         ) : (
-          payments.map((da, i) => (
+          comments.map((da, i) => (
             <Box
-              setPaymentCtrl={setPaymentCtrl}
-              setRandNumForPaymentClick={setRandNumForPaymentClick}
+              setCommentCtrl={setCommentCtrl}
+              setRandNumForCommentClick={setRandNumForCommentClick}
               key={i}
               data={da}
             />
@@ -129,4 +129,4 @@ const AllPayments = ({ setPaymentCtrl, setRandNumForPaymentClick }) => {
   );
 };
 
-export default AllPayments;
+export default AllNewComments;

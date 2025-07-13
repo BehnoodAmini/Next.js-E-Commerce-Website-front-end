@@ -6,7 +6,9 @@ import { TiTickOutline } from "react-icons/ti";
 import BreadCrumb from "@/components/breadCrumb";
 import RelatedPosts from "@/components/sliders/related-posts";
 import SingleProductPageFav from "@/components/singleProductPageFav";
+import CommentsManager from "@/components/commentsManagement";
 import SingleProductPageCart from "@/components/singleProductPageCart";
+import CommentCounter from "@/components/commentCounter";
 
 const getData = async (slug) => {
   const data = await fetch(
@@ -26,6 +28,8 @@ const SingleProduct = async ({ params }) => {
 
   const resolvedParams = await params;
   const data = await getData(resolvedParams.slug);
+
+  const commentProps = { src_id: data._id, typeOfModel: "product" };
 
   const spliterForFeatures = (value) => {
     return value.split(":");
@@ -160,10 +164,7 @@ const SingleProduct = async ({ params }) => {
                   title={"محصولات مرتبط"}
                 />
               </section>
-              <section className="flex flex-col gap-6">
-                <h2 className="text-xl">دیدگاه‌ها</h2>
-                <form className="bg-zinc-500 rounded-md h-48">1</form>
-              </section>
+              <CommentsManager commentProps={commentProps} />
             </div>
           </main>
           <aside className="w-80 max-w-80 rounded-md flex flex-col gap-8">
@@ -186,7 +187,7 @@ const SingleProduct = async ({ params }) => {
                 </li>
                 <li className="flex justify-between items-center">
                   <span>تعداد دیدگاه</span>
-                  <span>{data.comments.length}</span>
+                  <CommentCounter goalId={data._id} />
                 </li>
               </ul>
             </div>

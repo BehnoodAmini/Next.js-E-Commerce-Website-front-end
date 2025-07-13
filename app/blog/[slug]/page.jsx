@@ -2,14 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { FaRegEye } from "react-icons/fa";
-import { FaRegComment } from "react-icons/fa";
 import { SlCalender } from "react-icons/sl";
+import { FaRegComment } from "react-icons/fa";
 
 import BreadCrumb from "@/components/breadCrumb";
 import MostViewedPosts from "@/components/mostViewedPosts";
 import RelatedPosts from "@/components/sliders/related-posts";
 import CommentsManager from "@/components/commentsManagement";
 import SearchBlog from "@/components/search-blog";
+import CommentCounter from "@/components/commentCounter";
 
 const getData = async (slug) => {
   const data = await fetch(
@@ -74,7 +75,7 @@ const SingleBlog = async ({ params }) => {
                   <div className="bg-zinc-100 rounded-md p-2 flex justify-between items-center gap-2">
                     <FaRegComment className="w-6 h-6 text-black" />
                     <span>تعداد دیدگاه:</span>
-                    <span>{data.comments.length}</span>
+                    <CommentCounter goalId={data._id} />
                   </div>
                   <div className="bg-zinc-100 rounded-md p-2 flex justify-between items-center gap-2">
                     <SlCalender className="w-6 h-6 text-black" />

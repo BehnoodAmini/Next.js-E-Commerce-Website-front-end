@@ -193,6 +193,7 @@ const PostDetails = ({ goalId }) => {
             <h2 className="text-orange-500">جزئیات مقاله</h2>
             <div className="flex justify-end items-center gap-4">
               <Link
+                target="_blank"
                 href={`/blog/${fullData.slug}`}
                 className="bg-indigo-600 text-white! px-4 py-1 rounded-md text-sm transition-all duration-300 hover:bg-indigo-700"
               >

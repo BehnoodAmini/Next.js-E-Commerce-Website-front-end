@@ -133,12 +133,43 @@ const UserDetails = ({ goalId }) => {
       });
   }, [goalId]);
 
-  const uncheckerHandler = (goalId) => {
+  const paymentUncheckerHandler = (goalId) => {
     const url = `https://behnood-fileshop-server.liara.run/api/uncheck-payment/${goalId}`;
     axios
       .get(url)
       .then((d) => {
-        toast.success("به بخش سفارش‌ها افزوده شد.", {
+        toast.success("به بخش سفارش‌های جدید افزوده شد.", {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      })
+      .catch((e) => {
+        let message = "متاسفانه ناموفق بود.";
+        if (e.response.data.msg) {
+          message = e.response.data.msg;
+        }
+
+        toast.error(message, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+  };
+
+  const commentUncheckerHandler = (goalId) => {
+    const url = `https://behnood-fileshop-server.liara.run/api/uncheck-comment/${goalId}`;
+    axios
+      .get(url)
+      .then((d) => {
+        toast.success("به بخش دیدگاه‌های جدید افزوده شد.", {
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -422,10 +453,52 @@ const UserDetails = ({ goalId }) => {
                           <div>{da.createdAt}</div>
                         </div>
                         <div
-                          onClick={() => uncheckerHandler(da._id)}
-                          className="cursor-pointer rounded-lg flex justify-center items-center w-35 h-6 text-xs bg-indigo-500 text-white! hover:bg-indigo-600 transition-all duration-300"
+                          onClick={() => paymentUncheckerHandler(da._id)}
+                          className="cursor-pointer rounded-lg flex justify-center items-center w-50 h-6 text-xs bg-indigo-500 text-white! hover:bg-indigo-600 transition-all duration-300"
                         >
-                          نمایش در بخش سفارش‌ها
+                          نمایش در بخش سفارش‌های جدید
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              }
+            </div>
+            <div className="flex flex-col gap-2">
+              <div>دیدگاه‌ها</div>
+              {
+                <div className="flex justify-start items-center gap-2 text-xs flex-wrap">
+                  {fullData.comments.length < 1 ? (
+                    <div>بدون دیدگاه.</div>
+                  ) : (
+                    fullData.comments.map((da, i) => (
+                      <div
+                        key={i}
+                        className="w-[48%] min-h-[12rem] bg-zinc-100 rounded-lg p-4 flex flex-col justify-between gap-1 shadow-[0px_0px_5px_rgba(0,0,0,.15)]"
+                      >
+                        <div className="flex justify-between items-center gap-2">
+                          <div>مرجع: </div>
+                          <div>
+                            {da.typeOfModel == "post" ? "مقاله" : "محصول"}
+                          </div>
+                        </div>
+                        <div className="flex justify-between items-center gap-2">
+                          <div>تاریخ: </div>
+                          <div>{da.createdAt}</div>
+                        </div>
+                        <div className="flex justify-start items-start gap-1">
+                          <div>متن: </div>
+                          <div className="text-justify line-clamp-3">
+                            {da.message}
+                          </div>
+                        </div>
+                        <div className="flex justify-center items-center">
+                          <div
+                            onClick={() => commentUncheckerHandler(da._id)}
+                            className="cursor-pointer rounded-lg flex justify-center items-center w-50 h-6 text-xs bg-indigo-500 text-white! hover:bg-indigo-600 transition-all duration-300"
+                          >
+                            نمایش در بخش دیدگاه‌های جدید
+                          </div>
                         </div>
                       </div>
                     ))

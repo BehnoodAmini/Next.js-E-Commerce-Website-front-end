@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 import AllComments from "./allComments";
 import CommentDetails from "./commentDetails";
+import AllNewComments from "./allComments/newComments";
 
 const CommentsMain = () => {
   const [commentCtrl, setCommentCtrl] = useState("");
@@ -38,6 +39,19 @@ const CommentsMain = () => {
             className="cursor-pointer flex justify-center items-center w-32 h-10 rounded-md bg-indigo-600 text-white transition-all duration-300 hover:bg-orange-500"
           >
             همه
+          </button>
+          <button
+            onClick={() =>
+              setDet(
+                <AllNewComments
+                  setCommentCtrl={setCommentCtrl}
+                  setRandNumForCommentClick={setRandNumForCommentClick}
+                />
+              )
+            }
+            className="cursor-pointer flex justify-center items-center w-32 h-10 rounded-md bg-indigo-600 text-white transition-all duration-300 hover:bg-orange-500"
+          >
+            جدید
           </button>
         </div>
       </section>

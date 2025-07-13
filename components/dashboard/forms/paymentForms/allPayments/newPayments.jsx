@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 
 import Box from "./Box";
 
-const AllPayments = ({ setPaymentCtrl, setRandNumForPaymentClick }) => {
+const AllNewPayments = ({ setPaymentCtrl, setRandNumForPaymentClick }) => {
   const [payments, setPayments] = useState([-1]);
   const [pageNumber, setPageNumber] = useState(1);
   const [numbersOfBtns, setNumbersOfBtns] = useState([-1]);
@@ -20,7 +20,7 @@ const AllPayments = ({ setPaymentCtrl, setRandNumForPaymentClick }) => {
   useEffect(() => {
     axios
       .get(
-        `https://behnood-fileshop-server.liara.run/api/payments?pn=${pageNumber}&&pgn=${paginate}`
+        `https://behnood-fileshop-server.liara.run/api/not-viewwed-payments?pn=${pageNumber}&&pgn=${paginate}`
       )
       .then((d) => {
         setPayments(d.data.GoalPayment);
@@ -70,7 +70,7 @@ const AllPayments = ({ setPaymentCtrl, setRandNumForPaymentClick }) => {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex justify-between items-center">
-        <div>همه سفارش‌ها</div>
+        <div>سفارش‌های دیده نشده(جدید)</div>
         <div className="w-32 h-10 rounded bg-indigo-600 flex justify-center items-center text-white">
           {allPaymentsNumber} سفارش
         </div>
@@ -129,4 +129,4 @@ const AllPayments = ({ setPaymentCtrl, setRandNumForPaymentClick }) => {
   );
 };
 
-export default AllPayments;
+export default AllNewPayments;

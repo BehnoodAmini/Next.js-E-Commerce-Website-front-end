@@ -125,14 +125,19 @@ const Favourite = ({ cookie }) => {
   return (
     <div className="flex flex-col gap-8 relative pt-20">
       <h3 className="text-xl absolute top-1 right-1">محصولات مورد علاقه من</h3>
-      <div
-        onClick={() => {
-          setNeedRefresh(1);
-          setData([-1]);
-        }}
-        className="absolute top-1 left-1 cursor-pointer text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-28 h-10"
-      >
-        <FiRefreshCw /> به روز رسانی
+      <div className="flex items-center justify-end">
+        <div
+          onClick={() => {
+            setNeedRefresh(1);
+            setData([-1]);
+          }}
+          className="absolute top-1 left-1 cursor-pointer text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-28 h-10"
+        >
+          <FiRefreshCw /> به روز رسانی
+        </div>
+        <div className="absolute top-1 left-35 text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-25 h-10">
+          {data.length} محصول
+        </div>
       </div>
       <div>
         {data[0] == -1 ? (

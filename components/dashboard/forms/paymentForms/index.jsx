@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 import AllPayments from "./allPayments";
 import PaymentDetails from "./paymentDetails";
+import AllNewPayments from "./allPayments/newPayments";
 
 const PaymentsMain = () => {
   const [paymentCtrl, setPaymentCtrl] = useState("");
@@ -38,6 +39,19 @@ const PaymentsMain = () => {
             className="cursor-pointer flex justify-center items-center w-32 h-10 rounded-md bg-indigo-600 text-white transition-all duration-300 hover:bg-orange-500"
           >
             همه
+          </button>
+          <button
+            onClick={() =>
+              setDet(
+                <AllNewPayments
+                  setPaymentCtrl={setPaymentCtrl}
+                  setRandNumForPaymentClick={setRandNumForPaymentClick}
+                />
+              )
+            }
+            className="cursor-pointer flex justify-center items-center w-32 h-10 rounded-md bg-indigo-600 text-white transition-all duration-300 hover:bg-orange-500"
+          >
+            جدید
           </button>
         </div>
       </section>

@@ -24,7 +24,10 @@ const CommentBox = ({ data, commentProps }) => {
       </div>
       <p className="text-black leading-7 text-justify p-2">{data.message}</p>
       <div className="flex justify-end items-center gap-4">
-        <div onClick={() => setchildrensDisplayer(childrensDisplayer * -1)} className="cursor-pointer text-base sm:text-sm px-2 h-8 rounded-md bg-cyan-600 text-white! flex justify-center items-center">
+        <div
+          onClick={() => setchildrensDisplayer(childrensDisplayer * -1)}
+          className="cursor-pointer text-base sm:text-sm px-2 h-8 rounded-md bg-cyan-600 text-white! flex justify-center items-center"
+        >
           نمایش پاسخ‌ها
         </div>
         <FaReply
@@ -32,43 +35,36 @@ const CommentBox = ({ data, commentProps }) => {
           className="cursor-pointer w-8 h-8 p-2 rounded-md bg-cyan-600 text-white! rotate-180"
         />
       </div>
-      <div>
-        <AnimatePresence>
-          {replyDisplayer == -1 && (
-            <motion.div
-              initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
-              animate={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
-              exit={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
-              transition={{ duration: 0.7, ease: "backOut" }}
-              style={{ overflow: "hidden" }}
-            >
-              <NewComment
-                text={"ثبت پاسخ"}
-                itemParentId={data._id}
-                commentProps={commentProps}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-      <div>
-        <AnimatePresence>
-          {childrensDisplayer == -1 && (
-            <motion.div
-              initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
-              animate={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
-              exit={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
-              transition={{ duration: 0.7, ease: "backOut" }}
-              style={{ overflow: "hidden" }}
-            >
-              <CommentRepliesList
-                commentProps={commentProps}
-                goalId={data._id}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+      <AnimatePresence>
+        {replyDisplayer == -1 && (
+          <motion.div
+            initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
+            animate={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
+            exit={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
+            transition={{ duration: 0.7, ease: "backOut" }}
+            style={{ overflow: "hidden" }}
+          >
+            <NewComment
+              text={"ثبت پاسخ"}
+              itemParentId={data._id}
+              commentProps={commentProps}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {childrensDisplayer == -1 && (
+          <motion.div
+            initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
+            animate={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
+            exit={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
+            transition={{ duration: 0.7, ease: "backOut" }}
+            style={{ overflow: "hidden" }}
+          >
+            <CommentRepliesList commentProps={commentProps} goalId={data._id} />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
