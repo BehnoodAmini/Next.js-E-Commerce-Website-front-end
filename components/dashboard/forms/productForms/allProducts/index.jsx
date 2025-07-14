@@ -3,12 +3,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
+import Cookies from "js-cookie";
 
 import { toast } from "react-toastify";
 
 import Box from "./Box";
 
 const AllProducts = ({ setProductDetCtrl, setRandNumForProductClick }) => {
+  const [authCookie, setAuthCookie] = useState(Cookies.get("auth_cookie"));
+
   const [products, setProducts] = useState([-1]);
   const [pageNumber, setPageNumber] = useState(1);
   const [numbersOfBtns, setNumbersOfBtns] = useState([-1]);
@@ -21,7 +24,10 @@ const AllProducts = ({ setProductDetCtrl, setRandNumForProductClick }) => {
   useEffect(() => {
     axios
       .get(
-        `https://behnood-fileshop-server.liara.run/api/${categoryUrl}?pn=${pageNumber}&&pgn=${paginate}`
+        `https://behnood-fileshop-server.liara.run/api/${categoryUrl}?pn=${pageNumber}&&pgn=${paginate}`,
+        {
+          headers: { auth_cookie: authCookie },
+        }
       )
       .then((d) => {
         setProducts(d.data.GoalProducts);
@@ -74,7 +80,7 @@ const AllProducts = ({ setProductDetCtrl, setRandNumForProductClick }) => {
         <div className="text-xs text-white flex justify-end items-center gap-4">
           <div>نوع محصول</div>
           <select
-            className="text-sm p-2 rounded w-full text-black border-2 border-indigo-300 focus:border-orange-400 focus:outline-none"
+            className="cursor-pointer text-sm p-2 rounded w-full text-black border-2 border-indigo-300 focus:border-orange-400 focus:outline-none"
             onChange={(event) => {
               const selectedValue = event.target.value;
               if (selectedValue === "products") {

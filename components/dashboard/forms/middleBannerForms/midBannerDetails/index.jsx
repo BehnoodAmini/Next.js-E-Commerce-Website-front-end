@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
+import Cookies from "js-cookie";
 
 import { toast } from "react-toastify";
 
@@ -19,6 +20,8 @@ const MidBannerDetails = ({ midBanId }) => {
       top: 0,
     });
   };
+
+  const [authCookie, setAuthCookie] = useState(Cookies.get("auth_cookie"));
 
   const imageUrlRef = useRef();
   const imageAltRef = useRef();
@@ -40,7 +43,9 @@ const MidBannerDetails = ({ midBanId }) => {
     };
     const url = `https://behnood-fileshop-server.liara.run/api/update-middle-banner/${midBanId}`;
     axios
-      .post(url, formData)
+      .post(url, formData, {
+        headers: { auth_cookie: authCookie },
+      })
       .then((d) => {
         formData.situation == "true"
           ? toast.success("بنر میانی با موفقیت منتشر شد.", {
@@ -82,7 +87,10 @@ const MidBannerDetails = ({ midBanId }) => {
     goTopCtrl();
     axios
       .get(
-        `https://behnood-fileshop-server.liara.run/api/get-mid-ban/${midBanId}`
+        `https://behnood-fileshop-server.liara.run/api/get-mid-ban/${midBanId}`,
+        {
+          headers: { auth_cookie: authCookie },
+        }
       )
       .then((d) => {
         setFullData(d.data);
@@ -102,7 +110,13 @@ const MidBannerDetails = ({ midBanId }) => {
   const RemoveHandler = () => {
     const url = `https://behnood-fileshop-server.liara.run/api/delete-middle-banner/${midBanId}`;
     axios
-      .post(url)
+      .post(
+        url,
+        { item: 1 },
+        {
+          headers: { auth_cookie: authCookie },
+        }
+      )
       .then((d) => {
         toast.success("بنر با موفقیت حذف شد.", {
           autoClose: 3000,

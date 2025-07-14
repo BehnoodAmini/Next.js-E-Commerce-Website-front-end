@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 import { toast } from "react-toastify";
 
@@ -30,11 +31,16 @@ const CommentDetails = ({ goalId }) => {
   const [fullData, setFullData] = useState([-1]); // LOADING DEFAULT VALUES
   const [needRefresh, setNeedRefresh] = useState(1);
 
+  const [authCookie, setAuthCookie] = useState(Cookies.get("auth_cookie"));
+
   useEffect(() => {
     goTopCtrl();
     axios
       .get(
-        `https://behnood-fileshop-server.liara.run/api/get-comment/${goalId}`
+        `https://behnood-fileshop-server.liara.run/api/get-comment/${goalId}`,
+        {
+          headers: { auth_cookie: authCookie },
+        }
       )
       .then((d) => {
         setFullData(d.data);
@@ -62,7 +68,9 @@ const CommentDetails = ({ goalId }) => {
     };
     const url = `https://behnood-fileshop-server.liara.run/api/update-comment/${goalId}`;
     axios
-      .post(url, formData)
+      .post(url, formData, {
+        headers: { auth_cookie: authCookie },
+      })
       .then((d) => {
         toast.success("دیدگاه با موفقیت به‌روزرسانی شد.", {
           autoClose: 3000,
@@ -92,7 +100,13 @@ const CommentDetails = ({ goalId }) => {
   const RemoveHandler = () => {
     const url = `https://behnood-fileshop-server.liara.run/api/delete-comment/${goalId}`;
     axios
-      .post(url)
+      .post(
+        url,
+        { item: 1 },
+        {
+          headers: { auth_cookie: authCookie },
+        }
+      )
       .then((d) => {
         toast.success("دیدگاه با موفقیت حذف شد.", {
           autoClose: 3000,
@@ -127,7 +141,9 @@ const CommentDetails = ({ goalId }) => {
     };
     const url = `https://behnood-fileshop-server.liara.run/api/publish-comment`;
     axios
-      .post(url, sendingData)
+      .post(url, sendingData, {
+        headers: { auth_cookie: authCookie },
+      })
       .then((d) => {
         toast.success("انتشار دیدگاه با موفقیت انجام شد.", {
           autoClose: 3000,

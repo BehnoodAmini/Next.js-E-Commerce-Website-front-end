@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
+import Cookies from "js-cookie";
 
 import { toast } from "react-toastify";
 
@@ -18,6 +19,8 @@ const NewProduct = () => {
   const spliterForCategories = (value) => {
     return value.split("*");
   };
+
+  const [authCookie, setAuthCookie] = useState(Cookies.get("auth_cookie"));
 
   const titleRef = useRef();
   const slugRef = useRef();
@@ -156,7 +159,9 @@ const NewProduct = () => {
     };
     const url = `https://behnood-fileshop-server.liara.run/api/new-product`;
     axios
-      .post(url, formData)
+      .post(url, formData, {
+        headers: { auth_cookie: authCookie },
+      })
       .then((d) => {
         formData.published == "true"
           ? toast.success("محصول با موفقیت منتشر شد.", {

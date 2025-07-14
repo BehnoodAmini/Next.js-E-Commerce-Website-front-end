@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 import Image from "next/image";
 
 import { toast } from "react-toastify";
@@ -9,6 +10,7 @@ import { toast } from "react-toastify";
 import Box from "./Box";
 
 const AllCategories = ({ setCategoryDetCtrl, setRandNumForBannerClick }) => {
+  const [authCookie, setAuthCookie] = useState(Cookies.get("auth_cookie"));
   const [categories, setCategories] = useState([-1]);
   const [pageNumber, setPageNumber] = useState(1);
   const [numbersOfBtns, setNumbersOfBtns] = useState([-1]);
@@ -20,12 +22,17 @@ const AllCategories = ({ setCategoryDetCtrl, setRandNumForBannerClick }) => {
   useEffect(() => {
     axios
       .get(
-        `https://behnood-fileshop-server.liara.run/api/categories?pn=${pageNumber}&&pgn=${paginate}`
+        `https://behnood-fileshop-server.liara.run/api/categories?pn=${pageNumber}&&pgn=${paginate}`,
+        {
+          headers: { auth_cookie: authCookie },
+        }
       )
       .then((d) => {
         setCategories(d.data.GoalCategories);
         setNumbersOfBtns(
-          Array.from(Array(Math.ceil(d.data.AllCategoriesNum / paginate)).keys())
+          Array.from(
+            Array(Math.ceil(d.data.AllCategoriesNum / paginate)).keys()
+          )
         );
         setAllCategoriesNums(d.data.AllCategoriesNum);
       })

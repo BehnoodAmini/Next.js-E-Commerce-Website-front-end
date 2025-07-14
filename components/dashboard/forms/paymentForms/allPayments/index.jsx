@@ -3,12 +3,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
+import Cookies from "js-cookie";
 
 import { toast } from "react-toastify";
 
 import Box from "./Box";
 
 const AllPayments = ({ setPaymentCtrl, setRandNumForPaymentClick }) => {
+  const [authCookie, setAuthCookie] = useState(Cookies.get("auth_cookie"));
+
   const [payments, setPayments] = useState([-1]);
   const [pageNumber, setPageNumber] = useState(1);
   const [numbersOfBtns, setNumbersOfBtns] = useState([-1]);
@@ -20,7 +23,10 @@ const AllPayments = ({ setPaymentCtrl, setRandNumForPaymentClick }) => {
   useEffect(() => {
     axios
       .get(
-        `https://behnood-fileshop-server.liara.run/api/payments?pn=${pageNumber}&&pgn=${paginate}`
+        `https://behnood-fileshop-server.liara.run/api/payments?pn=${pageNumber}&&pgn=${paginate}`,
+        {
+          headers: { auth_cookie: authCookie },
+        }
       )
       .then((d) => {
         setPayments(d.data.GoalPayment);

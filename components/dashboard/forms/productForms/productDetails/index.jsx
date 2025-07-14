@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import Cookies from "js-cookie";
 
 import { toast } from "react-toastify";
 
@@ -26,6 +27,8 @@ const ProductDetails = ({ goalId }) => {
   const spliterForCategories = (value) => {
     return value.split("*");
   };
+
+  const [authCookie, setAuthCookie] = useState(Cookies.get("auth_cookie"));
 
   const titleRef = useRef();
   const slugRef = useRef();
@@ -163,7 +166,9 @@ const ProductDetails = ({ goalId }) => {
     };
     const url = `https://behnood-fileshop-server.liara.run/api/update-product/${goalId}`;
     axios
-      .post(url, formData)
+      .post(url, formData, {
+        headers: { auth_cookie: authCookie },
+      })
       .then((d) => {
         formData.published == "true"
           ? toast.success("محصول با موفقیت به‌روزرسانی و منتشر شد.", {
@@ -206,7 +211,13 @@ const ProductDetails = ({ goalId }) => {
   const RemoveHandler = () => {
     const url = `https://behnood-fileshop-server.liara.run/api/delete-product/${goalId}`;
     axios
-      .post(url)
+      .post(
+        url,
+        { item: 1 },
+        {
+          headers: { auth_cookie: authCookie },
+        }
+      )
       .then((d) => {
         toast.success("محصول با موفقیت حذف شد.", {
           autoClose: 3000,
@@ -240,7 +251,10 @@ const ProductDetails = ({ goalId }) => {
     goTopCtrl();
     axios
       .get(
-        `https://behnood-fileshop-server.liara.run/api/get-product-by-id/${goalId}`
+        `https://behnood-fileshop-server.liara.run/api/get-product-by-id/${goalId}`,
+        {
+          headers: { auth_cookie: authCookie },
+        }
       )
       .then((d) => {
         setFullData(d.data);

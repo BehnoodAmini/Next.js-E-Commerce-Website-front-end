@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 import { toast } from "react-toastify";
 
@@ -12,6 +13,8 @@ const NewSlider = () => {
       event.preventDefault();
     }
   };
+
+  const [authCookie, setAuthCookie] = useState(Cookies.get("auth_cookie"));
 
   const imageUrlRef = useRef();
   const imageAltRef = useRef();
@@ -34,7 +37,9 @@ const NewSlider = () => {
     };
     const url = `https://behnood-fileshop-server.liara.run/api/new-slider`;
     axios
-      .post(url, formData)
+      .post(url, formData, {
+        headers: { auth_cookie: authCookie },
+      })
       .then((d) => {
         formData.situation == "true"
           ? toast.success("اسلایدر با موفقیت منتشر شد.", {

@@ -56,7 +56,9 @@ const Info = ({ cookie }) => {
     };
     const backendUrl = `https://behnood-fileshop-server.liara.run/api/mini-update-user/${data._id}`;
     axios
-      .post(backendUrl, formData)
+      .post(backendUrl, formData, {
+        headers: { auth_cookie: authCookie },
+      })
       .then((d) => {
         const message = d.data.msg
           ? d.data.msg

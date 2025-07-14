@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 import { toast } from "react-toastify";
 
@@ -12,6 +13,8 @@ const NewMidBanner = () => {
       event.preventDefault();
     }
   };
+
+  const [authCookie, setAuthCookie] = useState(Cookies.get("auth_cookie"));
 
   const titleRef = useRef();
   const slugRef = useRef();
@@ -38,7 +41,9 @@ const NewMidBanner = () => {
     };
     const url = `https://behnood-fileshop-server.liara.run/api/new-category`;
     axios
-      .post(url, formData)
+      .post(url, formData, {
+        headers: { auth_cookie: authCookie },
+      })
       .then((d) => {
         formData.situation == "true"
           ? toast.success("دسته محصول با موفقیت منتشر شد.", {
@@ -151,7 +156,7 @@ const NewMidBanner = () => {
         </div>
         <button
           type="submit"
-          className="p-2 bg-indigo-600 text-white w-full rounded-md transition-all duration-300 hover:bg-orange-500"
+          className="cursor-pointer p-2 bg-indigo-600 text-white w-full rounded-md transition-all duration-300 hover:bg-orange-500"
         >
           ارسال
         </button>

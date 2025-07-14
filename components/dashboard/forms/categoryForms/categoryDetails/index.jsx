@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
+import Cookies from "js-cookie";
 
 import { toast } from "react-toastify";
 
@@ -19,6 +20,8 @@ const CategoryDetails = ({ categoryId }) => {
       top: 0,
     });
   };
+
+  const [authCookie, setAuthCookie] = useState(Cookies.get("auth_cookie"));
 
   const titleRef = useRef();
   const slugRef = useRef();
@@ -45,7 +48,9 @@ const CategoryDetails = ({ categoryId }) => {
     };
     const url = `https://behnood-fileshop-server.liara.run/api/update-category/${categoryId}`;
     axios
-      .post(url, formData)
+      .post(url, formData, {
+        headers: { auth_cookie: authCookie },
+      })
       .then((d) => {
         formData.situation == "true"
           ? toast.success("دسته محصول با موفقیت منتشر شد.", {
@@ -86,7 +91,12 @@ const CategoryDetails = ({ categoryId }) => {
   useEffect(() => {
     goTopCtrl();
     axios
-      .get(`https://behnood-fileshop-server.liara.run/api/get-category/${categoryId}`)
+      .get(
+        `https://behnood-fileshop-server.liara.run/api/get-category/${categoryId}`,
+        {
+          headers: { auth_cookie: authCookie },
+        }
+      )
       .then((d) => {
         setFullData(d.data);
       })
@@ -105,7 +115,13 @@ const CategoryDetails = ({ categoryId }) => {
   const RemoveHandler = () => {
     const url = `https://behnood-fileshop-server.liara.run/api/delete-category/${categoryId}`;
     axios
-      .post(url)
+      .post(
+        url,
+        { item: 1 },
+        {
+          headers: { auth_cookie: authCookie },
+        }
+      )
       .then((d) => {
         toast.success("دسته محصول با موفقیت حذف شد.", {
           autoClose: 3000,
@@ -143,12 +159,28 @@ const CategoryDetails = ({ categoryId }) => {
         <div className="flex flex-col gap-8">
           <div className="flex justify-between items-center">
             <h2 className="text-orange-500">جزئیات دسته محصول</h2>
-            <button
-              onClick={() => RemoveHandler()}
-              className="bg-rose-600 text-white px-4 py-1 rounded-md text-xs transition-all duration-300 hover:bg-rose-700"
-            >
-              حذف
-            </button>
+            <div className="w-20 h-6 flex justify-center items-center m-1">
+              <button
+                onClick={() => RemoveHandler()}
+                className="cursor-pointer h-8 inline-flex items-center px-4 py-2 bg-rose-600 transition ease-in-out delay-75 hover:bg-rose-700 text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
+              >
+                حذف
+                <svg
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  className="h-5 w-5 mr-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    strokeWidth={2}
+                    strokeLinejoin="round"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
           <div className="flex justify-between items-center">
             <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
@@ -261,7 +293,7 @@ const CategoryDetails = ({ categoryId }) => {
             </div>
             <button
               type="submit"
-              className="p-2 bg-indigo-600 text-white w-full rounded-md transition-all duration-300 hover:bg-orange-500"
+              className="cursor-pointer p-2 bg-indigo-600 text-white w-full rounded-md transition-all duration-300 hover:bg-orange-500"
             >
               به‌روزرسانی
             </button>

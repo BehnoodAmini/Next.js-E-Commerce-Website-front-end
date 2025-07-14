@@ -3,11 +3,14 @@
 import { useRef, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 
 import UserDetails from "../userDetails";
 import Loading from "@/app/loading";
 
 const FindUser = () => {
+  const [authCookie, setAuthCookie] = useState(Cookies.get("auth_cookie"));
+
   const [userData, setUserData] = useState(0);
   const emailRef = useRef();
 
@@ -19,10 +22,12 @@ const FindUser = () => {
     };
     const url = `https://behnood-fileshop-server.liara.run/api/search-user`;
     axios
-      .post(url, formData)
+      .post(url, formData, {
+        headers: { auth_cookie: authCookie },
+      })
       .then((d) => {
         if (d.data.userData == 0) {
-          toast.success("چنین کاربری یافت نشد!", {
+          toast.info("چنین کاربری یافت نشد!", {
             autoClose: 3000,
             hideProgressBar: false,
             closeOnClick: true,

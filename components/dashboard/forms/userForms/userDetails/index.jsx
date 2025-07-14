@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 import { toast } from "react-toastify";
 
@@ -25,6 +26,8 @@ const UserDetails = ({ goalId }) => {
       top: 0,
     });
   };
+
+  const [authCookie, setAuthCookie] = useState(Cookies.get("auth_cookie"));
 
   const viewedRef = useRef();
   const emailRef = useRef();
@@ -53,7 +56,9 @@ const UserDetails = ({ goalId }) => {
     };
     const url = `https://behnood-fileshop-server.liara.run/api/update-user/${goalId}`;
     axios
-      .post(url, formData)
+      .post(url, formData, {
+        headers: { auth_cookie: authCookie },
+      })
       .then((d) => {
         toast.success("کاربر با موفقیت به‌روزرسانی شد.", {
           autoClose: 3000,
@@ -84,7 +89,13 @@ const UserDetails = ({ goalId }) => {
   const RemoveHandler = () => {
     const url = `https://behnood-fileshop-server.liara.run/api/delete-user/${goalId}`;
     axios
-      .post(url)
+      .post(
+        url,
+        { item: 1 },
+        {
+          headers: { auth_cookie: authCookie },
+        }
+      )
       .then((d) => {
         toast.success("کاربر با موفقیت حذف شد.", {
           autoClose: 3000,
@@ -117,7 +128,9 @@ const UserDetails = ({ goalId }) => {
   useEffect(() => {
     goTopCtrl();
     axios
-      .get(`https://behnood-fileshop-server.liara.run/api/get-user/${goalId}`)
+      .get(`https://behnood-fileshop-server.liara.run/api/get-user/${goalId}`, {
+        headers: { auth_cookie: authCookie },
+      })
       .then((d) => {
         setFullData(d.data);
       })
@@ -136,7 +149,9 @@ const UserDetails = ({ goalId }) => {
   const paymentUncheckerHandler = (goalId) => {
     const url = `https://behnood-fileshop-server.liara.run/api/uncheck-payment/${goalId}`;
     axios
-      .get(url)
+      .get(url, {
+        headers: { auth_cookie: authCookie },
+      })
       .then((d) => {
         toast.success("به بخش سفارش‌های جدید افزوده شد.", {
           autoClose: 3000,
@@ -167,7 +182,9 @@ const UserDetails = ({ goalId }) => {
   const commentUncheckerHandler = (goalId) => {
     const url = `https://behnood-fileshop-server.liara.run/api/uncheck-comment/${goalId}`;
     axios
-      .get(url)
+      .get(url, {
+        headers: { auth_cookie: authCookie },
+      })
       .then((d) => {
         toast.success("به بخش دیدگاه‌های جدید افزوده شد.", {
           autoClose: 3000,

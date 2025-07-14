@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import Cookies from "js-cookie";
 
 import { toast } from "react-toastify";
 
@@ -20,6 +21,8 @@ const PostDetails = ({ goalId }) => {
       top: 0,
     });
   };
+
+  const [authCookie, setAuthCookie] = useState(Cookies.get("auth_cookie"));
 
   const titleRef = useRef();
   const slugRef = useRef();
@@ -88,7 +91,9 @@ const PostDetails = ({ goalId }) => {
     };
     const url = `https://behnood-fileshop-server.liara.run/api/update-post/${goalId}`;
     axios
-      .post(url, formData)
+      .post(url, formData, {
+        headers: { auth_cookie: authCookie },
+      })
       .then((d) => {
         formData.published == "true"
           ? toast.success("مقاله با موفقیت به‌روزرسانی و منتشر شد.", {
@@ -128,7 +133,13 @@ const PostDetails = ({ goalId }) => {
   const RemoveHandler = () => {
     const url = `https://behnood-fileshop-server.liara.run/api/delete-post/${goalId}`;
     axios
-      .post(url)
+      .post(
+        url,
+        { item: 1 },
+        {
+          headers: { auth_cookie: authCookie },
+        }
+      )
       .then((d) => {
         toast.success("مقاله با موفقیت حذف شد.", {
           autoClose: 3000,
@@ -162,7 +173,10 @@ const PostDetails = ({ goalId }) => {
     goTopCtrl();
     axios
       .get(
-        `https://behnood-fileshop-server.liara.run/api/get-post-by-id/${goalId}`
+        `https://behnood-fileshop-server.liara.run/api/get-post-by-id/${goalId}`,
+        {
+          headers: { auth_cookie: authCookie },
+        }
       )
       .then((d) => {
         setFullData(d.data);

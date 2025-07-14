@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 import { TiTickOutline } from "react-icons/ti";
 
@@ -28,6 +29,9 @@ const SingleProduct = async ({ params }) => {
 
   const resolvedParams = await params;
   const data = await getData(resolvedParams.slug);
+  if (!data._id && !data.msg) {
+    notFound();
+  }
 
   const commentProps = { src_id: data._id, typeOfModel: "product" };
 

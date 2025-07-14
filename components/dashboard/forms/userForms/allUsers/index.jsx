@@ -3,12 +3,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
+import Cookies from "js-cookie";
 
 import { toast } from "react-toastify";
 
 import Box from "./Box";
 
 const AllUsers = ({ setUserCtrl, setRandNumForUserClick }) => {
+  const [authCookie, setAuthCookie] = useState(Cookies.get("auth_cookie"));
+
   const [users, setUsers] = useState([-1]);
   const [pageNumber, setPageNumber] = useState(1);
   const [numbersOfBtns, setNumbersOfBtns] = useState([-1]);
@@ -19,7 +22,12 @@ const AllUsers = ({ setUserCtrl, setRandNumForUserClick }) => {
 
   useEffect(() => {
     axios
-      .get(`https://behnood-fileshop-server.liara.run/api/users?pn=${pageNumber}&&pgn=${paginate}`)
+      .get(
+        `https://behnood-fileshop-server.liara.run/api/users?pn=${pageNumber}&&pgn=${paginate}`,
+        {
+          headers: { auth_cookie: authCookie },
+        }
+      )
       .then((d) => {
         setUsers(d.data.GoalUsers);
         setNumbersOfBtns(

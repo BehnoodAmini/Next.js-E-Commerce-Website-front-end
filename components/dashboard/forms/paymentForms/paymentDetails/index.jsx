@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 import { toast } from "react-toastify";
 
@@ -21,18 +22,25 @@ const PaymentDetails = ({ goalId }) => {
     });
   };
 
+  const [authCookie, setAuthCookie] = useState(Cookies.get("auth_cookie"));
+
   const viewedRef = useRef();
   const amountRef = useRef();
   const payedRef = useRef();
   const emailRef = useRef();
   const usernameRef = useRef();
 
-    // LOADING DEFAULT VALUES
+  // LOADING DEFAULT VALUES
   const [fullData, setFullData] = useState([-1]);
   useEffect(() => {
     goTopCtrl();
     axios
-      .get(`https://behnood-fileshop-server.liara.run/api/get-payment/${goalId}`)
+      .get(
+        `https://behnood-fileshop-server.liara.run/api/get-payment/${goalId}`,
+        {
+          headers: { auth_cookie: authCookie },
+        }
+      )
       .then((d) => {
         setFullData(d.data);
         console.log(d.data);
@@ -65,7 +73,9 @@ const PaymentDetails = ({ goalId }) => {
     };
     const url = `https://behnood-fileshop-server.liara.run/api/update-payment/${goalId}`;
     axios
-      .post(url, formData)
+      .post(url, formData, {
+        headers: { auth_cookie: authCookie },
+      })
       .then((d) => {
         toast.success("سفارش با موفقیت به‌روزرسانی شد.", {
           autoClose: 3000,
@@ -95,7 +105,13 @@ const PaymentDetails = ({ goalId }) => {
   const RemoveHandler = () => {
     const url = `https://behnood-fileshop-server.liara.run/api/delete-payment/${goalId}`;
     axios
-      .post(url)
+      .post(
+        url,
+        { item: 1 },
+        {
+          headers: { auth_cookie: authCookie },
+        }
+      )
       .then((d) => {
         toast.success("سفارش با موفقیت حذف شد.", {
           autoClose: 3000,
@@ -228,7 +244,10 @@ const PaymentDetails = ({ goalId }) => {
                     <div>بدون محصول</div>
                   ) : (
                     fullData.products.map((da, i) => (
-                      <div key={i} className="bg-zinc-100 rounded-lg p-4 flex flex-col gap-2 shadow-[0px_0px_5px_rgba(0,0,0,.15)]">
+                      <div
+                        key={i}
+                        className="bg-zinc-100 rounded-lg p-4 flex flex-col gap-2 shadow-[0px_0px_5px_rgba(0,0,0,.15)]"
+                      >
                         <div className="flex justify-between items-center gap-1">
                           <div>شناسه: </div>
                           <div>{da._id}</div>
@@ -238,13 +257,13 @@ const PaymentDetails = ({ goalId }) => {
                           <div>{da.title}</div>
                         </div>
                         <div className="flex justify-center">
-                        <Link
-                          href={`/shop/${da.slug}`}
-                          target={"_blank"}
-                          className="rounded-lg flex justify-center items-center w-12 h-6 text-xs bg-indigo-500 text-white! hover:bg-indigo-600 transition-all duration-300"
-                        >
-                          لینک
-                        </Link>
+                          <Link
+                            href={`/shop/${da.slug}`}
+                            target={"_blank"}
+                            className="rounded-lg flex justify-center items-center w-12 h-6 text-xs bg-indigo-500 text-white! hover:bg-indigo-600 transition-all duration-300"
+                          >
+                            لینک
+                          </Link>
                         </div>
                       </div>
                     ))
