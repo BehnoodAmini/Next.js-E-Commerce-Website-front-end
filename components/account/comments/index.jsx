@@ -38,6 +38,14 @@ const Comments = ({ cookie }) => {
 
   return (
     <div className="flex flex-col gap-8 relative pt-20">
+      <>
+        <meta charSet="utf-8" />
+        <title> دیدگاه‌‌های من </title>
+        <meta name="description" content=" دیدگاه‌‌های من " />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="canonical" href="/account/comments" />
+      </>
       <h3 className="text-xl absolute top-1 right-1">دیدگاه‌‌های من</h3>
       <div className="flex items-center justify-end">
         <div
@@ -79,36 +87,38 @@ const Comments = ({ cookie }) => {
                     <div className="flex justify-between items-start gap-4">
                       <div className="relative w-full flex flex-col gap-8">
                         <div className="flex justify-between items-center">
-                            <Link
-                          href={
-                            da.typeOfModel == "post"
-                              ? `/blog/${da.src.slug}`
-                              : `/shop/${da.src.slug}`
-                          }
-                          className="px-3 py-1 flex justify-center items-center text-sm bg-blue-500 text-white! transition-all duration-300 hover:bg-blue-600 rounded-md h-6"
-                          target="_blank"
-                        >
-                          {da.typeOfModel == "post" ? "مقاله" : "محصول"}:{" "}
-                          {da.src.title}
-                        </Link>
-                        <div className="flex justify-end items-center gap-4">
-                        <div className="bg-indigo-400 text-white! rounded-md text-xs flex justify-center items-center w-28 h-6">
-                          {da.createdAt}
-                        </div>
-                        <div className="">
-                        {da.published == true ? (
-                          <div className="bg-emerald-600 text-white! w-20 h-6 text-xs rounded-md flex justify-center items-center">
-                            منتشر شده
+                          <Link
+                            href={
+                              da.typeOfModel == "post"
+                                ? `/blog/${da.src.slug}`
+                                : `/shop/${da.src.slug}`
+                            }
+                            className="px-3 py-1 flex justify-center items-center text-sm bg-blue-500 text-white! transition-all duration-300 hover:bg-blue-600 rounded-md h-6"
+                            target="_blank"
+                          >
+                            {da.typeOfModel == "post" ? "مقاله" : "محصول"}:{" "}
+                            {da.src.title}
+                          </Link>
+                          <div className="flex justify-end items-center gap-4">
+                            <div className="bg-indigo-400 text-white! rounded-md text-xs flex justify-center items-center w-28 h-6">
+                              {da.createdAt}
+                            </div>
+                            <div className="">
+                              {da.published == true ? (
+                                <div className="bg-emerald-600 text-white! w-20 h-6 text-xs rounded-md flex justify-center items-center">
+                                  منتشر شده
+                                </div>
+                              ) : (
+                                <div className="bg-rose-600 text-white! w-22 h-6 text-xs rounded-md flex justify-center items-center">
+                                  در انتظار انتشار
+                                </div>
+                              )}
+                            </div>
                           </div>
-                        ) : (
-                          <div className="bg-rose-600 text-white! w-22 h-6 text-xs rounded-md flex justify-center items-center">
-                            در انتظار انتشار
-                          </div>
-                        )}
                         </div>
-                        </div>
-                        </div>
-                        <p className="leading-9 text-base text-black!">{da.message}</p>
+                        <p className="leading-9 text-base text-black!">
+                          {da.message}
+                        </p>
                       </div>
                     </div>
                   </div>

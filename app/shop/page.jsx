@@ -16,9 +16,21 @@ const ShopPage = () => {
   const pn = searchParams.get("pn") || "";
   const pgn = searchParams.get("pgn") || "";
 
-  const url = { keyword, orderBy, type, maxP, minP,categories, pn, pgn };
+  const url = { keyword, orderBy, type, maxP, minP, categories, pn, pgn };
 
-  return <ShopComp url={url} />;
+  return (
+    <div>
+      <>
+        <meta charSet="utf-8" />
+        <title> فروشگاه </title>
+        <meta name="description" content=" فروشگاه " />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="canonical" href="/shop" />
+      </>
+      <ShopComp url={url} />
+    </div>
+  );
 };
 
 export default ShopPage;

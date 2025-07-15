@@ -26,9 +26,22 @@ const PaymentResultPage = async ({ searchParams }) => {
   const data = await getAuthData(cookieValue);
 
   return (
-    <section className="container mx-auto p-12 flex justify-center items-center">
-      <PaymentResultComp resolvedParams={resolvedParams} cookie={cookieValue} />
-    </section>
+    <div>
+      <>
+        <meta charSet="utf-8" />
+        <title> لطفا صبر کنید...</title>
+        <meta name="description" content=" لطفا صبر کنید..." />
+        <meta name="robots" content="noindex, nofollow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="canonical" href="/payment-result" />
+      </>
+      <section className="container mx-auto p-12 flex justify-center items-center">
+        <PaymentResultComp
+          resolvedParams={resolvedParams}
+          cookie={cookieValue}
+        />
+      </section>
+    </div>
   );
 };
 

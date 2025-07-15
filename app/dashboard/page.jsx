@@ -28,6 +28,14 @@ const Page = async () => {
 
   return (
     <div>
+      <>
+        <meta charSet="utf-8" />
+        <title> داشبورد مدیریتی </title>
+        <meta name="description" content=" داشبورد مدیریتی " />
+        <meta name="robots" content="noindex, nofollow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="canonical" href="/dashboard" />
+      </>
       <MainDashboard />
     </div>
   );

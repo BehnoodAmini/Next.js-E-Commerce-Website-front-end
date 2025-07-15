@@ -47,6 +47,14 @@ const AccountPayments = ({ cookie }) => {
 
   return (
     <div className="flex flex-col gap-8 relative pt-20">
+      <>
+        <meta charSet="utf-8" />
+        <title> سفارش‌های من </title>
+        <meta name="description" content=" سفارش‌های من " />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="canonical" href="/account/payments" />
+      </>
       <h3 className="text-xl absolute top-1 right-1">سفارش‌های من</h3>
       <div className="flex items-center justify-end">
         <div

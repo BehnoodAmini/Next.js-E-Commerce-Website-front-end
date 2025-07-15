@@ -44,6 +44,15 @@ const BlogPageComp = ({ url }) => {
 
   return (
     <div className="flex flex-col gap-8">
+      <div>
+        <meta charSet="utf-8" />
+        <title> وبلاگ </title>
+        <meta name="description" content=" وبلاگ فروشگاه فایل " />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="keywords" content="وبلاگ فروشگاه فایل" />
+        <link rel="canonical" href="/blog" />
+      </div>
       <section className="flex justify-between items-center gap-8">
         <div className="flex justify-start items-center gap-4">
         <h1 className="text-center text-xl text-indigo-600">

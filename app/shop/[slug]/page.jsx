@@ -39,12 +39,33 @@ const SingleProduct = async ({ params }) => {
     return value.split(":");
   };
 
+  //SEO
+  const productSlug = `/shop/${data.slug}`;
+  const productShortDesc = data.shortDesc;
+  const productTitle = data.title;
+
   return (
     <div className="flex justify-between items-start container mx-auto gap-4">
+      <meta charSet="utf-8" />
+      <meta name="robots" content="index, follow" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="keywords" content="فروشگاه فروشگاه فایل" />
       {data.msg ? (
-        <div>محصول هنوز منتشر نشده است...</div>
+        <div>
+          <>
+            <title> محصول هنوز منتشر نشده است </title>
+            <meta name="description" content={productShortDesc} />
+            <link rel="canonical" href="/shop" />
+          </>
+          <div>محصول هنوز منتشر نشده است...</div>
+        </div>
       ) : (
         <>
+          <>
+            <title>{productTitle}</title>
+            <meta name="description" content={productShortDesc} />
+            <link rel="canonical" href={productSlug} />
+          </>
           <main className="w-[75%]">
             {" "}
             <div className="flex flex-col gap-12">

@@ -38,6 +38,14 @@ const Purchased = ({ cookie }) => {
 
   return (
     <div className="flex flex-col gap-8 relative pt-20">
+      <>
+        <meta charSet="utf-8" />
+        <title> فایل‌های من </title>
+        <meta name="description" content=" فایل‌های من " />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="canonical" href="/account/purchased" />
+      </>
       <h3 className="text-xl absolute top-1 right-1">فایل‌های خریداری شده من</h3>
       <div className="flex items-center justify-end">
         <div

@@ -43,12 +43,33 @@ const SingleBlog = async ({ params }) => {
   const productsData = await getProductsData();
   const commentProps = { src_id: data._id, typeOfModel: "post" };
 
+  //SEO
+  const postSlug = `/blog/${data.slug}`;
+  const postShortDesc = data.shortDesc;
+  const postTtitle = data.title;
+
   return (
     <div className="flex justify-between items-start container mx-auto gap-2">
+      <meta charSet="utf-8" />
+      <meta name="robots" content="index, follow" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="keywords" content="وبلاگ فروشگاه فایل" />
       {data.msg ? (
-        <div>مقاله هنوز منتشر نشده است...</div>
+        <>
+          <div>
+            <title> مقاله هنوز منتشر نشده است </title>
+            <meta name="description" content={postShortDesc} />
+            <link rel="canonical" href="/blog" />
+          </div>
+          <div>مقاله هنوز منتشر نشده است...</div>
+        </>
       ) : (
         <>
+          <div>
+            <title>{postTtitle}</title>
+            <meta name="description" content={postShortDesc} />
+            <link rel="canonical" href={postSlug} />
+          </div>
           <main className="w-[75%]">
             {" "}
             <div className="flex flex-col gap-12">

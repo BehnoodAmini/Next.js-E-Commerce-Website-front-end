@@ -28,6 +28,14 @@ const CartPage = async () => {
 
   return (
     <main className="container mx-auto">
+      <div>
+        <meta charSet="utf-8" />
+        <title> سبد خرید </title>
+        <meta name="description" content=" سبد خرید " />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="canonical" href="/cart" />
+      </div>
       <CartPageComp cookie={cookieValue} />
     </main>
   );
