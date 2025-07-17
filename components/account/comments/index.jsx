@@ -53,11 +53,11 @@ const Comments = ({ cookie }) => {
             setNeedRefresh(1);
             setData([-1]);
           }}
-          className="absolute top-1 left-1 cursor-pointer text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-28 h-10"
+          className="absolute top-12 md:top-1 left-1 cursor-pointer text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-28 h-10"
         >
           <FiRefreshCw /> به روز رسانی
         </div>
-        <div className="absolute top-1 left-35 text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-25 h-10">
+        <div className="absolute top-12 md:top-1 left-35 text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-25 h-10">
           {data.length} دیدگاه‌
         </div>
       </div>
@@ -86,14 +86,14 @@ const Comments = ({ cookie }) => {
                   >
                     <div className="flex justify-between items-start gap-4">
                       <div className="relative w-full flex flex-col gap-8">
-                        <div className="flex justify-between items-center">
+                        <div className="flex justify-between items-center flex-wrap gap-4">
                           <Link
                             href={
                               da.typeOfModel == "post"
                                 ? `/blog/${da.src.slug}`
                                 : `/shop/${da.src.slug}`
                             }
-                            className="px-3 py-1 flex justify-center items-center text-sm bg-blue-500 text-white! transition-all duration-300 hover:bg-blue-600 rounded-md h-6"
+                            className="px-3 py-1 flex justify-center items-center text-sm bg-blue-500 text-white! transition-all duration-300 hover:bg-blue-600 rounded-md"
                             target="_blank"
                           >
                             {da.typeOfModel == "post" ? "مقاله" : "محصول"}:{" "}

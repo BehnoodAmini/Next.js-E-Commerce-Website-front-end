@@ -139,11 +139,11 @@ const Favourite = ({ cookie }) => {
             setNeedRefresh(1);
             setData([-1]);
           }}
-          className="absolute top-1 left-1 cursor-pointer text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-28 h-10"
+          className="absolute top-12 lg:top-1 left-1 cursor-pointer text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-28 h-10"
         >
           <FiRefreshCw /> به روز رسانی
         </div>
-        <div className="absolute top-1 left-35 text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-25 h-10">
+        <div className="absolute top-12 lg:top-1 left-35 text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-25 h-10">
           {data.length} محصول
         </div>
       </div>
@@ -168,9 +168,9 @@ const Favourite = ({ cookie }) => {
                 {data.map((da, i) => (
                   <div
                     key={i}
-                    className="w-full flex flex-col gap-4 bg-zinc-200 text-sm rounded-md p-4 relative"
+                    className="w-full flex flex-col gap-4 bg-zinc-200 text-sm rounded-md p-4 relative  max-lg:h-140 max-lg:items-center"
                   >
-                    <div className="flex justify-between items-start gap-4">
+                    <div className="flex justify-between items-start gap-4 flex-col lg:flex-row max-lg:items-center">
                       <div className="flex justify-center items-center">
                         <Image
                           width={260}
@@ -181,8 +181,9 @@ const Favourite = ({ cookie }) => {
                           title={da.title}
                         />
                       </div>
-                      <div className="relative w-full flex flex-col gap-4">
-                        <div className="absolute top-0 left-50 bg-indigo-400 text-white! rounded-md text-xs flex justify-center items-center w-20 h-6">
+                      <div className="relative w-full flex flex-col gap-4 max-lg:items-center">
+                        <div className="max-xl:flex max-xl:flex-row max-lg:gap-10">
+                        <div className="hidden lg:flex absolute top-0 left-50 bg-indigo-400 text-white! rounded-md text-xs justify-center items-center w-20 h-6">
                           {da.typeOfProduct == "book" ? (
                             <span>کتاب</span>
                           ) : da.typeOfProduct == "app" ? (
@@ -193,17 +194,18 @@ const Favourite = ({ cookie }) => {
                         </div>
                         <div
                           onClick={() => cartAdder(da._id)}
-                          className="absolute top-0 left-22 bg-emerald-500 text-white! rounded-md text-xs flex justify-center items-center w-26 h-6 transition-all duration-300 hover:bg-emerald-600 cursor-pointer"
+                          className="lg:absolute top-0 lg:left-22 bg-emerald-500 text-white! rounded-md text-xs flex justify-center items-center w-26 h-6 transition-all duration-300 hover:bg-emerald-600 cursor-pointer"
                         >
                           افزودن به سبد خرید
                         </div>
                         <Link
                           href={`/shop/${da.slug}`}
-                          className="absolute top-0 left-0 flex justify-center items-center text-xs bg-blue-500 text-white! transition-all duration-300 hover:bg-blue-600 rounded-md w-20 h-6"
+                          className="lg:absolute top-0 lg:left-0 flex justify-center items-center text-xs bg-blue-500 text-white! transition-all duration-300 hover:bg-blue-600 rounded-md w-20 h-6"
                           target="_blank"
                         >
                           لینک محصول
                         </Link>
+                        </div>
                         <h3 className="text-base">{da.title}</h3>
                         <p>{da.shortDesc}</p>
                         <div className="flex justify-start items-center gap-4">
@@ -230,10 +232,10 @@ const Favourite = ({ cookie }) => {
                         </div>
                       </div>
                     </div>
-                    <div className="w-20 h-6 absolute bottom-5 left-5">
+                    <div className="w-20 h-6 absolute bottom-5 lg:left-5">
                       <button
                         onClick={() => productRemoveHandler(da._id)}
-                        className="cursor-pointer h-8 inline-flex items-center px-4 py-2 bg-rose-600 transition ease-in-out delay-75 hover:bg-rose-700 text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
+                        className="cursor-pointer h-6 lg:h-8 inline-flex items-center px-4 py-2 bg-rose-600 transition ease-in-out delay-75 hover:bg-rose-700 text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
                       >
                         حذف
                         <svg

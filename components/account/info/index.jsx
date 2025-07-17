@@ -250,7 +250,7 @@ const Info = ({ cookie }) => {
                   onSubmit={emailConfirmHandler}
                   className="flex flex-col gap-8 items-center"
                 >
-                  <div className="flex justify-between items-center gap-4 w-full">
+                  <div className="flex flex-wrap justify-between items-center gap-4 w-full">
                     <h3 className="text-lg">تایید حساب کاربری</h3>
                     <div
                       onClick={() => sendEmailReactivator()}
@@ -279,7 +279,7 @@ const Info = ({ cookie }) => {
               <div></div>
             )}
 
-            <div className="flex justify-between items-center gap-4">
+            <div className="flex justify-center md:justify-between items-center gap-4 flex-wrap">
               <div className="flex justify-center gap-1 items-center bg-zinc-200 w-60 text-sm h-10 rounded-md p-1">
                 <div>تاریخ ثبت نام:</div>
                 <div>{data.createdAt}</div>
@@ -307,7 +307,7 @@ const Info = ({ cookie }) => {
               <div className="text-base">به روز رسانی اطلاعات</div>
               <form
                 onSubmit={handleSubmit(formSubmitHandler)}
-                className="flex flex-col gap-8 w-[30rem] bg-gray-100 p-6 rounded-md shadow-[0px_0px_1rem_rgba(0,0,0,.2)]"
+                className="flex flex-col gap-8 w-full md:w-[30rem] bg-gray-100 p-6 rounded-md shadow-[0px_0px_1rem_rgba(0,0,0,.2)]"
               >
                 <div className="flex flex-col gap-1">
                   <input
@@ -400,7 +400,7 @@ const Info = ({ cookie }) => {
                 </button>
               </form>
             </div>
-            <div className="flex justify-between items-center gap-6 bg-zinc-100 w-full text-sm rounded-xl p-4 shadow-sm">
+            <div className="flex flex-wrap justify-between items-center gap-6 bg-zinc-100 w-full text-sm rounded-xl p-4 shadow-sm">
               <div className="flex items-center justify-between w-85 h-12 bg-white rounded-xl border border-zinc-300 px-4 py-2 shadow-sm">
                 <span>اطلاع رسانی جشنواره‌ها از طریق ایمیل</span>
 
@@ -412,7 +412,6 @@ const Info = ({ cookie }) => {
                     onChange={(e) => bulkEmailChanger(e.target.checked)}
                   />
                   <div className="group peer ring-0 bg-rose-400 rounded-full outline-none duration-300 after:duration-300 w-16 h-8 shadow-md peer-checked:bg-emerald-500 peer-focus:outline-none after:rounded-full after:absolute after:bg-gray-50 after:outline-none after:h-6 after:w-5.5 after:top-1 after:left-1 after:-rotate-180 after:flex after:justify-center after:items-center after:text-[0.85rem] after:leading-none peer-checked:after:translate-x-8 peer-checked:after:content-['✔️'] peer-hover:after:scale-95  peer-checked:after:rotate-0"></div>
-                  {/*after:content-['✖️']*/}
                 </label>
               </div>
               <button

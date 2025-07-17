@@ -62,11 +62,11 @@ const AccountPayments = ({ cookie }) => {
             setNeedRefresh(1);
             setData([-1]);
           }}
-          className="absolute top-1 left-1 cursor-pointer text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-28 h-10"
+          className="absolute top-12 md:top-1 left-1 cursor-pointer text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-28 h-10"
         >
           <FiRefreshCw /> به روز رسانی
         </div>
-        <div className="absolute top-1 left-35 text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-25 h-10">
+        <div className="absolute top-12 md:top-1 left-35 text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-25 h-10">
           {data.length} سفارش
         </div>
       </div>
@@ -91,9 +91,9 @@ const AccountPayments = ({ cookie }) => {
                 {data.map((da, i) => (
                   <div
                     key={i}
-                    className="w-full flex flex-col gap-4 bg-zinc-200 text-sm rounded-xl p-4 relative shadow-sm hover:shadow-md transition-shadow duration-300"
+                    className="w-full flex flex-col gap-4 bg-zinc-200 text-sm rounded-xl p-1 md:p-4 relative shadow-sm hover:shadow-md transition-shadow duration-300 max-lg:items-center"
                   >
-                    <div className="flex justify-between items-start gap-4 w-250 mx-2.5">
+                    <div className="flex justify-between items-start gap-4 xl:w-250 mx-2.5 flex-wrap  max-md:mt-5">
                       <div className="flex justify-center items-center w-30 h-8 rounded-lg bg-sky-600 text-white!">
                         {priceChanger(da.amount)} تومان
                       </div>
@@ -117,7 +117,7 @@ const AccountPayments = ({ cookie }) => {
                         </div>
                       )}
                     </div>
-                    <div className="flex justify-start items-center gap-13.5 flex-wrap">
+                    <div className="flex justify-center lg:justify-start items-center lg:gap-13.5 flex-wrap">
                       {da.products.map((da, i) => (
                         <SlideBox itemData={da} key={i} />
                       ))}

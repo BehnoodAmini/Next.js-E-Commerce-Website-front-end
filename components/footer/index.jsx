@@ -13,9 +13,10 @@ const Footer = () => {
       behavior: "smooth",
     });
   };
+
   return (
     <footer className="container mx-auto flex flex-col gap-8 py-6 mt-8">
-      <div className="flex justify-between items-center p-8 bg-zinc-100 rounded-xl">
+      <div className="flex justify-between items-center p-8 bg-zinc-100 rounded-xl flex-col md:flex-row gap-8 md:gap-2">
         <div className="w-72 max-w-72 flex flex-col gap-4">
           <div className="flex justify-center">
             <Image
@@ -28,7 +29,7 @@ const Footer = () => {
           </div>
           <p className="text-center text-base sm:text-sm">متن ساختگی</p>
         </div>
-        <div className="flex justify-around items-start gap-16">
+        <div className="flex justify-around items-start gap-8 sm:gap-16">
           <div className="flex flex-col gap-4">
             <div className="text-xl">دسترسی سریع</div>
             <ul className="flex flex-col gap-3 text-base sm:text-sm">
@@ -126,7 +127,7 @@ const Footer = () => {
         <p>تمامی حقوق مادی و معنوی این وبسایت متعلق به ***** می‌باشد.</p>
         <HiOutlineArrowUp
           onClick={() => goTopCtrl()}
-          className="fixed bottom-4 left-4 cursor-pointer w-12 h-12 p-2 rounded-lg bg-yellow-500 text-black transition-all duration-300 hover:bg-indigo-500 hover:text-white"
+          className="z-40 fixed bottom-4 left-4 cursor-pointer w-12 h-12 p-2 rounded-lg bg-yellow-500 text-black transition-all duration-300 hover:bg-indigo-500 hover:text-white"
         />
       </div>
     </footer>

@@ -53,11 +53,11 @@ const Purchased = ({ cookie }) => {
             setNeedRefresh(1);
             setData([-1]);
           }}
-          className="absolute top-1 left-1 cursor-pointer text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-28 h-10"
+          className="absolute top-12 lg:top-1 left-1 cursor-pointer text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-28 h-10"
         >
           <FiRefreshCw /> به روز رسانی
         </div>
-        <div className="absolute top-1 left-35 text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-25 h-10">
+        <div className="absolute top-12 lg:top-1 left-35 text-white bg-indigo-500 rounded-md flex text-sm justify-center items-center gap-1 w-25 h-10">
           {data.length} محصول
         </div>
       </div>
@@ -82,7 +82,7 @@ const Purchased = ({ cookie }) => {
                 {data.map((da, i) => (
                   <div
                     key={i}
-                    className="w-full flex flex-col md:flex-row gap-4 bg-white border border-zinc-200 shadow-sm rounded-xl p-4 hover:shadow-md transition-shadow duration-300"
+                    className="w-full flex flex-col lg:flex-row gap-4 bg-white border border-zinc-200 shadow-sm rounded-xl p-4 hover:shadow-md transition-shadow duration-300"
                   >
                     <div className="flex justify-center items-center">
                       <Image
@@ -94,15 +94,15 @@ const Purchased = ({ cookie }) => {
                         title={da.title}
                       />
                     </div>
-                    <div className="relative w-full flex flex-col gap-4 justify-between">
+                    <div className="relative w-full flex flex-col gap-4 justify-between max-lg:items-center">
                       <Link
                         href={`/shop/${da.slug}`}
-                        className="absolute top-2 left-2 flex justify-center items-center text-xs bg-blue-500 text-white! transition-all duration-300 hover:bg-blue-600 rounded-md px-3 py-1 shadow"
+                        className="absolute top-2 lg:left-2 flex justify-center items-center text-xs bg-blue-500 text-white! transition-all duration-300 hover:bg-blue-600 rounded-md px-3 py-1 shadow"
                         target="_blank"
                       >
                         لینک محصول
                       </Link>
-                      <h3 className="text-base font-semibold text-gray-800">
+                      <h3 className="text-base md:font-semibold text-gray-800 mt-12 lg:mt-0">
                         {da.title}
                       </h3>
                       <Link
