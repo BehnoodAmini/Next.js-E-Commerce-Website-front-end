@@ -81,7 +81,7 @@ const RegisterForm = () => {
     <section className="container mx-auto flex justify-center items-center">
       <form
         onSubmit={handleSubmit(formSubmitHandler)}
-        className="flex flex-col gap-8 m-12 w-[30rem] bg-gray-100 p-12 rounded-md shadow-[0px_0px_1rem_rgba(0,0,0,.2)]"
+        className="flex flex-col gap-8 mt-15 md:m-12 w-[30rem] bg-gray-100 p-10 md:p-12 rounded-md shadow-[0px_0px_1rem_rgba(0,0,0,.2)] max-md:w-[100%]"
       >
         <div className="flex flex-col justify-center items-center gap-3">
           <h1 className="text-xl text-center text-indigo-500">

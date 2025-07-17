@@ -22,9 +22,6 @@ const CartPage = async () => {
   const cookieValue =
     auth_cookie && auth_cookie.value ? auth_cookie.value : undefined;
   const data = await getAuthData(cookieValue);
-  // if (!data._id) {
-  //   redirect("/login");
-  // }
 
   return (
     <main className="container mx-auto">

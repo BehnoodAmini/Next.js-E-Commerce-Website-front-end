@@ -183,28 +183,28 @@ const Favourite = ({ cookie }) => {
                       </div>
                       <div className="relative w-full flex flex-col gap-4 max-lg:items-center">
                         <div className="max-xl:flex max-xl:flex-row max-lg:gap-10">
-                        <div className="hidden lg:flex absolute top-0 left-50 bg-indigo-400 text-white! rounded-md text-xs justify-center items-center w-20 h-6">
-                          {da.typeOfProduct == "book" ? (
-                            <span>کتاب</span>
-                          ) : da.typeOfProduct == "app" ? (
-                            <span>اپلیکیشن</span>
-                          ) : (
-                            <span>فایل گرافیکی</span>
-                          )}
-                        </div>
-                        <div
-                          onClick={() => cartAdder(da._id)}
-                          className="lg:absolute top-0 lg:left-22 bg-emerald-500 text-white! rounded-md text-xs flex justify-center items-center w-26 h-6 transition-all duration-300 hover:bg-emerald-600 cursor-pointer"
-                        >
-                          افزودن به سبد خرید
-                        </div>
-                        <Link
-                          href={`/shop/${da.slug}`}
-                          className="lg:absolute top-0 lg:left-0 flex justify-center items-center text-xs bg-blue-500 text-white! transition-all duration-300 hover:bg-blue-600 rounded-md w-20 h-6"
-                          target="_blank"
-                        >
-                          لینک محصول
-                        </Link>
+                          <div className="hidden lg:flex absolute top-0 left-50 bg-indigo-400 text-white! rounded-md text-xs justify-center items-center w-20 h-6">
+                            {da.typeOfProduct == "book" ? (
+                              <span>کتاب</span>
+                            ) : da.typeOfProduct == "app" ? (
+                              <span>اپلیکیشن</span>
+                            ) : (
+                              <span>فایل گرافیکی</span>
+                            )}
+                          </div>
+                          <div
+                            onClick={() => cartAdder(da._id)}
+                            className="lg:absolute top-0 lg:left-22 bg-emerald-500 text-white! rounded-md text-xs flex justify-center items-center w-26 h-6 transition-all duration-300 hover:bg-emerald-600 cursor-pointer"
+                          >
+                            افزودن به سبد خرید
+                          </div>
+                          <Link
+                            href={`/shop/${da.slug}`}
+                            className="lg:absolute top-0 lg:left-0 flex justify-center items-center text-xs bg-blue-500 text-white! transition-all duration-300 hover:bg-blue-600 rounded-md w-20 h-6"
+                            target="_blank"
+                          >
+                            لینک محصول
+                          </Link>
                         </div>
                         <h3 className="text-base">{da.title}</h3>
                         <p>{da.shortDesc}</p>

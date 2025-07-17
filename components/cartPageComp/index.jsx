@@ -191,7 +191,7 @@ const CartPageComp = ({ cookie }) => {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className=" flex justify-between items-start">
+      <div className=" flex justify-between items-start max-md:p-4 max-md:mt-10">
         <h1 className="text-indigo-600 text-2xl border-r-indigo-500 border-r-2 pr-1">
           سبد خرید
         </h1>
@@ -217,7 +217,7 @@ const CartPageComp = ({ cookie }) => {
           </div>
         ) : (
           <div>
-            <div className="flex justify-between items-start gap-2">
+            <div className="flex justify-between items-center md:items-start gap-2 flex-col md:flex-row">
               <div className="w-full rounded-md bg-zinc-100 p-4 shadow-[0px_0px_5px_rgba(0,0,0,.15)]">
                 {data.length < 1 ? (
                   <div className="flex justify-center items-center p-8 w-full">
@@ -228,7 +228,7 @@ const CartPageComp = ({ cookie }) => {
                     {data.map((da, i) => (
                       <div
                         key={i}
-                        className="w-full flex flex-col gap-4 bg-zinc-200 text-sm rounded-md p-4 relative"
+                        className="w-full flex flex-col gap-4 bg-zinc-200 text-sm rounded-md p-4 relative max-lg:items-center"
                       >
                         <div className="flex justify-between items-start gap-4">
                           <div className="flex justify-center items-center">
@@ -242,7 +242,8 @@ const CartPageComp = ({ cookie }) => {
                             />
                           </div>
                           <div className="relative w-full flex flex-col gap-4">
-                            <div className="absolute top-0 left-35 bg-indigo-400 text-white! rounded-md text-xs flex justify-center items-center w-20 h-6">
+                            <div className="max-xl:flex max-xl:flex-row max-lg:gap-10">
+                            <div className="hidden md:flex lg:absolute top-0 left-35 bg-indigo-400 text-white! rounded-md text-xs justify-center items-center w-20 h-6">
                               {da.typeOfProduct == "book" ? (
                                 <span>کتاب</span>
                               ) : da.typeOfProduct == "app" ? (
@@ -253,16 +254,17 @@ const CartPageComp = ({ cookie }) => {
                             </div>
                             <Link
                               href={`/shop/${da.slug}`}
-                              className="absolute top-0 left-12 flex justify-center items-center text-xs bg-blue-500 text-white! transition-all duration-300 hover:bg-blue-600 rounded-md w-20 h-6"
+                              className="lg:absolute top-0 left-12 flex justify-center items-center text-xs bg-blue-500 text-white! transition-all duration-300 hover:bg-blue-600 rounded-md w-20 h-6"
                               target="_blank"
                             >
                               لینک محصول
                             </Link>
                             <div
                               onClick={() => favAdder(da._id)}
-                              className="absolute top-0 left-0 text-xs flex justify-center items-center w-10 h-6 cursor-pointer"
+                              className="lg:absolute top-0 left-0 text-xs flex justify-center items-center w-10 h-6 cursor-pointer"
                             >
                               <Like />
+                            </div>
                             </div>
                             <h3 className="text-base">{da.title}</h3>
                             <p>{da.shortDesc}</p>
@@ -290,7 +292,7 @@ const CartPageComp = ({ cookie }) => {
                             </div>
                           </div>
                         </div>
-                        <div className="w-20 h-6 absolute bottom-5 left-5">
+                        <div className="w-20 h-6 absolute bottom-5 left-5 max-lg:right-5">
                           <button
                             onClick={() => productRemoveHandler(da._id)}
                             className="cursor-pointer h-8 inline-flex items-center px-4 py-2 bg-rose-600 transition ease-in-out delay-75 hover:bg-rose-700 text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
@@ -317,17 +319,17 @@ const CartPageComp = ({ cookie }) => {
                   </div>
                 )}
               </div>
-              <div className="w-80 min-w-80 rounded-md bg-zinc-100 p-4 flex flex-col gap-6 shadow-[0px_0px_5px_rgba(0,0,0,.15)]">
+              <div className="w-80 min-w-80 max-md:w-full rounded-md bg-zinc-100 p-4 flex flex-col gap-6 shadow-[0px_0px_5px_rgba(0,0,0,.15)] max-md:mt-10">
                 <div className="flex justify-between items-center">
                   <div>مجموع قیمت</div>
                   <div>{priceChanger(priceSum)} تومان</div>
                 </div>
                 <button
                   onClick={paymentHandler}
-                  className="cursor-pointer bg-white text-center rounded-2xl h-10 relative group"
+                  className="cursor-pointer max-md:bg-zinc-100! bg-white text-center rounded-2xl h-10 relative group max-lg:flex max-md:justify-center max-lg:items-center max-lg:gap-20"
                   type="button"
                 >
-                  <div className="bg-green-400 rounded-xl h-10 w-1/4 flex items-center justify-center absolute left-1 top-0 group-hover:w-full z-10 duration-500">
+                  <div className="hidden bg-green-400 rounded-xl h-10 w-1/4 md:flex items-center justify-center lg:absolute left-1 top-0 group-hover:w-full z-10 duration-500">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 1024 1024"
@@ -344,7 +346,7 @@ const CartPageComp = ({ cookie }) => {
                       />
                     </svg>
                   </div>
-                  <p className="translate-x-2">پرداخت</p>
+                  <p className="md:translate-x-2 max-md:flex max-md:items-center max-md:justify-center max-md:bg-emerald-600 max-md:text-white max-md:w-full max-md:rounded-xl max-md:h-10">پرداخت</p>
                 </button>
               </div>
             </div>

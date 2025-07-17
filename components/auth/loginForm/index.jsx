@@ -71,7 +71,7 @@ const LoginForm = () => {
     <section className="container mx-auto flex justify-center items-center">
       <form
         onSubmit={handleSubmit(formSubmitHandler)}
-        className="flex flex-col gap-8 m-12 w-[30rem] bg-gray-100 p-12 rounded-md"
+        className="flex flex-col gap-8 mt-15 md:m-12 w-[30rem] bg-gray-100 p-10 md:p-12 rounded-md  max-md:w-[100%]"
       >
         <div className="flex flex-col justify-center items-center gap-3">
           <h1 className="text-xl text-center text-indigo-500">ورود به حساب</h1>
@@ -141,7 +141,7 @@ const LoginForm = () => {
             <p className="group-hover:-translate-y-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
               ورود به حساب کاربری
             </p>
-            <p className="absolute top-7 group-hover:top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
+            <p className="hidden md:flex absolute top-7 group-hover:top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
               بزن بریم!
             </p>
           </div>
