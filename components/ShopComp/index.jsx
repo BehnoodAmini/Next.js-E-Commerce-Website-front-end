@@ -5,6 +5,9 @@ import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+import { FaFilter } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
+
 import GraphicSlideBox from "../sliders/graphic-slider-box";
 
 const ShopComp = ({ url }) => {
@@ -134,7 +137,8 @@ const ShopComp = ({ url }) => {
   // CATEGORIES
   const [allCats, setAllCats] = useState([-1]);
   useEffect(() => {
-    const url = "https://behnood-fileshop-server.liara.run/api/products-categories-rel";
+    const url =
+      "https://behnood-fileshop-server.liara.run/api/products-categories-rel";
     axios.get(url).then((d) => {
       setAllCats(d.data);
     });
@@ -170,13 +174,30 @@ const ShopComp = ({ url }) => {
     }
   });
 
+  // FOR RESPONSIVE
+  const [menuIsOpen, setMenuIsOpen] = useState(-1);
+
+  useEffect(() => {
+    if (menuIsOpen == -1) {
+      document.body.style.overflow = "auto";
+    } else if (menuIsOpen == 1) {
+      document.body.style.overflow = "hidden";
+    }
+  }, [menuIsOpen]);
+  
   return (
-    <div className="container mx-auto flex justify-between items-start gap-2">
-      <aside className="w-80 flex flex-col gap-4">
-        <div className="flex flex-col gap-4 bg-zinc-100 rounded-lg p-2">
-          <div>مرتب سازی بر اساس</div>
-          <div className="flex gap-2 items-center flex-wrap justify-between cursor-pointer">
-            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
+    <div className="container mx-auto flex justify-between items-start gap-2 max-xl:px-2">
+      <aside
+        className={
+          menuIsOpen == -1
+            ? "z-50 flex flex-col gap-4 bg-[#000000cc] md:bg-transparent w-full md:w-80 py-4 md:py-0 h-min-[100vh] fixed md:static bottom-0 top-0 left-[100%] md:left-0 -right-[100%] md:right-0 transition-all duration-500"
+            : "z-50 flex flex-col gap-4 bg-[#000000cc] md:bg-transparent backdrop-blur-md w-full md:w-80 py-4 md:py-0 h-min-[100vh] overflow-auto md:h-auto fixed md:static bottom-0 top-0 left-0 right-0 transition-all duration-500"
+        }
+      >
+        <div className="flex flex-col gap-4 bg-transparent md:bg-zinc-100 rounded-lg p-2 max-md:mt-12">
+          <div className="max-md:text-white">مرتب سازی بر اساس</div>
+          <div className="flex gap-2 items-center flex-wrap justify-center 2xl:justify-between cursor-pointer">
+            <div className="flex basis-[41%] gap-1 items-center justify-center md:bg-transparent bg-zinc-100 w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
               <label className="cursor-pointer" htmlFor="date">
                 جدیدترین
               </label>
@@ -201,7 +222,7 @@ const ShopComp = ({ url }) => {
                 />
               )}
             </div>
-            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
+            <div className="flex basis-[41%] gap-1 items-center justify-center md:bg-transparent bg-zinc-100 w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
               <label className="cursor-pointer" htmlFor="price">
                 قیمت
               </label>
@@ -226,7 +247,7 @@ const ShopComp = ({ url }) => {
                 />
               )}
             </div>
-            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
+            <div className="flex basis-[41%] gap-1 items-center justify-center md:bg-transparent bg-zinc-100 w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
               <label className="cursor-pointer" htmlFor="pageView">
                 پر بازدیدترین
               </label>
@@ -251,7 +272,7 @@ const ShopComp = ({ url }) => {
                 />
               )}
             </div>
-            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
+            <div className="flex basis-[41%] gap-1 items-center justify-center md:bg-transparent bg-zinc-100 w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
               <label className="cursor-pointer" htmlFor="buyNumber">
                 پر فروش‌ترین
               </label>
@@ -278,10 +299,10 @@ const ShopComp = ({ url }) => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-4 bg-zinc-100 rounded-lg p-2">
-          <div>نوع محصول</div>
-          <div className="flex gap-2 items-center flex-wrap justify-between cursor-pointer">
-            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
+        <div className="flex flex-col gap-4 bg-transparent md:bg-zinc-100 rounded-lg p-2">
+          <div className="max-md:text-white">نوع محصول</div>
+          <div className="flex gap-2 items-center flex-wrap justify-center 2xl:justify-between cursor-pointer">
+            <div className="flex basis-[41%] gap-1 items-center justify-center md:bg-transparent bg-zinc-100 w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
               <label className="cursor-pointer" htmlFor="allPros">
                 همه
               </label>
@@ -306,7 +327,7 @@ const ShopComp = ({ url }) => {
                 />
               )}
             </div>
-            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
+            <div className="flex basis-[41%] gap-1 items-center justify-center md:bg-transparent bg-zinc-100 w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
               <label className="cursor-pointer" htmlFor="app">
                 اپلیکیشن
               </label>
@@ -331,7 +352,7 @@ const ShopComp = ({ url }) => {
                 />
               )}
             </div>
-            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
+            <div className="flex basis-[41%] gap-1 items-center justify-center md:bg-transparent bg-zinc-100 w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
               <label className="cursor-pointer" htmlFor="book">
                 کتاب
               </label>
@@ -356,7 +377,7 @@ const ShopComp = ({ url }) => {
                 />
               )}
             </div>
-            <div className="flex gap-1 items-center justify-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
+            <div className="flex basis-[41%] gap-1 items-center justify-center md:bg-transparent bg-zinc-100 w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded">
               <label className="cursor-pointer" htmlFor="gr">
                 فایل گرافیکی
               </label>
@@ -383,12 +404,12 @@ const ShopComp = ({ url }) => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-4 bg-zinc-100 rounded-lg p-2">
-          <div>بازه قیمت(تومان)</div>
+        <div className="flex flex-col gap-4 bg-transparent md:bg-zinc-100 rounded-lg p-2">
+          <div className="max-md:text-white">بازه قیمت(تومان)</div>
           <form onSubmit={priceHandler} className="flex gap-4 flex-col">
-            <div className="flex gap-2 items-center flex-wrap justify-between">
+            <div className="flex gap-2 items-center flex-wrap justify-center 2xl:justify-between">
               <input
-                className="inputLtr text-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 outline-none focus:border-indigo-600 rounded"
+                className="inputLtr md:bg-transparent bg-zinc-100 text-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 outline-none focus:border-indigo-600 rounded"
                 type="number"
                 placeholder="حداقل قیمت"
                 ref={minPRef}
@@ -396,7 +417,7 @@ const ShopComp = ({ url }) => {
                 min={0}
               />
               <input
-                className="inputLtr text-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 outline-none focus:border-indigo-600 rounded"
+                className="inputLtr md:bg-transparent bg-zinc-100 text-center w-28 h-10 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 outline-none focus:border-indigo-600 rounded"
                 type="number"
                 placeholder="حداکثر قیمت"
                 ref={maxPRef}
@@ -412,8 +433,8 @@ const ShopComp = ({ url }) => {
             </button>
           </form>
         </div>
-        <div className="flex flex-col gap-4 bg-zinc-100 rounded-lg p-2">
-          <div>دسته بندی</div>
+        <div className="flex flex-col gap-4 bg-transparent md:bg-zinc-100 rounded-lg p-2">
+          <div className="max-md:text-white">دسته بندی</div>
           <div className="flex gap-2 items-center flex-wrap justify-between">
             {allCats[0] == -1 ? (
               <div className="w-full flex justify-center items-center p-12">
@@ -432,7 +453,7 @@ const ShopComp = ({ url }) => {
                   {allCats.map((da, i) => (
                     <div
                       key={i}
-                      className="w-28 h-12 flex gap-1 items-center justify-between p-2 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded"
+                      className="md:bg-transparent bg-zinc-100 w-full h-12 flex gap-1 items-center justify-between p-2 text-base sm:text-xs border-2 border-zinc-200 transition-all duration-300 hover:border-indigo-600 rounded"
                     >
                       <label className="cursor-pointer" htmlFor={da.slug}>
                         {da.title}
@@ -463,15 +484,15 @@ const ShopComp = ({ url }) => {
           </div>
         </div>
       </aside>
-      <main className="bg-zinc-100 rounded-lg p-2 w-full flex flex-col gap-8">
+      <main className="bg-zinc-100 rounded-lg p-2 w-full flex flex-col gap-8 mt-12 md:mt-0">
         <div className="flex justify-between items-center">
           <h1 className="text-xl text-indigo-600">محصولات {title} فروشگاه</h1>
-          <div className="text-base sm:text-sm rounded-md border-2 border-indigo-600 w-20 h-8 flex justify-center items-center">
+          <div className="text-sm rounded-md border-2 border-indigo-600 w-20 h-8 flex justify-center items-center">
             {searchedProductNumber} محصول
           </div>
         </div>
         <div className="flex flex-col gap-6">
-          <section className="flex justify-between items-center gap-4 flex-wrap">
+          <section className="flex justify-center lg:justify-between items-center gap-4 flex-wrap">
             {result[0] == -1 ? (
               <div className="w-full flex justify-center items-center p-12">
                 <Image
@@ -520,6 +541,28 @@ const ShopComp = ({ url }) => {
           </section>
         </div>
       </main>
+      <div className="z-50 flex md:hidden fixed top-2 right-4 bg-[#0093b8cb] rounded-full p-1 border-2 border-white">
+        <FaFilter
+          onClick={() => {
+            setMenuIsOpen(menuIsOpen * -1);
+          }}
+          className={
+            menuIsOpen == -1
+              ? "w-10 h-10 text-white flex p-2"
+              : "w-10 h-10 text-white hidden"
+          }
+        />
+        <IoMdClose
+          onClick={() => {
+            setMenuIsOpen(menuIsOpen * -1);
+          }}
+          className={
+            menuIsOpen == 1
+              ? "w-10 h-10 text-white flex"
+              : "w-10 h-10 text-white hidden"
+          }
+        />
+      </div>
     </div>
   );
 };

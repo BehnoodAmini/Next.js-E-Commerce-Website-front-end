@@ -72,21 +72,35 @@ const AccountMainComp = ({ items }) => {
     }
   }, [items.slug[0]]);
 
-    // FOR RESPONSIVE
-  const [menuIsOpen,setMenuIsOpen]=useState(-1);
+  // FOR RESPONSIVE
+  const [menuIsOpen, setMenuIsOpen] = useState(-1);
+
+  useEffect(() => {
+    if (menuIsOpen == -1) {
+      document.body.style.overflow = "auto";
+    } else if (menuIsOpen == 1) {
+      document.body.style.overflow = "hidden";
+    }
+  }, [menuIsOpen]);
 
   return (
     <div className="container mx-auto">
       <div className="flex justify-center md:justify-between items-start gap-2">
-        <div className={menuIsOpen==-1
-        ?"z-50 w-full min-w-full md:min-w-56 md:w-56 flex bg-[#000000cc] md:bg-zinc-100 md:shadow-[1px_0px_5px_rgba(0,0,0,.3)] p-6 md:rounded-lg md:h-100 rounded-none fixed md:sticky md:top-8 md:bottom-8 py-4 md:py-0 h-[100vh] bottom-0 top-0 left-[100%] -right-[100%] md:left-0 md:right-0 transition-all duration-500"
-        :"z-50 w-full min-w-full md:min-w-56 md:w-56 flex bg-[#000000cc] md:bg-zinc-100 md:shadow-[1px_0px_5px_rgba(0,0,0,.3)] p-6 md:rounded-lg md:h-100 rounded-none py-4 md:py-0 h-[100vh] fixed bottom-0 top-0 left-0 right-0 md:static transition-all duration-500"
-        }>
+        <div
+          className={
+            menuIsOpen == -1
+              ? "z-50 w-full min-w-full md:min-w-56 md:w-56 flex bg-[#000000cc] md:bg-zinc-100 md:shadow-[1px_0px_5px_rgba(0,0,0,.3)] p-6 md:rounded-lg md:h-100 rounded-none fixed md:sticky md:top-1.5 md:bottom-8 py-4 md:py-0 h-[100vh] bottom-0 top-0 left-[100%] -right-[100%] md:left-0 md:right-0 transition-all duration-500"
+              : "z-50 w-full min-w-full md:min-w-56 md:w-56 flex bg-[#000000cc] md:bg-zinc-100 backdrop-blur-md md:shadow-[1px_0px_5px_rgba(0,0,0,.3)] p-6 md:rounded-lg md:h-100 rounded-none py-4 md:py-0 h-[100vh] fixed bottom-0 top-0 left-0 right-0 md:static transition-all duration-500"
+          }
+        >
           <nav className="flex justify-center items-center w-full">
             <ul className="flex flex-col gap-6 w-full">
               <li>
                 <Link
-                  onClick={()=>{goTopCtrl();setMenuIsOpen(-1);}}
+                  onClick={() => {
+                    goTopCtrl();
+                    setMenuIsOpen(-1);
+                  }}
                   className={
                     items.slug[0] == "info"
                       ? "rounded-md bg-indigo-600 hover:bg-indigo-500 transition-all duration-300 text-white! hover:text-white! flex justify-center items-center w-full h-12"
@@ -99,7 +113,10 @@ const AccountMainComp = ({ items }) => {
               </li>
               <li>
                 <Link
-                  onClick={()=>{goTopCtrl();setMenuIsOpen(-1);}}
+                  onClick={() => {
+                    goTopCtrl();
+                    setMenuIsOpen(-1);
+                  }}
                   className={
                     items.slug[0] == "favourites"
                       ? "rounded-md bg-indigo-600 hover:bg-indigo-500 transition-all duration-300 text-white! hover:text-white! flex justify-center items-center w-full h-12"
@@ -112,7 +129,10 @@ const AccountMainComp = ({ items }) => {
               </li>
               <li>
                 <Link
-                  onClick={()=>{goTopCtrl();setMenuIsOpen(-1);}}
+                  onClick={() => {
+                    goTopCtrl();
+                    setMenuIsOpen(-1);
+                  }}
                   className={
                     items.slug[0] == "purchased"
                       ? "rounded-md bg-indigo-600 hover:bg-indigo-500 transition-all duration-300 text-white! hover:text-white! flex justify-center items-center w-full h-12"
@@ -125,7 +145,10 @@ const AccountMainComp = ({ items }) => {
               </li>
               <li>
                 <Link
-                  onClick={()=>{goTopCtrl();setMenuIsOpen(-1);}}
+                  onClick={() => {
+                    goTopCtrl();
+                    setMenuIsOpen(-1);
+                  }}
                   className={
                     items.slug[0] == "comments"
                       ? "rounded-md bg-indigo-600 hover:bg-indigo-500 transition-all duration-300 text-white! hover:text-white! flex justify-center items-center w-full h-12"
@@ -138,7 +161,10 @@ const AccountMainComp = ({ items }) => {
               </li>
               <li>
                 <Link
-                  onClick={()=>{goTopCtrl();setMenuIsOpen(-1);}}
+                  onClick={() => {
+                    goTopCtrl();
+                    setMenuIsOpen(-1);
+                  }}
                   className={
                     items.slug[0] == "payments"
                       ? "rounded-md bg-indigo-600 hover:bg-indigo-500 transition-all duration-300 text-white! hover:text-white! flex justify-center items-center w-full h-12"
@@ -152,20 +178,28 @@ const AccountMainComp = ({ items }) => {
             </ul>
           </nav>
         </div>
-        <div className="p-2 md:p-4 bg-zinc-100 rounded-md w-full mt-12 md:mt-0">{details}</div>
+        <div className="p-2 md:p-4 bg-zinc-100 rounded-md w-full mt-12 md:mt-0">
+          {details}
+        </div>
       </div>
       <div className="z-50 flex md:hidden fixed top-2 right-5 bg-[#b80036cb] rounded-full p-1">
-                  <BiMenu onClick={()=>{setMenuIsOpen(menuIsOpen*-1)}} className={
-                    menuIsOpen==-1
-                    ?"w-10 h-10 flex text-white"
-                    :"w-10 h-10 hidden"
-                  }/>
-                  <IoMdClose onClick={()=>{setMenuIsOpen(menuIsOpen*-1)}} className={
-                    menuIsOpen==1
-                    ?"w-10 h-10 text-white flex"
-                    :"w-10 h-10 hidden"
-                  }/>
-            </div>
+        <BiMenu
+          onClick={() => {
+            setMenuIsOpen(menuIsOpen * -1);
+          }}
+          className={
+            menuIsOpen == -1 ? "w-10 h-10 flex text-white" : "w-10 h-10 hidden"
+          }
+        />
+        <IoMdClose
+          onClick={() => {
+            setMenuIsOpen(menuIsOpen * -1);
+          }}
+          className={
+            menuIsOpen == 1 ? "w-10 h-10 text-white flex" : "w-10 h-10 hidden"
+          }
+        />
+      </div>
     </div>
   );
 };

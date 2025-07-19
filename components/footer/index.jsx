@@ -127,7 +127,7 @@ const Footer = () => {
         <p>تمامی حقوق مادی و معنوی این وبسایت متعلق به ***** می‌باشد.</p>
         <HiOutlineArrowUp
           onClick={() => goTopCtrl()}
-          className="z-40 fixed bottom-4 left-4 cursor-pointer w-12 h-12 p-2 rounded-lg bg-yellow-500 text-black transition-all duration-300 hover:bg-indigo-500 hover:text-white"
+          className="z-40 fixed bottom-4 left-4 cursor-pointer w-12 h-12 p-2 rounded-lg bg-[#0093b8cb] text-white transition-all duration-300 hover:bg-indigo-500 hover:text-white border-2 border-white"
         />
       </div>
     </footer>

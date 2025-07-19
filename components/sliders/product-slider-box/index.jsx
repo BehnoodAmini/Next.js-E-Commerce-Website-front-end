@@ -106,7 +106,7 @@ const SlideBox = ({ itemData }) => {
       <div className="relative bg-white h-[26rem] w-64 md:w-72 rounded-lg">
         <Link
           href={`/shop/${itemData.slug}`}
-          className="flex justify-center items-center pt-2"
+          className="flex justify-center items-center p-2"
           target="_blank"
         >
           <Image

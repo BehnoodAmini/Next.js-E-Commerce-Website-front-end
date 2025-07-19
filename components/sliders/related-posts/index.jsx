@@ -62,7 +62,7 @@ const RelatedPosts = ({ typeOfModel, title, relPostsData }) => {
           </header>
           <div
             ref={carouselRef}
-            className="sliderContainer w-full max-w-5xl overflow-x-scroll px-4"
+            className="sliderContainer w-full max-w-5xl overflow-x-scroll md:px-4"
           >
             <div className=" flex justify-between items-center gap-4">
               {relModelDataState[0] == -1 ? (

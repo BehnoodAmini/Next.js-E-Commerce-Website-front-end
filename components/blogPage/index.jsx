@@ -21,12 +21,16 @@ const BlogPageComp = ({ url }) => {
   useEffect(() => {
     setResult([-1]);
     setBtns([-1]);
-    setKeyword((url.keyword && url.keyword.length>0) ? `&keyword=${url.keyword}` : "");
+    setKeyword(
+      url.keyword && url.keyword.length > 0 ? `&keyword=${url.keyword}` : ""
+    );
   }, [url.keyword]);
 
   useEffect(() => {
     axios
-      .get(`https://behnood-fileshop-server.liara.run/api/search-posts?${pgn}${pn}${keyword}`)
+      .get(
+        `https://behnood-fileshop-server.liara.run/api/search-posts?${pgn}${pn}${keyword}`
+      )
       .then((d) => {
         setResult(d.data.allPosts);
         setBtns(d.data.btns);
@@ -53,12 +57,14 @@ const BlogPageComp = ({ url }) => {
         <meta name="keywords" content="وبلاگ فروشگاه فایل" />
         <link rel="canonical" href="/blog" />
       </div>
-      <section className="flex justify-between items-center gap-8">
+      <section className="flex justify-center md:justify-between items-center gap-8 flex-wrap my-8 mx-2">
         <div className="flex justify-start items-center gap-4">
-        <h1 className="text-center text-xl text-indigo-600">
-          وبلاگ فروشگاه فایل
-        </h1>
-          <div className="flex justify-center items-center w-20 h-7 rounded text-base sm:text-sm border-2 border-indigo-500">{searchedPostsNumber} مقاله</div>
+          <h1 className="text-center text-xl text-indigo-600">
+            وبلاگ فروشگاه فایل
+          </h1>
+          <div className="flex justify-center items-center w-20 h-7 rounded text-base sm:text-sm border-2 border-indigo-500">
+            {searchedPostsNumber} مقاله
+          </div>
         </div>
         <SearchBlog />
       </section>
@@ -78,7 +84,7 @@ const BlogPageComp = ({ url }) => {
               مقاله‌ای موجود نیست...
             </div>
           ) : (
-            <div className="flex flex-wrap justify-between items-center gap-2">
+            <div className="flex flex-wrap justify-center md:justify-between items-center gap-2">
               {result.map((da, i) => (
                 <BlogBox key={i} data={da} />
               ))}

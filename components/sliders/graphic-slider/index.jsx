@@ -25,11 +25,11 @@ const GraphicSlider = ({ goalData }) => {
       {goalData.length < 1 ? (
         <div></div>
       ) : (
-        <div className="bg-[#ffc422]">
+        <div className="bg-sky-600">
           <div className="container mx-auto py-8">
             <section className="flex flex-col gap-4 px-2">
               <header className=" flex justify-between items-center">
-                <h2 className="text-2xl border-r-black border-r-2 pr-1  text-black">
+                <h2 className="text-xl md:text-2xl border-r-white border-r-2 pr-1  text-white">
                   فایل‌های گرافیکی
                 </h2>
                 <div className="flex gap-1">
@@ -38,20 +38,20 @@ const GraphicSlider = ({ goalData }) => {
                       onClick={() => {
                         carouselSwitcher(1);
                       }}
-                      className=" cursor-pointer bg-white transition-all duration-300 hover:text-white hover:bg-indigo-400 w-10 h-10 p-3 rounded"
+                      className=" cursor-pointer bg-white transition-all duration-300 hover:text-white hover:bg-orange-400 md:w-10 md:h-10 w-8 h-8 p-2.5 md:p-3 rounded"
                     />
                     <FaChevronLeft
                       onClick={() => {
                         carouselSwitcher(-1);
                       }}
-                      className=" cursor-pointer bg-white transition-all duration-300 hover:text-white hover:bg-indigo-400 w-10 h-10 p-3 rounded"
+                      className=" cursor-pointer bg-white transition-all duration-300 hover:text-white hover:bg-orange-400 md:w-10 md:h-10 w-8 h-8 p-2.5 md:p-3 rounded"
                     />
                   </div>
                   <Link
                     href={"/shop?&orderBy=date&type=gr&maxP=1000000000&minP=0&pgn=12&pn=1"}
-                    className="flex items-center text-white! border-white border-2 bg-indigo-500 px-4 py-1 rounded-md transition-all duration-500 hover:bg-indigo-600"
+                    className="flex items-center text-white! border-white border-2 bg-orange-500 px-4 py-1 rounded-md transition-all duration-500 hover:bg-orange-600"
                   >
-                    مشاهده همه
+                     همگی
                   </Link>
                 </div>
               </header>

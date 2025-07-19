@@ -46,7 +46,7 @@ const RegisterForm = () => {
     axios
       .post(backendUrl, formData)
       .then((d) => {
-        Cookies.set("auth_cookie", d.data.auth,{expires:30});
+        Cookies.set("auth_cookie", d.data.auth, { expires: 30 });
         const message = d.data.msg
           ? d.data.msg
           : "ثبت نام شما با موفقیت انجام شد!";

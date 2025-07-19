@@ -37,7 +37,7 @@ const SliderDetails = ({ data }) => {
                   setslideHandler(1);
                 }, 1000);
               }}
-              className="bg-white w-10 h-10 p-2 rounded border-zinc-800 border-[.2rem] cursor-pointer hover:border-zinc-500 transition-all duration-500"
+              className="bg-white md:w-10 md:h-10 w-8 h-8 md:p-3 p-2 rounded border-zinc-800 border-3 md:border-[.2rem] cursor-pointer hover:border-zinc-500 transition-all duration-500"
             />
 
             <FaChevronLeft
@@ -48,12 +48,12 @@ const SliderDetails = ({ data }) => {
                   setslideHandler(1);
                 }, 1000);
               }}
-              className="bg-white w-10 h-10 p-2 rounded border-zinc-800 border-[.2rem] cursor-pointer hover:border-zinc-500 transition-all duration-500"
+              className="bg-white md:w-10 md:h-10 w-8 h-8 md:p-3 p-2 rounded border-zinc-800 border-3 md:border-[.2rem] cursor-pointer hover:border-zinc-500 transition-all duration-500"
             />
           </div>
           <Link
             href={data[nowSlide].link}
-            className="z-20 flex justify-center items-center gap-6"
+            className="mt-11 md:mt-0 z-20 flex justify-center items-center gap-6"
           >
             <Image
               width={1280}

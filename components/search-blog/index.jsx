@@ -35,7 +35,7 @@ const SearchBlog = () => {
     <div>
       <form
         onSubmit={BlogSearcher}
-        className="border-zinc-700 border-2 px-2 rounded-md flex justify-between items-center w-78"
+        className="border-zinc-700 border-2 px-2 rounded-md flex justify-between items-center w-full md:w-78"
       >
         <input
           ref={searchRef}
@@ -43,7 +43,7 @@ const SearchBlog = () => {
           className="bg-transparent p-2 outline-none text-sm"
           placeholder="جست و جو در وبلاگ..."
         />
-        <button type="submit" className="w-10 absolute left-28 cursor-pointer">
+        <button type="submit" className="w-10 flex justify-end cursor-pointer">
           <BiSearchAlt className="w-6 h-6 text-blue-500" />
         </button>
       </form>

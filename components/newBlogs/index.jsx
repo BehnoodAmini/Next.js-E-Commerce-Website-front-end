@@ -13,7 +13,7 @@ const NewBlogs = async () => {
       {data.length < 1 ? (
         <></>
       ) : (
-        <section className="container mx-auto flex flex-col gap-[1.5rem]">
+        <section className="container mx-auto px-1 flex flex-col gap-[1.5rem]">
           <header className="flex justify-between items-center">
             <h2 className="text-2xl border-r-zinc-500 border-r-2 pr-1">
               آخرین مقالات

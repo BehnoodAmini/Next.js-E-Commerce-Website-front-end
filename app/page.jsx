@@ -27,7 +27,7 @@ const Home = async () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="canonical" href="/" />
       </>
-      <main className="flex flex-col gap-12">
+      <main className="flex flex-col gap-12 mt-12 md:mt-0">
         <MainSlider />
         <ProductsSlider
           goalData={data.NewApps}

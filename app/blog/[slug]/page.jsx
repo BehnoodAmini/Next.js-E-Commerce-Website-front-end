@@ -64,15 +64,15 @@ const SingleBlog = async ({ params }) => {
           <div>مقاله هنوز منتشر نشده است...</div>
         </>
       ) : (
-        <>
-          <div>
+        <div className="flex items-start justify-between gap-2 w-full flex-wrap md:flex-nowrap my-12 px-2 md:p-0 md:m-0">
+          <>
             <title>{postTtitle}</title>
             <meta name="description" content={postShortDesc} />
             <link rel="canonical" href={postSlug} />
-          </div>
-          <main className="w-[75%]">
+          </>
+          <main className="w-full">
             {" "}
-            <div className="flex flex-col gap-12">
+            <div className="flex flex-col gap-12 max-[424px]:text-xs">
               <BreadCrumb
                 secondTitle={"وبلاگ"}
                 secondLink={"/blog"}
@@ -91,7 +91,7 @@ const SingleBlog = async ({ params }) => {
               </section>
               <section className="flex flex-col gap-6">
                 <h1 className="text-blue-400 text-lg">{data.title}</h1>
-                <div className="flex justify-start items-center gap-4 text-base sm:text-sm">
+                <div className="flex justify-start items-center gap-4 max-md:flex-col max-md:items-start text-sm flex-wrap">
                   <div className="bg-zinc-100 rounded-md p-2 flex justify-between items-center gap-2">
                     <FaRegEye className="w-6 h-6 text-black" />
                     <span>تعداد بازدید:</span>
@@ -125,7 +125,7 @@ const SingleBlog = async ({ params }) => {
               <CommentsManager commentProps={commentProps} />
             </div>
           </main>
-          <aside className="w-80 max-w-80 rounded-md flex flex-col gap-12">
+          <aside className="mt-8 md:mt-0 w-full md:w-80 md:max-w-80 rounded-md flex flex-col gap-12">
             <SearchBlog />
             <div className="flex flex-col gap-4 rounded-lg p-3 shadow-[0px_0px_8px_rgba(0,0,0,0.35)]">
               <h3 className="text-blue-500">توضیحات خلاصه</h3>
@@ -174,7 +174,7 @@ const SingleBlog = async ({ params }) => {
               </ul>
             </div>
           </aside>
-        </>
+        </div>
       )}
     </div>
   );

@@ -190,7 +190,7 @@ const CartPageComp = ({ cookie }) => {
   };
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 p-2">
       <div className=" flex justify-between items-start max-md:p-4 max-md:mt-10">
         <h1 className="text-indigo-600 text-2xl border-r-indigo-500 border-r-2 pr-1">
           سبد خرید
@@ -230,7 +230,7 @@ const CartPageComp = ({ cookie }) => {
                         key={i}
                         className="w-full flex flex-col gap-4 bg-zinc-200 text-sm rounded-md p-4 relative max-lg:items-center"
                       >
-                        <div className="flex justify-between items-start gap-4">
+                        <div className="flex xl:justify-between justify-center items-start gap-4 max-lg:flex-wrap">
                           <div className="flex justify-center items-center">
                             <Image
                               width={260}
@@ -242,29 +242,29 @@ const CartPageComp = ({ cookie }) => {
                             />
                           </div>
                           <div className="relative w-full flex flex-col gap-4">
-                            <div className="max-xl:flex max-xl:flex-row max-lg:gap-10">
-                            <div className="hidden md:flex lg:absolute top-0 left-35 bg-indigo-400 text-white! rounded-md text-xs justify-center items-center w-20 h-6">
-                              {da.typeOfProduct == "book" ? (
-                                <span>کتاب</span>
-                              ) : da.typeOfProduct == "app" ? (
-                                <span>اپلیکیشن</span>
-                              ) : (
-                                <span>فایل گرافیکی</span>
-                              )}
-                            </div>
-                            <Link
-                              href={`/shop/${da.slug}`}
-                              className="lg:absolute top-0 left-12 flex justify-center items-center text-xs bg-blue-500 text-white! transition-all duration-300 hover:bg-blue-600 rounded-md w-20 h-6"
-                              target="_blank"
-                            >
-                              لینک محصول
-                            </Link>
-                            <div
-                              onClick={() => favAdder(da._id)}
-                              className="lg:absolute top-0 left-0 text-xs flex justify-center items-center w-10 h-6 cursor-pointer"
-                            >
-                              <Like />
-                            </div>
+                            <div className="max-xl:flex max-lg:gap-10 max-lg:flex-wrap max-xl:justify-center">
+                              <div className="hidden lg:flex lg:absolute top-0 left-35 bg-indigo-400 text-white! rounded-md text-xs justify-center items-center w-20 h-6">
+                                {da.typeOfProduct == "book" ? (
+                                  <span>کتاب</span>
+                                ) : da.typeOfProduct == "app" ? (
+                                  <span>اپلیکیشن</span>
+                                ) : (
+                                  <span>فایل گرافیکی</span>
+                                )}
+                              </div>
+                              <Link
+                                href={`/shop/${da.slug}`}
+                                className="lg:absolute top-0 left-12 flex justify-center items-center text-xs bg-blue-500 text-white! transition-all duration-300 hover:bg-blue-600 rounded-md w-20 h-6"
+                                target="_blank"
+                              >
+                                لینک محصول
+                              </Link>
+                              <div
+                                onClick={() => favAdder(da._id)}
+                                className="lg:absolute top-0 left-0 text-xs flex justify-center items-center w-10 h-6 cursor-pointer"
+                              >
+                                <Like />
+                              </div>
                             </div>
                             <h3 className="text-base">{da.title}</h3>
                             <p>{da.shortDesc}</p>
@@ -292,7 +292,7 @@ const CartPageComp = ({ cookie }) => {
                             </div>
                           </div>
                         </div>
-                        <div className="w-20 h-6 absolute bottom-5 left-5 max-lg:right-5">
+                        <div className="w-20 h-6 lg:absolute lg:bottom-5 lg:left-5">
                           <button
                             onClick={() => productRemoveHandler(da._id)}
                             className="cursor-pointer h-8 inline-flex items-center px-4 py-2 bg-rose-600 transition ease-in-out delay-75 hover:bg-rose-700 text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
@@ -346,7 +346,9 @@ const CartPageComp = ({ cookie }) => {
                       />
                     </svg>
                   </div>
-                  <p className="md:translate-x-2 max-md:flex max-md:items-center max-md:justify-center max-md:bg-emerald-600 max-md:text-white max-md:w-full max-md:rounded-xl max-md:h-10">پرداخت</p>
+                  <p className="md:translate-x-2 max-md:flex max-md:items-center max-md:justify-center max-md:bg-emerald-600 max-md:text-white max-md:w-full max-md:rounded-xl max-md:h-10">
+                    پرداخت
+                  </p>
                 </button>
               </div>
             </div>
