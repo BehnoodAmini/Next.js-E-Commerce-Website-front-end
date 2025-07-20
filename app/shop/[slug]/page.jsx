@@ -255,7 +255,7 @@ const SingleProduct = async ({ params }) => {
                   data.tags.map((da, i) => (
                     <Link
                       key={i}
-                      href={`/shop?keyword=${da}`}
+                      href={`/shop?keyword=${escape(da)}`}
                       className="p-2 flex justify-center items-center rounded-md text-base sm:text-sm bg-zinc-100 transition-all duration-300 hover:text-white! hover:bg-orange-500"
                     >
                       #{da}

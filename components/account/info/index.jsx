@@ -205,11 +205,20 @@ const Info = ({ cookie }) => {
       });
   };
 
+  // ROUTER AFTER LOGOUT
+  const [routerState, setRouterState] = useState(0);
+  useEffect(() => {
+    if (routerState == 1) {
+      router.push("/login");
+      setRouterState(0);
+    }
+  }, [routerState]);
+
   // LOGOUT
   const router = useRouter();
   const logoutHandler = () => {
     Cookies.remove("auth_cookie");
-    router.push("/login");
+    setRouterState(1);
   };
 
   return (

@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
+import { useAppContext } from "@/context/appContext";
+
 import { toast } from "react-toastify";
 
 import Cookies from "js-cookie";
@@ -18,6 +20,16 @@ const LoginForm = () => {
     watch,
   } = useForm({});
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  // ROUTER AFTER LOGIN
+  const [routerState, setRouterState] = useState(0);
+  useEffect(() => {
+    if (routerState == 1) {
+      router.push("./account/info");
+      setRouterState(0);
+    }
+  }, [routerState]);
 
   // IF USER HAVE TOKEN SHOULD BE REDIRECTED TO ACCOUNT PAGE
   const [authCookie, setAuthCookie] = useState(Cookies.get("auth_cookie"));
@@ -27,6 +39,7 @@ const LoginForm = () => {
   }, [Cookies.get("auth_cookie")]);
 
   const formSubmitHandler = () => {
+    setIsLoading(true);
     const formData = {
       email: watch("email"),
       password: watch("password"),
@@ -48,7 +61,7 @@ const LoginForm = () => {
           draggable: true,
           progress: undefined,
         });
-        router.push("./account/info");
+        setRouterState(1);
       })
       .catch((err) => {
         const errorMsg =
@@ -64,8 +77,17 @@ const LoginForm = () => {
           draggable: true,
           progress: undefined,
         });
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
+
+  // WHEN USER LOGOUT, HIS CART'S NUMBER SHOULD BE ZERO
+  const { setCartNumber } = useAppContext();
+  useEffect(() => {
+    setCartNumber(0);
+  }, []);
 
   return (
     <section className="container mx-auto flex justify-center items-center">
@@ -136,14 +158,40 @@ const LoginForm = () => {
         <button
           type="submit"
           className="cursor-pointer bg-gradient-to-b from-indigo-500 to-indigo-600 shadow-[0px_4px_32px_0_rgba(99,102,241,.70)] px-6 py-3 rounded-xl border-[1px] border-slate-500 text-white font-medium group"
+          disabled={isLoading}
         >
           <div className="relative overflow-hidden flex justify-center items-center">
-            <p className="group-hover:-translate-y-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
-              ورود به حساب کاربری
-            </p>
-            <p className="hidden md:flex absolute top-7 group-hover:top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
-              بزن بریم!
-            </p>
+            {isLoading ? (
+              <svg
+                className="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"
+                ></path>
+              </svg>
+            ) : (
+              <>
+                <p className="group-hover:-translate-y-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
+                  ورود به حساب کاربری
+                </p>
+                <p className="hidden md:flex absolute top-7 group-hover:top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
+                  بزن بریم!
+                </p>
+              </>
+            )}
           </div>
         </button>
       </form>

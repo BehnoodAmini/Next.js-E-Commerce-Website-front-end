@@ -15,14 +15,16 @@ const BlogPageComp = ({ url }) => {
   const [pgn, setPgn] = useState(url.pgn ? `pgn=${url.pgn}` : "pgn=4");
   const [pn, setPn] = useState(url.pn ? `&pn=${url.pn}` : "&pn=1");
   const [keyword, setKeyword] = useState(
-    url.keyword ? `&keyword=${url.keyword}` : ""
+    url.keyword ? `&keyword=${unescape(url.keyword).replace(/\s+/g, "_")}` : ""
   );
 
   useEffect(() => {
     setResult([-1]);
     setBtns([-1]);
     setKeyword(
-      url.keyword && url.keyword.length > 0 ? `&keyword=${url.keyword}` : ""
+      url.keyword && url.keyword.length > 0
+        ? `&keyword=${unescape(url.keyword).replace(/\s+/g, "_")}`
+        : ""
     );
   }, [url.keyword]);
 
@@ -47,7 +49,7 @@ const BlogPageComp = ({ url }) => {
   };
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 p-2">
       <div>
         <meta charSet="utf-8" />
         <title> وبلاگ </title>
@@ -57,7 +59,7 @@ const BlogPageComp = ({ url }) => {
         <meta name="keywords" content="وبلاگ فروشگاه فایل" />
         <link rel="canonical" href="/blog" />
       </div>
-      <section className="flex justify-center md:justify-between items-center gap-8 flex-wrap my-8 mx-2">
+      <section className="flex justify-center md:justify-between items-center gap-8 flex-wrap max-md:my-8 max-md:mx-2">
         <div className="flex justify-start items-center gap-4">
           <h1 className="text-center text-xl text-indigo-600">
             وبلاگ فروشگاه فایل

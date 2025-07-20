@@ -22,11 +22,17 @@ const ShopComp = ({ url }) => {
 
   const [result, setResult] = useState([-1]);
   const [btns, setBtns] = useState([-1]);
-  const [title, setTitle] = useState(url.keyword);
+  const [title, setTitle] = useState(
+    url.keyword && url.keyword.length > 0
+      ? unescape(url.keyword).split("_").join(" ")
+      : ""
+  );
   const [searchedProductNumber, setSearchedProductNumber] = useState(0);
 
   const [keyword, setKeyword] = useState(
-    url.keyword ? `&keyword=${url.keyword}` : ""
+    url.keyword && url.keyword.length > 0
+      ? `&keyword=${unescape(url.keyword).replace(/\s+/g, "_").toLowerCase()}`
+      : ""
   );
   const [orderBy, setOrderBy] = useState(
     url.orderBy ? `&orderBy=${url.orderBy}` : "&orderBy=date"
@@ -52,21 +58,32 @@ const ShopComp = ({ url }) => {
   const [pgn, setPgn] = useState(url.pgn ? `&pgn=${url.pgn}` : "&pgn=12");
   const [pn, setPn] = useState(url.pn ? `&pn=${url.pn}` : "&pn=1");
 
-  const queries = `${keyword ? keyword : ""}${orderBy ? orderBy : ""}${
-    typeOfPro ? typeOfPro : ""
-  }${maxPrice ? maxPrice : ""}${minPrice ? minPrice : ""}${
-    categories ? categories : ""
-  }${pgn ? pgn : ""}${pn ? pn : ""}`;
-  const mainFrontUrl = `/shop?${queries}`;
-  const mainBackUrl = `https://behnood-fileshop-server.liara.run/api/search-products?${queries}`;
-
   useEffect(() => {
+    const frontQueries = `${
+      keyword.length > 0
+        ? `&keyword=${escape(keyword.replace("&keyword=", ""))}`
+        : ""
+    }${orderBy ? orderBy : ""}${typeOfPro ? typeOfPro : ""}${
+      maxPrice ? maxPrice : ""
+    }${minPrice ? minPrice : ""}${categories ? categories : ""}${
+      pgn ? pgn : ""
+    }${pn ? pn : ""}`;
+
+    const backendQueries = `${keyword.length > 0 ? keyword : ""}${
+      orderBy ? orderBy : ""
+    }${typeOfPro ? typeOfPro : ""}${maxPrice ? maxPrice : ""}${
+      minPrice ? minPrice : ""
+    }${categories ? categories : ""}${pgn ? pgn : ""}${pn ? pn : ""}`;
+
+    const mainFrontUrl = `/shop?${frontQueries}`;
+    const mainBackendUrl = `https://behnood-fileshop-server.liara.run/api/search-products?${backendQueries}`;
+
     goTopCtrl();
     setPgn(`&pgn=12`);
     setResult([-1]);
     setBtns([-1]);
     router.push(mainFrontUrl);
-    axios.get(mainBackUrl).then((d) => {
+    axios.get(mainBackendUrl).then((d) => {
       setResult(d.data.allProducts);
       setBtns(d.data.btns);
       setSearchedProductNumber(d.data.productsNumber);
@@ -75,13 +92,15 @@ const ShopComp = ({ url }) => {
 
   // KEYWORD
   useEffect(() => {
-    url.keyword == undefined
+    url.keyword == undefined || url.keyword.length < 1
       ? setTitle(``)
-      : setTitle(url.keyword.split("_").join(" "));
+      : setTitle(unescape(url.keyword).split("_").join(" "));
     setPn(`&pn=1`);
-    if (url.keyword && url.keyword.length > 0) {
-      setKeyword(`&keyword=${url.keyword.replace(/\s+/g, "_").toLowerCase()}`);
-    }
+    setKeyword(
+      url.keyword && url.keyword.length > 0
+        ? `&keyword=${unescape(url.keyword).replace(/\s+/g, "_").toLowerCase()}`
+        : ""
+    );
   }, [url.keyword]);
 
   // ORDER BY
@@ -94,12 +113,12 @@ const ShopComp = ({ url }) => {
   const typeOfProductHandler = (v) => {
     if (v.target.value == "allPros") {
       setTypeOfPro(``);
-      url.keyword == undefined
+      url.keyword == undefined || url.keyword.length < 1
         ? setTitle(``)
-        : setTitle(url.keyword.split("_").join(" "));
+        : setTitle(unescape(url.keyword).split("_").join(" "));
     } else {
       setTypeOfPro(`&type=${v.target.value}`);
-      url.keyword == undefined
+      url.keyword == undefined || url.keyword.length < 1
         ? setTitle(
             v.target.value == "app"
               ? `اپلیکیشن‌های`
@@ -109,10 +128,12 @@ const ShopComp = ({ url }) => {
           )
         : setTitle(
             v.target.value == "app"
-              ? `${url.keyword.split("_").join(" ")} از اپلیکیشن‌های`
+              ? `${unescape(url.keyword).split("_").join(" ")} از اپلیکیشن ها`
               : v.target.value == "gr"
-              ? `${url.keyword.split("_").join(" ")} از محصولات گرافیکی`
-              : `${url.keyword.split("_").join(" ")} از کتاب‌های`
+              ? `${unescape(url.keyword)
+                  .split("_")
+                  .join(" ")} از محصولات گرافیکی`
+              : `${unescape(url.keyword).split("_").join(" ")} از کتاب ها`
           );
     }
     setPn(`&pn=1`);
@@ -184,7 +205,7 @@ const ShopComp = ({ url }) => {
       document.body.style.overflow = "hidden";
     }
   }, [menuIsOpen]);
-  
+
   return (
     <div className="container mx-auto flex justify-between items-start gap-2 max-xl:px-2">
       <aside

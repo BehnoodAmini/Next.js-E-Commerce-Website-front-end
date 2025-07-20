@@ -47,9 +47,15 @@ const NewProduct = () => {
       tagRef.current.value = "";
     }
   };
+  const [tagreloader, settagreloader] = useState(-1);
   const tagDeleter = (indexToRemove) => {
-    setTag(tag.filter((_, index) => index !== indexToRemove));
+    tag.splice(indexToRemove, 1);
+    setTag(tag);
+    settagreloader(tagreloader * -1);
   };
+  useEffect(() => {
+    setTag(tag);
+  }, [tagreloader]);
 
   // FEATURES MANAGING
   const featuresRef = useRef();
@@ -296,10 +302,10 @@ const NewProduct = () => {
                 return (
                   <div
                     key={t}
-                    className="res flex gap-1 text-sm py-1 px-2 rounded-md border-2 border-zinc-300"
+                    className="flex gap-1 text-sm py-1 px-2 rounded-md border-2 border-zinc-300"
                   >
                     <i
-                      className="text-indigo-500 flex items-center  cursor-pointer"
+                      className="text-indigo-500 flex items-center cursor-pointer"
                       onClick={() => {
                         tagDeleter(index);
                       }}

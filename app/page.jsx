@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 import MainSlider from "../components/sliders/mainSlider";
 import ProductsSlider from "../components/sliders/products-slider";
 import MiddleBanner from "../components/middle-banners";

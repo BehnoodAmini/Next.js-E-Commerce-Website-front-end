@@ -35,10 +35,7 @@ const Header = () => {
     e.preventDefault();
     setMenuIsOpen(-1);
     if (searchRef.current.value.length > 0) {
-      const url = `/shop?keyword=${searchRef.current.value.replace(
-        /\s+/g,
-        "_"
-      )}`;
+      const url = `/shop?keyword=${escape(searchRef.current.value)}`;
       router.push(url);
       searchRef.current.value = "";
     } else {

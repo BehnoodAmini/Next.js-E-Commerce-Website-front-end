@@ -6,6 +6,8 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import axios from "axios";
 
+import { useAppContext } from "@/context/appContext";
+
 import { BiMenu } from "react-icons/bi";
 import { IoMdClose } from "react-icons/io";
 
@@ -82,6 +84,18 @@ const AccountMainComp = ({ items }) => {
       document.body.style.overflow = "hidden";
     }
   }, [menuIsOpen]);
+
+  // WHEN USER LOGIN, HIS CART'S NUMBER SHOULD BE SET AGAIN
+  const { setCartNumber } = useAppContext();
+  useEffect(() => {
+    const url = "https://behnood-fileshop-server.liara.run/api/cart-number";
+    axios
+      .get(url, { headers: { auth_cookie: authCookie } })
+      .then((d) => setCartNumber(d.data.number))
+      .catch((e) => {
+        setCartNumber(0);
+      });
+  }, []);
 
   return (
     <div className="container mx-auto">

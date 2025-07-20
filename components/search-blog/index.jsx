@@ -13,10 +13,7 @@ const SearchBlog = () => {
   const BlogSearcher = (e) => {
     e.preventDefault();
     if (searchRef.current.value.length > 0) {
-      const url = `/blog?keyword=${searchRef.current.value.replace(
-        /\s+/g,
-        "_"
-      )}`;
+      const url = `/blog?keyword=${escape(searchRef.current.value)}`;
       router.push(url);
       searchRef.current.value = "";
     } else {

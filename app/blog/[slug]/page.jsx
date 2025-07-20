@@ -144,7 +144,7 @@ const SingleBlog = async ({ params }) => {
                   data.tags.map((ta, i) => (
                     <Link
                       key={i}
-                      href={`/blog?keyword=${ta}`}
+                      href={`/blog?keyword=${escape(ta)}`}
                       className="p-2 flex justify-center items-center rounded-md text-base sm:text-sm bg-zinc-100 transition-all duration-300 hover:text-white! hover:bg-orange-500"
                     >
                       #{ta}
