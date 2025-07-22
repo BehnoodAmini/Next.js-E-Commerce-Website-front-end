@@ -9,7 +9,7 @@ const Box = ({ data, setMidBanDetCtrl, setRandNumForBannerClick }) => {
         setMidBanDetCtrl(data._id);
         setRandNumForBannerClick(Math.random());
       }}
-      className="relative flex justify-between items-center cursor-pointer w-full p-6 rounded-lg bg-zinc-100 border-2 border-zinc-200 transition-all duration-300 hover:border-orange-500"
+      className="lg:relative flex max-lg:gap-5 flex-wrap justify-center lg:justify-between items-center cursor-pointer w-full p-6 rounded-lg bg-zinc-100 border-2 border-zinc-200 transition-all duration-300 hover:border-orange-500"
     >
       <div className="flex justify-start items-center">
         <Image
@@ -21,7 +21,7 @@ const Box = ({ data, setMidBanDetCtrl, setRandNumForBannerClick }) => {
           height={200}
         />
       </div>
-      <div className="flex items-center gap-3 absolute bottom-3 left-3">
+      <div className="flex items-center gap-3 lg:absolute bottom-3 left-3">
         {data.situation == true ? (
           <div className="text-xs bg-emerald-600 text-white px-3 py-1 rounded">
             فعال

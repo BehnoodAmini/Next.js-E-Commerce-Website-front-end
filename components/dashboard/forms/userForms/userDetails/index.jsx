@@ -245,7 +245,7 @@ const UserDetails = ({ goalId }) => {
               </button>
             </div>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center flex-wrap gap-5">
             <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
               شناسه کاربر: {fullData._id ? fullData._id : ""}
             </div>
@@ -339,7 +339,7 @@ const UserDetails = ({ goalId }) => {
             <div className="flex flex-col gap-2">
               <div>محصولات مورد علاقه کاربر</div>
               {
-                <div className="flex justify-start items-center gap-4 text-xs flex-wrap">
+                <div className="flex justify-center md:justify-start items-center gap-4 text-xs flex-wrap">
                   {fullData.favoriteProducts.length < 1 ? (
                     <div>بدون محصول مورد علاقه</div>
                   ) : (
@@ -374,7 +374,7 @@ const UserDetails = ({ goalId }) => {
             <div className="flex flex-col gap-2">
               <div>سبد خرید کاربر</div>
               {
-                <div className="flex justify-start items-center gap-4 text-xs flex-wrap">
+                <div className="flex justify-center md:justify-start items-center gap-4 text-xs flex-wrap">
                   {fullData.cart.length < 1 ? (
                     <div>محصولی در سبد خرید کاربر نیست!</div>
                   ) : (
@@ -409,7 +409,7 @@ const UserDetails = ({ goalId }) => {
             <div className="flex flex-col gap-2">
               <div>محصولات خریداری شده</div>
               {
-                <div className="flex justify-start items-center gap-4 text-xs flex-wrap">
+                <div className="flex justify-center md:justify-start items-center gap-4 text-xs flex-wrap">
                   {fullData.userProducts.length < 1 ? (
                     <div>بدون محصول خریداری شده.</div>
                   ) : (
@@ -444,7 +444,7 @@ const UserDetails = ({ goalId }) => {
             <div className="flex flex-col gap-2">
               <div>سفارش‌ها</div>
               {
-                <div className="flex justify-start items-center gap-4 text-xs flex-wrap">
+                <div className="flex justify-center md:justify-start items-center gap-4 text-xs flex-wrap">
                   {fullData.payments.length < 1 ? (
                     <div>بدون سفارش.</div>
                   ) : (
@@ -484,14 +484,14 @@ const UserDetails = ({ goalId }) => {
             <div className="flex flex-col gap-2">
               <div>دیدگاه‌ها</div>
               {
-                <div className="flex justify-start items-center gap-2 text-xs flex-wrap">
+                <div className="flex justify-center md:justify-start items-center gap-2 text-xs flex-wrap">
                   {fullData.comments.length < 1 ? (
                     <div>بدون دیدگاه.</div>
                   ) : (
                     fullData.comments.map((da, i) => (
                       <div
                         key={i}
-                        className="w-[48%] min-h-[12rem] bg-zinc-100 rounded-lg p-4 flex flex-col justify-between gap-1 shadow-[0px_0px_5px_rgba(0,0,0,.15)]"
+                        className="w-[90%] md:w-[48%] min-h-[12rem] bg-zinc-100 rounded-lg p-4 flex flex-col justify-between gap-1 shadow-[0px_0px_5px_rgba(0,0,0,.15)]"
                       >
                         <div className="flex justify-between items-center gap-2">
                           <div>مرجع: </div>

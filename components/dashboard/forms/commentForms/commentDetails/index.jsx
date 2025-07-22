@@ -180,12 +180,12 @@ const CommentDetails = ({ goalId }) => {
         </div>
       ) : (
         <div className="flex flex-col gap-8">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center flex-wrap gap-2">
             <h2 className="text-orange-500">جزئیات دیدگاه</h2>
-            <div className="flex justify-end items-center gap-4">
+            <div className="flex justify-center md:justify-end items-center gap-4 flex-wrap">
               <button
                 onClick={() => PublishHandler()}
-                className="cursor-pointer h-8 inline-flex items-center px-4 py-2 bg-sky-600 transition ease-in-out delay-75 hover:bg-sky-700 text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
+                className="cursor-pointer md:h-8 inline-flex items-center px-4 py-2 bg-sky-600 transition ease-in-out delay-75 hover:bg-sky-700 text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
               >
                 انتشار + ارسال ایمیل در صورت پاسخ بودن
               </button>
@@ -211,7 +211,7 @@ const CommentDetails = ({ goalId }) => {
               </button>
             </div>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center flex-wrap gap-5">
             <Link
               target="_blank"
               href={
@@ -301,7 +301,7 @@ const CommentDetails = ({ goalId }) => {
               <div className="flex flex-col gap-2">
                 <div>دیدگاه اصلی</div>
                 <div className=" border-2 border-zinc-300 bg-zinc-50 p-1 rounded-md flex flex-col gap-2">
-                  <div className="flex justify-between items-center flex-wrap">
+                  <div className="flex justify-center md:justify-between items-center gap-3 flex-wrap">
                     <div className="px-2 py-1 rounded-lg bg-zinc-200">
                       {fullData.displayname}
                     </div>

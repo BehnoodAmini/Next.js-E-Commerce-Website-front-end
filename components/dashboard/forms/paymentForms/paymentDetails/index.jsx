@@ -171,7 +171,7 @@ const PaymentDetails = ({ goalId }) => {
               </button>
             </div>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center flex-wrap gap-5">
             <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
               کد پرداختی: {fullData.resnumber ? fullData.resnumber : ""}
             </div>
@@ -239,7 +239,7 @@ const PaymentDetails = ({ goalId }) => {
             <div className="flex flex-col gap-2">
               <div>محصولات</div>
               {
-                <div className="flex justify-start items-center gap-4 text-xs flex-wrap">
+                <div className="flex justify-center md:justify-start items-center gap-4 text-xs flex-wrap">
                   {fullData.products.length < 1 ? (
                     <div>بدون محصول</div>
                   ) : (

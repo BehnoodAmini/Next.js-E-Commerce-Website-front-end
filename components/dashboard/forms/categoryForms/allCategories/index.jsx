@@ -76,7 +76,7 @@ const AllCategories = ({ setCategoryDetCtrl, setRandNumForBannerClick }) => {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex justify-end">
+      <div className="flex justify-center md:justify-end">
         <div className="w-32 h-10 rounded bg-indigo-600 flex justify-center items-center text-white">
           {allCategoriesNums} دسته
         </div>

@@ -168,7 +168,7 @@ const PostDetails = ({ goalId }) => {
   };
 
   // LOADING DEFAULT VALUES
-  const [fullData, setFullData] = useState([-1]);
+  const [fullData, setFullData] = useState([-1]); 
   useEffect(() => {
     goTopCtrl();
     axios
@@ -237,7 +237,7 @@ const PostDetails = ({ goalId }) => {
               </div>
             </div>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center flex-wrap max-[1280px]:gap-5">
             <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
               شناسه مقاله: {fullData._id ? fullData._id : ""}
             </div>

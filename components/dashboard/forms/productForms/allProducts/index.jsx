@@ -76,9 +76,8 @@ const AllProducts = ({ setProductDetCtrl, setRandNumForProductClick }) => {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex justify-end gap-2">
-        <div className="text-xs text-white flex justify-end items-center gap-4">
-          <div>نوع محصول</div>
+      <div className="flex justify-center md:justify-end items-center gap-2">
+        <div className="text-xs text-white flex justify-center md:justify-end items-center gap-4 w-32 h-10">
           <select
             className="cursor-pointer text-sm p-2 rounded w-full text-black border-2 border-indigo-300 focus:border-orange-400 focus:outline-none"
             onChange={(event) => {

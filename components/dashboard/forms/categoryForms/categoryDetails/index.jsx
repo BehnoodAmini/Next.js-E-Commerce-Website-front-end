@@ -182,7 +182,7 @@ const CategoryDetails = ({ categoryId }) => {
               </button>
             </div>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center flex-wrap max-md:gap-5">
             <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
               شناسه دسته بندی: {fullData._id ? fullData._id : ""}
             </div>

@@ -8,8 +8,8 @@ const DashboardCtrl = ({ setContentChanger }) => {
   const [colorChanger, setColorChanger] = useState("admin-panel");
 
   return (
-    <div className="w-60 flex justify-center items-center h-[100vh]">
-      <div className="flex flex-col bg-zinc-200 rounded-lg w-full h-[98vh] items-center justify-around p-4 shadow-[1px_0px_5px_rgba(0,0,0,.3)]">
+    <div className="w-full md:w-60 flex justify-center items-center h-[100vh]">
+      <div className="flex flex-col bg-transparent md:bg-zinc-200 rounded-lg md:w-full h-[98vh] items-center justify-around p-4 md:shadow-[1px_0px_5px_rgba(0,0,0,.3)]">
         <DCBtn
           title={"پیشخوان"}
           content={"admin-panel"}

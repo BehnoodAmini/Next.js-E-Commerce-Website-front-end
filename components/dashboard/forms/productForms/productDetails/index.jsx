@@ -290,7 +290,7 @@ const ProductDetails = ({ goalId }) => {
               <Link
                 target="_blank"
                 href={`/shop/${fullData.slug}`}
-                className="bg-indigo-600 text-white! px-4 py-1 rounded-md text-sm transition-all duration-300 hover:bg-indigo-700"
+                className="bg-indigo-600 text-white! px-1 md:px-4 py-1.5 rounded-md text-sm transition-all duration-300 hover:bg-indigo-700"
               >
                 لینک محصول
               </Link>
@@ -318,7 +318,7 @@ const ProductDetails = ({ goalId }) => {
               </div>
             </div>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center flex-wrap max-xl:gap-5">
             <div className="bg-zinc-100 rounded px-3 py-1 text-sm">
               شناسه محصول: {fullData._id ? fullData._id : ""}
             </div>
