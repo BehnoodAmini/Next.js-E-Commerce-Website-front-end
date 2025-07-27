@@ -43,18 +43,17 @@ const SingleProduct = async ({ params }) => {
   const productSlug = `/shop/${data.slug}`;
   const productShortDesc = data.shortDesc;
   const productTitle = data.title;
+  const postKeywords = data.keywords;
 
   return (
     <div className="flex justify-between items-start container mx-auto gap-8 md:gap-4 px-2 flex-wrap md:flex-nowrap">
       <meta charSet="utf-8" />
       <meta name="robots" content="index, follow" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <meta name="keywords" content="فروشگاه فروشگاه فایل" />
       {data.msg ? (
         <div>
           <>
             <title> محصول هنوز منتشر نشده است </title>
-            <meta name="description" content={productShortDesc} />
             <link rel="canonical" href="/shop" />
           </>
           <div>محصول هنوز منتشر نشده است...</div>
@@ -64,6 +63,7 @@ const SingleProduct = async ({ params }) => {
           <>
             <title>{productTitle}</title>
             <meta name="description" content={productShortDesc} />
+            <meta name="keywords" content={postKeywords} />
             <link rel="canonical" href={productSlug} />
           </>
           <main className="w-full md:w-[60%] lg:w-[75%]">
@@ -178,9 +178,12 @@ const SingleProduct = async ({ params }) => {
                   </div>
                 </div>
               </section>
-              <section className="flex flex-col gap-6 p-4 rounded-md shadow-[0px_0px_8px_rgba(0,0,0,0.25)]">
-                <h2 className="text-lg">توضیحات کامل</h2>
-                <p className="leading-9 text-justify">{data.longDesc}</p>
+              <section className="flex flex-col gap-6">
+                <h2 className="text-xl">توضیحات کامل</h2>
+                <div
+                  className="custom-tiptap-content leading-9 w-[96%] text-justify"
+                  dangerouslySetInnerHTML={{ __html: data.longDesc }}
+                />
               </section>
               <section>
                 <RelatedPosts
@@ -195,10 +198,10 @@ const SingleProduct = async ({ params }) => {
           <aside className="md:w-80 md:max-w-80 w-full rounded-md flex flex-col gap-8 mt-10 md:mt-0">
             <div className="flex flex-col gap-6">
               <div className="fixed bottom-5 right-20 left-20 md:static">
-              <SingleProductPageCart
-                data={data._id}
-                price={priceChanger(data.price)}
-              />
+                <SingleProductPageCart
+                  data={data._id}
+                  price={priceChanger(data.price)}
+                />
               </div>
               <SingleProductPageFav data={data._id} />
             </div>

@@ -1,17 +1,21 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import Cookies from "js-cookie";
-
+import dynamic from "next/dynamic";
 import { toast } from "react-toastify";
+
+const TextEditor = dynamic(() => import("@/components/richTextEditor"), {
+  ssr: false,
+});
 
 const ProductDetails = ({ goalId }) => {
   //PREVENT FORM TO BE SENT WITH ENTER
   const FormKeyNotSuber = (event) => {
-    if (event.key == "Enter") {
+    if (event.key === "Enter") {
       event.preventDefault();
     }
   };
@@ -37,9 +41,10 @@ const ProductDetails = ({ goalId }) => {
   const imageAltRef = useRef();
   const priceRef = useRef();
   const shortDescRef = useRef();
-  const longDescRef = useRef();
   const typeOfProductRef = useRef();
   const publishedRef = useRef();
+  const keywordsRef = useRef();
+  const [longDescState, setLongDescState] = useState("");
 
   // TAG MANAGING
   const tagRef = useRef();
@@ -55,9 +60,15 @@ const ProductDetails = ({ goalId }) => {
       tagRef.current.value = "";
     }
   };
+  const [tagreloader, settagreloader] = useState(-1);
   const tagDeleter = (indexToRemove) => {
-    setTag(tag.filter((_, index) => index !== indexToRemove));
+    tag.splice(indexToRemove, 1);
+    setTag(tag);
+    settagreloader(tagreloader * -1);
   };
+  useEffect(() => {
+    setTag(tag);
+  }, [tagreloader]);
 
   // FEATURES MANAGING
   const featuresRef = useRef();
@@ -77,65 +88,125 @@ const ProductDetails = ({ goalId }) => {
     setFeature(feature.filter((_, index) => index !== indexToRemove));
   };
 
-  // RELATED PRODUCTS
-  const [products, setProducts] = useState([-1]);
+  // RELATED PRODUCTS MANAGING
+  const [allProducts, setAllProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [relProducts, setRelProducts] = useState([]);
+  const [productSearchTerm, setProductSearchTerm] = useState("");
+  const [loadingProducts, setLoadingProducts] = useState(true);
+
   useEffect(() => {
     const productsUrl = `https://behnood-fileshop-server.liara.run/api/products-rel`;
+    setLoadingProducts(true);
     axios
       .get(productsUrl)
       .then((d) => {
-        setProducts(d.data);
+        setAllProducts(d.data);
+        setFilteredProducts(d.data);
+        setLoadingProducts(false);
       })
-      .catch((e) => console.log("error in loading posts"));
+      .catch((e) => {
+        console.error("Error in loading products:", e);
+        setLoadingProducts(false);
+        toast.error("خطا در بارگذاری محصولات.", { autoClose: 3000 });
+      });
   }, []);
-  const productsRelatedMan = (v) => {
-    let related = [...relProducts];
-    if (v.target.checked) {
-      related = [...related, v.target.value];
+
+  // Filter products based on search term
+  useEffect(() => {
+    if (productSearchTerm === "") {
+      setFilteredProducts(allProducts);
     } else {
-      related.splice(relProducts.indexOf(v.target.value), 1);
+      const lowercasedSearchTerm = productSearchTerm.toLowerCase();
+      const filtered = allProducts.filter((product) =>
+        product.title.toLowerCase().includes(lowercasedSearchTerm)
+      );
+      setFilteredProducts(filtered);
     }
-    setRelProducts(related);
+  }, [productSearchTerm, allProducts]);
+
+  const productsRelatedMan = (e) => {
+    const productId = e.target.value;
+    if (e.target.checked) {
+      setRelProducts((prevRelProducts) => [...prevRelProducts, productId]);
+    } else {
+      setRelProducts((prevRelProducts) =>
+        prevRelProducts.filter((id) => id !== productId)
+      );
+    }
   };
 
-  // CATEGORIES
-  const [categories, setCategories] = useState([-1]);
+  const selectedRelatedProducts = useMemo(() => {
+    return allProducts.filter((product) => relProducts.includes(product._id));
+  }, [relProducts, allProducts]);
+
+  const removeSelectedRelatedProduct = (productIdToRemove) => {
+    setRelProducts((prevRelProducts) =>
+      prevRelProducts.filter((id) => id !== productIdToRemove)
+    );
+  };
+
+  // CATEGORIES MANAGING
+  const [allCategories, setAllCategories] = useState([]);
+  const [filteredCategories, setFilteredCategories] = useState([]);
   const [relCategories, setRelCategories] = useState([]);
-  const [thisProductCatsIds, setThisProductCatsIds] = useState([]);
+  const [categorySearchTerm, setCategorySearchTerm] = useState("");
+  const [loadingCategories, setLoadingCategories] = useState(true);
+
   useEffect(() => {
     const categoriesUrl = `https://behnood-fileshop-server.liara.run/api/products-categories-rel`;
+    setLoadingCategories(true);
     axios
       .get(categoriesUrl)
       .then((d) => {
-        setCategories(d.data);
+        setAllCategories(d.data);
+        setFilteredCategories(d.data);
+        setLoadingCategories(false);
       })
-      .catch((e) => console.log("error in loading posts"));
+      .catch((e) => {
+        console.error("Error in loading categories:", e);
+        setLoadingCategories(false);
+        toast.error("خطا در بارگذاری دسته‌بندی‌ها.", { autoClose: 3000 });
+      });
   }, []);
-  const productsCategoriesMan = (v) => {
-    let related = [...relCategories];
-    if (v.target.checked) {
-      const goalArr = spliterForCategories(v.target.value);
-      related = [
-        ...related,
-        {
-          _id: goalArr[0],
-          title: goalArr[1],
-          slug: goalArr[2],
-        },
-      ];
+
+  // Filter categories based on search term
+  useEffect(() => {
+    if (categorySearchTerm === "") {
+      setFilteredCategories(allCategories);
     } else {
-      const goalArr = spliterForCategories(v.target.value);
-      related.splice(
-        relCategories.indexOf({
-          _id: goalArr[0],
-          title: goalArr[1],
-          slug: goalArr[2],
-        }),
-        1
+      const lowercasedSearchTerm = categorySearchTerm.toLowerCase();
+      const filtered = allCategories.filter((category) =>
+        category.title.toLowerCase().includes(lowercasedSearchTerm)
+      );
+      setFilteredCategories(filtered);
+    }
+  }, [categorySearchTerm, allCategories]);
+
+  const productsCategoriesMan = (e) => {
+    const goalArr = spliterForCategories(e.target.value);
+    const categoryObject = {
+      _id: goalArr[0],
+      title: goalArr[1],
+      slug: goalArr[2],
+    };
+
+    if (e.target.checked) {
+      setRelCategories((prevRelCategories) => [
+        ...prevRelCategories,
+        categoryObject,
+      ]);
+    } else {
+      setRelCategories((prevRelCategories) =>
+        prevRelCategories.filter((cat) => cat._id !== categoryObject._id)
       );
     }
-    setRelCategories(related);
+  };
+
+  const removeSelectedCategory = (categoryIdToRemove) => {
+    setRelCategories((prevRelCategories) =>
+      prevRelCategories.filter((cat) => cat._id !== categoryIdToRemove)
+    );
   };
 
   const UpdateHandler = (e) => {
@@ -156,7 +227,8 @@ const ProductDetails = ({ goalId }) => {
       imageAlt: imageAltRef.current.value,
       price: priceRef.current.value,
       shortDesc: shortDescRef.current.value,
-      longDesc: longDescRef.current.value,
+      longDesc: longDescState,
+      keywords: keywordsRef.current.value,
       tags: tag,
       features: feature,
       typeOfProduct: typeOfProductRef.current.value,
@@ -170,7 +242,7 @@ const ProductDetails = ({ goalId }) => {
         headers: { auth_cookie: authCookie },
       })
       .then((d) => {
-        formData.published == "true"
+        formData.published === "true"
           ? toast.success("محصول با موفقیت به‌روزرسانی و منتشر شد.", {
               autoClose: 3000,
               hideProgressBar: false,
@@ -193,10 +265,9 @@ const ProductDetails = ({ goalId }) => {
       })
       .catch((e) => {
         let message = "متاسفانه ناموفق بود.";
-        if (e.response.data.msg) {
+        if (e.response && e.response.data && e.response.data.msg) {
           message = e.response.data.msg;
         }
-
         toast.error(message, {
           autoClose: 3000,
           hideProgressBar: false,
@@ -230,10 +301,9 @@ const ProductDetails = ({ goalId }) => {
       })
       .catch((e) => {
         let message = "متاسفانه ناموفق بود.";
-        if (e.response.data.msg) {
+        if (e.response && e.response.data && e.response.data.msg) {
           message = e.response.data.msg;
         }
-
         toast.error(message, {
           autoClose: 3000,
           hideProgressBar: false,
@@ -262,7 +332,7 @@ const ProductDetails = ({ goalId }) => {
         setFeature(d.data.features);
         setRelProducts(d.data.relatedProducts);
         setRelCategories(d.data.categories);
-        setThisProductCatsIds(d.data.categories.map((cat) => cat._id));
+        setLongDescState(d.data.longDesc || "");
       })
       .catch((e) => {
         toast.error("خطا در لود اطلاعات!", {
@@ -278,7 +348,7 @@ const ProductDetails = ({ goalId }) => {
 
   return (
     <div className="flex flex-col gap-8">
-      {fullData[0] == -1 ? (
+      {fullData[0] === -1 ? (
         <div className="flex justify-center items-center p-12">
           <Image alt="loading" width={120} height={120} src={"/loading.svg"} />
         </div>
@@ -350,7 +420,7 @@ const ProductDetails = ({ goalId }) => {
           <form
             onSubmit={UpdateHandler}
             onKeyDown={FormKeyNotSuber}
-            className="flex flex-col gap-6"
+            className="flex flex-col gap-10"
           >
             <div className="flex flex-col gap-2">
               <div>عنوان جدید محصول</div>
@@ -393,7 +463,7 @@ const ProductDetails = ({ goalId }) => {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <div>آلت جدید عکس</div>
+              <div>alt جدید عکس</div>
               <input
                 defaultValue={fullData.imageAlt ? fullData.imageAlt : ""}
                 required={true}
@@ -424,24 +494,36 @@ const ProductDetails = ({ goalId }) => {
             </div>
             <div className="flex flex-col gap-2">
               <div>توضیحات کامل جدید</div>
-              <textarea
-                defaultValue={fullData.longDesc ? fullData.longDesc : ""}
+              {longDescState !== undefined ? (
+                <TextEditor
+                  initialContent={longDescState}
+                  onChange={setLongDescState}
+                />
+              ) : (
+                <div className="p-4 text-center">
+                  در حال بارگذاری ویرایشگر...
+                </div>
+              )}
+            </div>
+            <div className="flex flex-col gap-2">
+              <div>کلمات کلیدی جدید(با ویرگول جدا کنید)</div>
+              <input
+                defaultValue={fullData.keywords ? fullData.keywords : ""}
                 required={true}
                 type="text"
-                ref={longDescRef}
+                ref={keywordsRef}
                 className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
-                rows="8"
               />
             </div>
-            <div className="tags flex flex-col gap-2">
-              <h3>برچسب ها</h3>
+            <div className="tags flex flex-col gap-4">
+              <h3 className="font-medium text-gray-700">برچسب‌ها</h3>
               <div className="tags w-full flex flex-col gap-4">
                 <div className="input flex gap-2 items-center">
                   <input
                     type="text"
                     onKeyDown={tagSuber}
                     ref={tagRef}
-                    className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+                    className="p-3 rounded-lg w-full outline-none border-2 border-zinc-300 focus:border-orange-400 transition-colors duration-200"
                     placeholder="تگ را وارد کنید و Enter بزنید..."
                   />
                 </div>
@@ -450,15 +532,17 @@ const ProductDetails = ({ goalId }) => {
                     return (
                       <div
                         key={t}
-                        className="res flex gap-1 text-sm py-1 px-2 rounded-md border-2 border-zinc-300"
+                        className="flex gap-1 text-sm py-2 px-3 rounded-full bg-zinc-100 border-2 border-zinc-300 items-center shadow-sm"
                       >
-                        <i
-                          className="text-indigo-500 flex items-center"
+                        <span className="text-xs text-gray-700">{t}</span>
+                        <button
+                          type="button"
                           onClick={() => {
                             tagDeleter(index);
                           }}
+                          className="text-indigo-500 hover:text-indigo-700 transition-colors duration-200 focus:outline-none"
+                          aria-label={`حذف تگ ${t}`}
                         >
-                          <span className="text-xs">{t}</span>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-4 w-4"
@@ -473,39 +557,41 @@ const ProductDetails = ({ goalId }) => {
                               d="M6 18L18 6M6 6l12 12"
                             />
                           </svg>
-                        </i>
+                        </button>
                       </div>
                     );
                   })}
                 </div>
               </div>
             </div>
-            <div className="tags flex flex-col gap-2">
-              <h3>ویژگی‌های جدید</h3>
+            <div className="tags flex flex-col gap-4">
+              <h3 className="font-medium text-gray-700">ویژگی‌ها</h3>
               <div className="tags w-full flex flex-col gap-4">
                 <div className="input flex gap-2 items-center">
                   <input
                     type="text"
                     onKeyDown={featureSuber}
                     ref={featuresRef}
-                    className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
+                    className="p-3 rounded-lg w-full outline-none border-2 border-zinc-300 focus:border-orange-400 transition-colors duration-200"
                     placeholder="نام ویژگی : توضیح ویژگی"
                   />
                 </div>
                 <div className="tagResults flex gap-3 justify-start flex-wrap">
-                  {feature.map((t, index) => {
+                  {feature.map((f, index) => {
                     return (
                       <div
-                        key={t}
-                        className="res flex gap-1 text-sm py-1 px-2 rounded-md border-2 border-zinc-300"
+                        key={f}
+                        className="flex gap-1 text-sm py-2 px-3 rounded-full bg-purple-100 border-2 border-purple-300 items-center shadow-sm"
                       >
-                        <i
-                          className="text-indigo-500 flex items-center  cursor-pointer"
+                        <span className="text-xs text-purple-800">{f}</span>
+                        <button
+                          type="button"
                           onClick={() => {
                             featureDeleter(index);
                           }}
+                          className="text-purple-500 hover:text-purple-700 transition-colors duration-200 focus:outline-none"
+                          aria-label={`حذف ویژگی ${f}`}
                         >
-                          <span className="text-xs">{t}</span>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-4 w-4"
@@ -520,7 +606,7 @@ const ProductDetails = ({ goalId }) => {
                               d="M6 18L18 6M6 6l12 12"
                             />
                           </svg>
-                        </i>
+                        </button>
                       </div>
                     );
                   })}
@@ -556,84 +642,176 @@ const ProductDetails = ({ goalId }) => {
                 )}
               </select>
             </div>
-            <div className="tags flex flex-col gap-2">
-              <h3>دسته بندی‌های محصول</h3>
-              {categories[0] == -1 ? (
+            <div className="tags flex flex-col gap-4">
+              <h3 className="font-medium text-gray-700">دسته‌بندی‌های محصول</h3>
+              {/* Display selected categories as chips */}
+              {relCategories.length > 0 && (
+                <div className="flex gap-3 justify-start flex-wrap mb-4 p-2 bg-indigo-50 rounded-lg border border-indigo-200 shadow-inner">
+                  {relCategories.map((category) => (
+                    <div
+                      key={category._id}
+                      className="flex gap-1 text-sm py-2 px-3 rounded-full bg-indigo-100 border border-indigo-300 items-center shadow-sm"
+                    >
+                      <span className="text-xs text-indigo-800">
+                        {category.title}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => removeSelectedCategory(category._id)}
+                        className="text-indigo-500 hover:text-indigo-700 transition-colors duration-200 focus:outline-none"
+                        aria-label={`حذف دسته‌بندی ${category.title}`}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={3}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {/* Search Input for Categories */}
+              <input
+                type="text"
+                placeholder="جستجو برای دسته‌بندی‌ها..."
+                value={categorySearchTerm}
+                onChange={(e) => setCategorySearchTerm(e.target.value)}
+                className="p-3 rounded-lg w-full outline-none border-2 border-zinc-300 focus:border-indigo-400 transition-colors duration-200 mb-4"
+              />
+
+              {loadingCategories ? (
                 <div className="flex justify-center items-center p-12">
                   <Image
                     alt="loading"
-                    width={120}
-                    height={120}
+                    width={60}
+                    height={60}
                     src={"/loading.svg"}
+                    className="animate-spin"
                   />
                 </div>
-              ) : categories.length < 1 ? (
-                <div className="p-3">دسته‌ای یافت نشد.</div>
+              ) : filteredCategories.length < 1 ? (
+                <div className="p-3 text-gray-600">دسته‌ای یافت نشد.</div>
               ) : (
-                <div className="flex justify-start items-center flex-wrap gap-2">
-                  {categories.map((po, i) => (
-                    <div key={i} className="px-2 py-1 bg-zinc-100 rounded">
-                      <label htmlFor={po._id}>{po.title}</label>{" "}
-                      {thisProductCatsIds.includes(po._id) ? (
-                        <input
-                          name={po._id}
-                          id={po._id}
-                          type="checkbox"
-                          value={`${po._id}*${po.title}*${po.slug}`}
-                          onChange={productsCategoriesMan}
-                          defaultChecked
-                        />
-                      ) : (
-                        <input
-                          name={po._id}
-                          id={po._id}
-                          type="checkbox"
-                          value={`${po._id}*${po.title}*${po.slug}`}
-                          onChange={productsCategoriesMan}
-                        />
-                      )}
+                <div className="flex flex-col gap-2 max-h-60 overflow-y-auto border border-zinc-200 rounded-lg p-3 bg-white shadow-sm">
+                  {filteredCategories.map((cat) => (
+                    <div
+                      key={cat._id}
+                      className="flex items-center gap-2 px-3 py-2 bg-zinc-50 hover:bg-zinc-100 rounded-md transition-colors duration-200 cursor-pointer"
+                    >
+                      <input
+                        name={`category_${cat._id}`}
+                        id={`category_${cat._id}`}
+                        type="checkbox"
+                        value={`${cat._id}*${cat.title}*${cat.slug}`}
+                        onChange={productsCategoriesMan}
+                        checked={relCategories.some(
+                          (selectedCat) => selectedCat._id === cat._id
+                        )}
+                        className="form-checkbox h-5 w-5 text-indigo-600 rounded focus:ring-indigo-500"
+                      />
+                      <label
+                        htmlFor={`category_${cat._id}`}
+                        className="text-gray-800 text-sm font-medium flex-grow cursor-pointer"
+                      >
+                        {cat.title}
+                      </label>
                     </div>
                   ))}
                 </div>
               )}
             </div>
-            <div className="tags flex flex-col gap-2">
-              <h3>محصولات مرتبط</h3>
-              {products[0] == -1 ? (
+            <div className="tags flex flex-col gap-4">
+              <h3 className="font-medium text-gray-700">محصولات مرتبط</h3>
+              {/* Display selected related products as chips */}
+              {selectedRelatedProducts.length > 0 && (
+                <div className="flex gap-3 justify-start flex-wrap mb-4 p-2 bg-blue-50 rounded-lg border border-blue-200 shadow-inner">
+                  {selectedRelatedProducts.map((product) => (
+                    <div
+                      key={product._id}
+                      className="flex gap-1 text-sm py-2 px-3 rounded-full bg-blue-100 border border-blue-300 items-center shadow-sm"
+                    >
+                      <span className="text-xs text-blue-800">
+                        {product.title}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          removeSelectedRelatedProduct(product._id)
+                        }
+                        className="text-blue-500 hover:text-blue-700 transition-colors duration-200 focus:outline-none"
+                        aria-label={`حذف محصول مرتبط ${product.title}`}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={3}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {/* Search Input for Related Products */}
+              <input
+                type="text"
+                placeholder="جستجو برای محصولات مرتبط..."
+                value={productSearchTerm}
+                onChange={(e) => setProductSearchTerm(e.target.value)}
+                className="p-3 rounded-lg w-full outline-none border-2 border-zinc-300 focus:border-blue-400 transition-colors duration-200 mb-4"
+              />
+              {loadingProducts ? (
                 <div className="flex justify-center items-center p-12">
                   <Image
                     alt="loading"
-                    width={120}
-                    height={120}
+                    width={60}
+                    height={60}
                     src={"/loading.svg"}
+                    className="animate-spin"
                   />
                 </div>
-              ) : products.length < 1 ? (
-                <div className="p-3">محصولی یافت نشد.</div>
+              ) : filteredProducts.length < 1 ? (
+                <div className="p-3 text-gray-600">محصولی یافت نشد.</div>
               ) : (
-                <div className="flex justify-start items-center flex-wrap gap-2">
-                  {products.map((po, i) => (
-                    <div key={i} className="px-2 py-1 bg-zinc-100 rounded">
-                      <label htmlFor={po._id}>{po.title}</label>{" "}
-                      {fullData.relatedProducts &&
-                      fullData.relatedProducts.includes(po._id) ? (
-                        <input
-                          name={po._id}
-                          id={po._id}
-                          type="checkbox"
-                          value={po._id}
-                          onChange={productsRelatedMan}
-                          defaultChecked
-                        />
-                      ) : (
-                        <input
-                          name={po._id}
-                          id={po._id}
-                          type="checkbox"
-                          value={po._id}
-                          onChange={productsRelatedMan}
-                        />
-                      )}
+                <div className="flex flex-col gap-2 max-h-60 overflow-y-auto border border-zinc-200 rounded-lg p-3 bg-white shadow-sm">
+                  {filteredProducts.map((pr) => (
+                    <div
+                      key={pr._id}
+                      className="flex items-center gap-2 px-3 py-2 bg-zinc-50 hover:bg-zinc-100 rounded-md transition-colors duration-200 cursor-pointer"
+                    >
+                      <input
+                        name={`product_${pr._id}`}
+                        id={`product_${pr._id}`}
+                        type="checkbox"
+                        value={pr._id}
+                        onChange={productsRelatedMan}
+                        checked={relProducts.includes(pr._id)}
+                        className="form-checkbox h-5 w-5 text-blue-600 rounded focus:ring-blue-500"
+                      />
+                      <label
+                        htmlFor={`product_${pr._id}`}
+                        className="text-gray-800 text-sm font-medium flex-grow cursor-pointer"
+                      >
+                        {pr.title}
+                      </label>
                     </div>
                   ))}
                 </div>
@@ -660,7 +838,7 @@ const ProductDetails = ({ goalId }) => {
             </div>
             <button
               type="submit"
-              className="p-2 bg-indigo-600 text-white w-full rounded-md transition-all duration-300 hover:bg-orange-500"
+              className="cursor-pointer p-2 bg-indigo-600 text-white w-full rounded-md transition-all duration-300 hover:bg-orange-500"
             >
               به روز رسانی
             </button>

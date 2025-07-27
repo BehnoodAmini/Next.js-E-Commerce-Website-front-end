@@ -46,19 +46,18 @@ const SingleBlog = async ({ params }) => {
   //SEO
   const postSlug = `/blog/${data.slug}`;
   const postShortDesc = data.shortDesc;
-  const postTtitle = data.title;
+  const postTitle = data.title;
+  const postKeywords = data.keywords;
 
   return (
     <div className="flex justify-between items-start container mx-auto gap-2">
       <meta charSet="utf-8" />
       <meta name="robots" content="index, follow" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <meta name="keywords" content="وبلاگ فروشگاه فایل" />
       {data.msg ? (
         <>
           <div>
             <title> مقاله هنوز منتشر نشده است </title>
-            <meta name="description" content={postShortDesc} />
             <link rel="canonical" href="/blog" />
           </div>
           <div>مقاله هنوز منتشر نشده است...</div>
@@ -66,8 +65,9 @@ const SingleBlog = async ({ params }) => {
       ) : (
         <div className="flex items-start justify-between gap-2 w-full flex-wrap md:flex-nowrap my-12 px-2 md:p-0 md:m-0">
           <>
-            <title>{postTtitle}</title>
+            <title>{postTitle}</title>
             <meta name="description" content={postShortDesc} />
+            <meta name="keywords" content={postKeywords} />
             <link rel="canonical" href={postSlug} />
           </>
           <main className="w-full">
@@ -111,9 +111,10 @@ const SingleBlog = async ({ params }) => {
               </section>
               <section className="flex flex-col gap-6">
                 <h2 className="text-xl">توضیحات کامل</h2>
-                <p className="leading-9 w-[96%] text-justify">
-                  {data.longDesc}
-                </p>
+                <div
+                  className="custom-tiptap-content leading-9 w-[96%] text-justify"
+                  dangerouslySetInnerHTML={{ __html: data.longDesc }}
+                />
               </section>
               <section>
                 <RelatedPosts
