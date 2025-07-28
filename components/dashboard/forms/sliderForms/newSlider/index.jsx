@@ -132,7 +132,7 @@ const NewSlider = () => {
         </div>
         <button
           type="submit"
-          className="p-2 bg-indigo-600 text-white w-full rounded-md transition-all duration-300 hover:bg-orange-500"
+          className="cursor-pointer p-2 bg-indigo-600 text-white w-full rounded-md transition-all duration-300 hover:bg-orange-500"
         >
           ارسال
         </button>

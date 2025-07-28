@@ -61,7 +61,7 @@ const ProductsSlider = ({ title, linkComp, goalData }) => {
               >
                 <div className=" flex justify-between items-center gap-4 ">
                   {goalData.map((da, i) => (
-                    <SlideBox key={i} itemData={da} />
+                    <SlideBox key={i} itemData={da} linkComp={linkComp}/>
                   ))}
                 </div>
               </div>

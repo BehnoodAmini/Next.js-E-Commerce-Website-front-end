@@ -46,7 +46,7 @@ const SingleProduct = async ({ params }) => {
   const postKeywords = data.keywords;
 
   return (
-    <div className="flex justify-between items-start container mx-auto gap-8 md:gap-4 px-2 flex-wrap md:flex-nowrap">
+    <div className="flex justify-between items-start container mx-auto gap-8 lg:gap-4 px-2 flex-wrap lg:flex-nowrap">
       <meta charSet="utf-8" />
       <meta name="robots" content="index, follow" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -66,16 +66,16 @@ const SingleProduct = async ({ params }) => {
             <meta name="keywords" content={postKeywords} />
             <link rel="canonical" href={productSlug} />
           </>
-          <main className="w-full md:w-[60%] lg:w-[75%]">
+          <main className="w-full lg:w-[60%] xl:w-[75%]">
             {" "}
-            <div className="flex flex-col gap-12 max-[424px]:text-xs mt-12 md:mt-0">
+            <div className="flex flex-col gap-12 max-[424px]:text-xs mt-12 lg:mt-0">
               <BreadCrumb
                 secondTitle={"فروشگاه"}
                 secondLink={"/shop"}
                 title={data.title}
               />
               <section className="flex justify-center items-center rounded-xl p-4 shadow-[0px_0px_8px_rgba(0,0,0,0.25)]">
-                <div className="flex justify-start items-center gap-4 w-full flex-col md:flex-row">
+                <div className="flex justify-start items-center gap-4 w-full flex-col lg:flex-row">
                   <div>
                     <Image
                       className="rounded-xl"
@@ -100,7 +100,7 @@ const SingleProduct = async ({ params }) => {
                         data.features.map((da, i) => (
                           <li
                             key={i}
-                            className="flex justify-between items-center gap-2 w-48"
+                            className="flex justify-between items-center gap-2 w-70"
                           >
                             <div className="flex justify-start items-center gap-1">
                               <TiTickOutline className="text-black" />
@@ -116,7 +116,7 @@ const SingleProduct = async ({ params }) => {
                   </div>
                 </div>
               </section>
-              <section className="flex justify-center items-center gap-2 md:gap-4 flex-wrap">
+              <section className="flex justify-center items-center gap-2 lg:gap-4 flex-wrap">
                 <div className="w-[18rem] rounded-md flex justify-center items-center gap-2 bg-slate-100 p-4 transition-all duration-300 hover:bg-slate-200">
                   <div className="flex justify-start items-center gap-2">
                     <Image
@@ -195,9 +195,9 @@ const SingleProduct = async ({ params }) => {
               <CommentsManager commentProps={commentProps} />
             </div>
           </main>
-          <aside className="md:w-80 md:max-w-80 w-full rounded-md flex flex-col gap-8 mt-10 md:mt-0">
+          <aside className="lg:w-80 lg:max-w-80 w-full rounded-md flex flex-col gap-8 mt-10 lg:mt-0">
             <div className="flex flex-col gap-6">
-              <div className="fixed bottom-5 right-20 left-20 md:static">
+              <div className="fixed bottom-5 right-20 left-20 lg:static">
                 <SingleProductPageCart
                   data={data._id}
                   price={priceChanger(data.price)}
@@ -221,7 +221,7 @@ const SingleProduct = async ({ params }) => {
                 </li>
               </ul>
             </div>
-            <div className="hidden md:flex flex-col gap-4 rounded-lg p-3 shadow-[0px_0px_8px_rgba(0,0,0,0.35)]">
+            <div className="hidden lg:flex flex-col gap-4 rounded-lg p-3 shadow-[0px_0px_8px_rgba(0,0,0,0.35)]">
               <h3 className="text-blue-500">معرفی کوتاه</h3>
               <p className="leading-8 text-base sm:text-sm text-justify">
                 {data.shortDesc}

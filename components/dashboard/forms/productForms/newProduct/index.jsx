@@ -349,7 +349,7 @@ const NewProduct = () => {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <div>کلمات کلیدی جدید(با ویرگول جدا کنید)</div>
+          <div>کلمات کلیدی (با ویرگول جدا کنید)</div>
           <input
             required={true}
             type="text"

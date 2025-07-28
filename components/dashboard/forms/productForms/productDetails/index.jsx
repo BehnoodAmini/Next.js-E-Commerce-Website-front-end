@@ -619,15 +619,15 @@ const ProductDetails = ({ goalId }) => {
                 ref={typeOfProductRef}
                 className="p-2 rounded-md w-full outline-none border-2 border-zinc-300 focus:border-orange-400"
               >
-                {fullData.typeOfProductRef &&
-                fullData.typeOfProductRef == "book" ? (
+                {fullData.typeOfProduct &&
+                fullData.typeOfProduct == "book" ? (
                   <>
                     <option value={"book"}>کتاب</option>
                     <option value={"app"}>اپلیکیشن</option>
                     <option value={"gr"}>فایل گرافیکی</option>
                   </>
-                ) : fullData.typeOfProductRef &&
-                  fullData.typeOfProductRef == "app" ? (
+                ) : fullData.typeOfProduct &&
+                  fullData.typeOfProduct == "app" ? (
                   <>
                     <option value={"app"}>اپلیکیشن</option>
                     <option value={"book"}>کتاب</option>

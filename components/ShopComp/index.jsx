@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { FaFilter } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 
-import GraphicSlideBox from "../sliders/graphic-slider-box";
+import ProductSlideBox from "../sliders/product-slider-box";
 
 const ShopComp = ({ url }) => {
   const goTopCtrl = () => {
@@ -526,7 +526,7 @@ const ShopComp = ({ url }) => {
             ) : result.length < 1 ? (
               <div>محصولی با این مشخصات موجود نیست...</div>
             ) : (
-              result.map((da, i) => <GraphicSlideBox key={i} itemData={da} />)
+              result.map((da, i) => <ProductSlideBox key={i} itemData={da} />)
             )}
           </section>
           <section className="flex justify-center items-center gap-4 flex-wrap">

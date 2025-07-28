@@ -14,7 +14,7 @@ import Like from "@/components/likeComp";
 
 import { useAppContext } from "@/context/appContext";
 
-const SlideBox = ({ itemData }) => {
+const SlideBox = ({ itemData, linkComp }) => {
   // PRICE BEAUTIFUL
   function priceChanger(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -103,7 +103,7 @@ const SlideBox = ({ itemData }) => {
 
   return (
     <article className="sliderItem p-2 hover:-translate-y-2 transition-all duration-300">
-      <div className="relative bg-white h-[26rem] w-64 md:w-72 rounded-lg">
+      <div className="relative bg-white h-[27rem] w-64 md:w-72 rounded-lg">
         <Link
           href={`/shop/${itemData.slug}`}
           className="flex justify-center items-center p-2"
@@ -112,7 +112,7 @@ const SlideBox = ({ itemData }) => {
           <Image
             width={260}
             height={150}
-            className="rounded-md"
+            className="rounded-md max-h-62"
             src={itemData.image}
             alt={itemData.imageAlt}
             title={itemData.imageAlt}
@@ -128,12 +128,12 @@ const SlideBox = ({ itemData }) => {
                 <div></div>
               ) : (
                 itemData.categories.map((da, i) =>
-                  i < 3 ? (
+                  i < 2 ? (
                     <Link
                       key={i}
                       href={`/shop?&orderBy=date&maxP=1000000000&minP=0&categories=${da.slug}&pgn=12&pn=1`}
                       target="_blank"
-                      className="py-1 px-2 rounded bg-zinc-200 transition-all duration-300 hover:bg-zinc-300"
+                      className="py-1 px-2 text-xs rounded bg-zinc-200 transition-all duration-300 hover:bg-zinc-300"
                     >
                       {da.title}
                     </Link>

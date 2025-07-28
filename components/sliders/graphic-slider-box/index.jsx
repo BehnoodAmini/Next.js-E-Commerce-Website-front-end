@@ -107,7 +107,7 @@ const SlideBox = ({ itemData }) => {
 
   return (
     <article className="sliderItem p-2 hover:-translate-y-2 transition-all duration-300">
-      <div className="relative bg-white h-[31rem] w-72 rounded-lg">
+      <div className="relative bg-white h-[30rem] w-72 rounded-lg">
         <Link
           href={`/shop/${itemData.slug}`}
           className="flex justify-center items-center p-2"
@@ -123,11 +123,11 @@ const SlideBox = ({ itemData }) => {
           />
         </Link>
         <div>
-          <div className="flex flex-col gap-6 p-2">
+          <div className="flex flex-col gap-5 p-2">
             <Link href={`/shop/${itemData.slug}`} target="_blank">
               <h3 className=" m-2 line-clamp-1">{itemData.title}</h3>
             </Link>
-            <div className="flex flex-col gap-1 text-zinc-500 text-base sm:text-sm absolute right-2 left-2 top-60">
+            <div className="flex flex-col gap-1 text-zinc-500 text-base sm:text-sm">
               <div className="flex flex-col gap-2">
                 {itemData.features.length < 1 ? (
                   <div></div>
@@ -150,17 +150,17 @@ const SlideBox = ({ itemData }) => {
                 )}
               </div>
             </div>
-            <div className="categories flex justify-start items-center flex-wrap gap-1 absolute right-2 left-2 top-[21rem]">
+            <div className="categories flex justify-start items-center flex-wrap gap-1 overflow-hidden">
               {itemData.categories.length < 1 ? (
                 <div></div>
               ) : (
                 itemData.categories.map((da, i) =>
-                  i < 3 ? (
+                  i < 2 ? (
                     <Link
                       key={i}
                       href={`/shop?&orderBy=date&maxP=1000000000&minP=0&categories=${da.slug}&pgn=12&pn=1`}
                       target="_blank"
-                      className="py-1 px-2 rounded bg-zinc-200 transition-all duration-300 hover:bg-zinc-300"
+                      className="py-1 px-2 text-xs rounded bg-zinc-200 transition-all duration-300 hover:bg-zinc-300"
                     >
                       {da.title}
                     </Link>
